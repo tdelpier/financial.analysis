@@ -1,0 +1,14 @@
+Package: financial.analysis
+Title: Financial Analysis
+Version: 0.0.0.9000
+Authors@R: 
+    person("Tanner", "Delpier", , "tdelpier@mea.org", role = c("aut", "cre"),
+           comment = c(ORCID = "YOUR-ORCID-ID"))
+Description: Creates the Michigan District Financial Analysis
+License: GPL (>= 3)
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.2.3
+Imports:
+  tidyverse,
+  tannerstools
