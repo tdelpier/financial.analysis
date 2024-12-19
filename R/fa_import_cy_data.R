@@ -8,40 +8,41 @@ fa_import_cy_data <- function() {
   
   clean_cy_data <- function(df, month) {
     df %>%
-      select(-starts_with("x")) %>%
-      mutate(dnum = as.numeric(dcode)) %>% 
-      rename_with(.cols = everything(),
+      dplyr::select(-starts_with("x")) %>%
+      dplyr::mutate(dnum = as.numeric(dcode)) %>% 
+      dplyr::rename_with(.cols = everything(),
                   function(x){paste0("cy.d.", {{ month }}, ".", x)}) %>%
-      rename(dcode = pastecy.d.8.dcode,
+      dplyr::rename(dcode = pastecy.d.8.dcode,
              FY = cy.d.8.FY,
              dnum = cy.d.8.dnum)
     
   }
   
   cydata_8 <- 
-    tt_import_cy_data(8) %>% 
-    select(-starts_with("x")) %>%
-    mutate(dnum = as.numeric(dcode)) %>%
-    rename_with(.cols = everything(),
+    TannersTools::tt_import_cy_data(8) %>% 
+    dplyr::select(-starts_with("x")) %>%
+    dplyr::mutate(dnum = as.numeric(dcode)) %>%
+    dplyr::rename_with(.cols = everything(),
                 function(x){paste0("cy.d.8.", x)}) %>%
-    rename(dcode = cy.d.8.dcode,
+    dplyr::rename(dcode = cy.d.8.dcode,
            FY = cy.d.8.FY,
            dnum = cy.d.8.dnum)
   
-  cydata_1 <- tt_import_cy_data(1)  %>% 
-    select(-starts_with("x")) %>%
-    mutate(dnum = as.numeric(dcode)) %>%
-    rename_with(.cols = everything(),
+  cydata_1 <- 
+    TannersTools::tt_import_cy_data(1)  %>% 
+    dplyr::select(-starts_with("x")) %>%
+    dplyr::mutate(dnum = as.numeric(dcode)) %>%
+    dplyr::rename_with(.cols = everything(),
                 function(x){paste0("cy.d.1.", x)}) %>%
-    rename(dcode = cy.d.1.dcode,
+    dplyr::rename(dcode = cy.d.1.dcode,
            FY = cy.d.1.FY,
            dnum = cy.d.1.dnum)
   
   
   cydata <- 
     cydata_8 %>% 
-    full_join(cydata_1, by = join_by(dnum, FY)) %>% 
-    filter(!is.na(dnum))
+    dplyr::full_join(cydata_1, by = dplyr::join_by(dnum, FY)) %>% 
+    dplyr::filter(!is.na(dnum))
   
   
   return(cydata)

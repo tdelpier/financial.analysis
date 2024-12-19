@@ -1,25 +1,26 @@
 
 
+
 # FUND BALANCE #################################################################
 
 
 fa_import_fid_fund_balance <- function() {
   
   fund_balances <- 
-    tt_import_fid_B() %>% 
-    filter(majorclass >= 700) %>% 
-    mutate(mc_1 = as.numeric(str_sub(majorclass, 1, 1)),
-           mc_2 = as.numeric(str_sub(majorclass, 1, 2)),
-           amount.bal = amount * -1) %>% 
-    group_by(FY, fund, dnum) %>% 
-    summarise(amount = sum(amount.bal, na.rm = TRUE)) %>% 
-    ungroup() %>% 
-    rename(FundBal = amount) %>% 
-    pivot_wider(id_cols = c(FY, dnum), 
-                names_from = fund, 
-                values_from = FundBal, 
-                names_prefix = "fid.b.fb",
-                values_fill = 0)
+    TannersTools::tt_import_fid_B() %>% 
+    dplyr::filter(majorclass >= 700) %>% 
+    dplyr::mutate(mc_1 = as.numeric(stringr::str_sub(majorclass, 1, 1)),
+                  mc_2 = as.numeric(stringr::str_sub(majorclass, 1, 2)),
+                  amount.bal = amount * -1) %>% 
+    dplyr::group_by(FY, fund, dnum) %>% 
+    dplyr::summarise(amount = sum(amount.bal, na.rm = TRUE)) %>% 
+    dplyr::ungroup() %>% 
+    dplyr::rename(FundBal = amount) %>% 
+    tidyr::pivot_wider(id_cols = c(FY, dnum),
+                       names_from = fund, 
+                       values_from = FundBal, 
+                       names_prefix = "fid.b.fb",
+                       values_fill = 0)
   
   return(fund_balances)
   

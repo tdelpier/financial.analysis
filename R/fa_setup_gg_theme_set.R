@@ -2,8 +2,11 @@
 
 
 
-
-fa_helper_gg_theme_set <- function() {
+#' FA Set ggplot Theme
+#'
+#'
+#' @export
+fa_setup_gg_theme_set <- function() {
   
     theme_set(theme(
     plot.background = element_blank(),

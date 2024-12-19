@@ -1,31 +1,34 @@
 
-state_cat_names <- read_csv("FA/Data_Small/State_Cat_Names.csv")
+# state_cat_names <- read_csv("FA/Data_Small/State_Cat_Names.csv")
 
 
 # CY ALLOWANCE #################################################################
 
+
+#' @import tidyverse 
+#' 
 fa_import_cy_allowance <- function() {
   
   
   clean_cy_allow <- function(df, month){
     
     df %>% 
-      select(FY, month, dcode, icd, descript, amount) %>% 
-      mutate(amount = amount) %>%
-      pivot_wider(id_cols = c(FY, dcode, month), 
+      dplyr::select(FY, month, dcode, icd, descript, amount) %>% 
+      dplyr::mutate(amount = amount) %>%
+      tidyr::pivot_wider(id_cols = c(FY, dcode, month), 
                   names_from = icd, 
                   values_from = amount,
                   names_prefix = paste0("cy.a.", {{ month }}, ".")) %>% 
-      mutate(dnum = as.numeric(dcode)) %>% 
-      select(-dcode)
+      dplyr::mutate(dnum = as.numeric(dcode)) %>% 
+      dplyr::select(-dcode)
     
     
   }
   
   cyallow_8_raw <- 
-    tt_import_cy_allow(month = 8) %>% 
-    mutate(icd = ifelse(str_length(icd) == 2, paste0("0", icd), icd),
-           icd = ifelse(str_length(icd) == 1, paste0("00", icd), icd)) 
+    TannersTools::tt_import_cy_allow(month = 8) %>% 
+    dplyr::mutate(icd = ifelse(stringr::str_length(icd) == 2, paste0("0", icd), icd),
+           icd = ifelse(stringr::str_length(icd) == 1, paste0("00", icd), icd)) 
   
   cyallow_8 <- 
     cyallow_8_raw %>% 
@@ -34,24 +37,23 @@ fa_import_cy_allowance <- function() {
   
   
   cyallow_1_raw <- 
-    tt_import_cy_allow(month = 1) %>% 
-    mutate(icd = ifelse(str_length(icd) == 2, paste0("0", icd), icd),
-           icd = ifelse(str_length(icd) == 1, paste0("00", icd), icd)) 
+    TannersTools::tt_import_cy_allow(month = 1) %>% 
+    mutate(icd = ifelse(stringr::str_length(icd) == 2, paste0("0", icd), icd),
+           icd = ifelse(stringr::str_length(icd) == 1, paste0("00", icd), icd)) 
   
   cyallow_1 <- 
     cyallow_1_raw %>% 
     clean_cy_allow(month = 1) %>% 
-    select(-month)
+    dplyr::select(-month)
   
   cyallow <- 
     cyallow_8 %>% 
-    full_join(cyallow_1, by = join_by(FY, dnum)) %>% 
-    select(FY, dnum, everything())
+    dplyr::full_join(cyallow_1, by = join_by(FY, dnum)) %>% 
+    dplyr::select(FY, dnum, everything())
   
   return(cyallow)
   
 }
-
 
 ## function to bring in names
 # cyallow_names <- 

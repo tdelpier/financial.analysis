@@ -1,5 +1,10 @@
 
-fa_helper_load_packages <- function() {
+
+#' FA Load Packages
+#'
+#'
+#' @export
+fa_setup_load_packages <- function() {
   
   packages = c("tidyverse",
                "lubridate", 
