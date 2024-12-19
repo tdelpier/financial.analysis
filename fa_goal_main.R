@@ -11,9 +11,7 @@ library(financial.analysis)
 fa_setup()
 fa_construct_data()
 FA_Data <- fa_import_data()
+# we made it here! 
 
-
-
-FA_import()
 FA_dwork()
 FA_render_dist()
