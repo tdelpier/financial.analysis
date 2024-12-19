@@ -2,7 +2,10 @@
 
 # CY DATA ######################################################################
 
-
+#' FA import cy data
+#'
+#'
+#' @export
 fa_import_cy_data <- function() {
   
   

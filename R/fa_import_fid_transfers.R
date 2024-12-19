@@ -3,6 +3,10 @@
 
 # TRANSFER #####################################################################
 
+
+#' FA helper add fund names
+#'
+#' @export
 fa_helper_add_fund_names <- function(df, fund.digit) {
   
   df %>% 
@@ -12,7 +16,9 @@ fa_helper_add_fund_names <- function(df, fund.digit) {
 }
 
 
-
+#' FA FID transfers
+#'
+#' @export
 fa_import_fid_transfers <- function(fund = 11) {
   
   
@@ -47,7 +53,9 @@ fa_import_fid_transfers <- function(fund = 11) {
 
 
 
-
+#' FA helper fid transfer long
+#'
+#' @export
 fa_helper_fid_transfer_long  <- function(df) {
   
   df %>% 

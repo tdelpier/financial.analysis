@@ -2,6 +2,9 @@
   
   # EXPENDITURE ##################################################################
 
+#' FA FID exp
+#'
+#' @export  
 fa_import_fid_exp <- function(fund = 11) {
   
   

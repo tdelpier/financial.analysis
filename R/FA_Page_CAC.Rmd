@@ -1,0 +1,33 @@
+---
+---
+
+
+## Cost Alignment Calculator Data 
+
+The Cost Alignment Calculator (CAC) is a tool developed and maintained by MEA's Bargaining Consultant to aid bargainers in developing proposals. The table below provides some of the data necessary to use that tool. The "General Fund Operating Revenue" shows recurring revenues that are not one-time federal stimulus nor 147c payments that must by law be submitted to the Office of Retirement Services (ORS). This is the prefered revenue figure used to fill out the CAC.
+
+
+
+```{r}
+
+FA_Data_District %>%
+  ungroup() %>%
+  select(FY, tab.rev.total, tab.rev.fed.stim, tab.rev.state.mpsers.uaal, tab.rev.total.xstim.xuaal) %>%
+  mutate(FY = ifelse(FY == fiscal.year, paste0(FY, " est."), FY)) %>% 
+  flextable() %>% 
+  set_header_labels(FY = "Fiscal Year", 
+                    tab.rev.total = "Total Revenue", 
+                    tab.rev.total.xstim.xuaal = "General Fund Operating Revenue",
+                    tab.rev.fed.stim = "Federal Stimulus",
+                    tab.rev.state.mpsers.uaal = "UAAL Payment (147c)"
+                    ) %>% 
+  colformat_double(j = c("tab.rev.total", "tab.rev.total.xstim.xuaal", 
+                         "tab.rev.fed.stim", "tab.rev.state.mpsers.uaal"), 
+                    big.mark = ",", digits = 0) %>%
+  bg(j = "tab.rev.total.xstim.xuaal", bg = "gray90", part = "all") %>% 
+  flextable_custom_theme()
+
+
+
+```
+

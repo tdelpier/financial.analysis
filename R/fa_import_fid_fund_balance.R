@@ -3,7 +3,9 @@
 
 # FUND BALANCE #################################################################
 
-
+#' FA FID Bal
+#'
+#' @export
 fa_import_fid_fund_balance <- function() {
   
   fund_balances <- 

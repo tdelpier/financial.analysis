@@ -1,0 +1,78 @@
+---
+---
+
+## Foundation Allowance
+
+```{r, Foundation Table}
+
+FA_Data_District %>%
+  select(FY, cy.d.found.pp, cy.d.found.pp.chg, cy.d.found.pp.pct.chg) %>%
+  flextable() %>%
+  set_header_labels(FY = "Fiscal Year",
+                    cy.d.found.pp = "Foundation Allowance",
+                    cy.d.found.pp.chg = "Change",
+                    cy.d.found.pp.pct.chg = "Pct Change") %>%
+  colformat_num(j = "FY", big.mark = "") %>%
+  colformat_num(j = c("cy.d.found.pp", "cy.d.found.pp.chg"), big.mark = ",")%>%
+  colformat_double(j = "cy.d.found.pp.pct.chg", suffix = "%") %>% 
+  flextable_custom_theme()
+
+
+
+```
+
+
+```{r Foundation Figure}
+
+FA_Data_District %>%
+  ggplot(aes(x = FY))+
+  geom_line(aes(y = cy.d.found.pp), color = mea_gray, size = line_size)+
+  scale_x_continuous(breaks = seq(1990, 2100, by = 1) )+
+  scale_y_continuous(labels = number_format(big.mark = ","))+
+  labs(title = "Foundation Allowance",
+       x = "Fiscal Year",
+       y = "")
+
+```
+
+\newpage
+
+
+```{r Total Foundation Revenue}
+
+FA_Data_District %>%
+  select(FY, cy.d.found.pp, cy.d.pupilcnt, cy.d.found.rev, cy.d.found.rev.chg, cy.d.found.rev.pct.chg) %>%
+  flextable() %>%
+  set_header_labels(FY = "Fiscal Year",
+                    cy.d.found.pp = "Foundation Allowance Per Pupil",
+                    cy.d.pupilcnt = "State Aid Membership",
+                    cy.d.found.rev = "Total Foundation Allowance",
+                    cy.d.found.rev.chg = "Change", 
+                    cy.d.found.rev.pct.chg = "Percent Change") %>%
+  colformat_num(j = "FY", big.mark = "") %>%
+  colformat_num(j = c("cy.d.found.pp", 
+                      "cy.d.pupilcnt", 
+                      "cy.d.found.rev", 
+                      "cy.d.found.rev.chg"), big.mark = ",") %>% 
+  colformat_double(j = "cy.d.found.rev.pct.chg", suffix = "%") %>% 
+  flextable_custom_theme() 
+
+# %>%
+#   htmltools_value(ft.shadow = FALSE)
+
+```
+
+```{r}
+
+FA_Data_District %>%
+  ggplot(aes(x = FY))+
+  geom_line(aes(y = cy.d.found.rev), color = mea_gray, size = line_size)+
+  scale_x_continuous(breaks = seq(1990, 2100, by = 1) )+
+  scale_y_continuous(labels = number_format(big.mark = ","))+
+  labs(title = "Foundation Allowance Revenue",
+       x = "Fiscal Year",
+       y = "")
+
+
+
+```

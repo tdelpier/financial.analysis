@@ -5,8 +5,12 @@
 # CY ALLOWANCE #################################################################
 
 
-#' @import tidyverse 
-#' 
+
+
+#' FA import cy allowance
+#'
+#'
+#' @export
 fa_import_cy_allowance <- function() {
   
   

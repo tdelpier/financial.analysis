@@ -7,7 +7,6 @@
 
 #' FA Join all data
 #'
-#'
 #' @export
 fa_construct_data <- function(path) {
   
@@ -34,6 +33,12 @@ fa_construct_data <- function(path) {
   message("ID done")
   
   
+  # Stimulus Allocations 
+  stim <- 
+    fa_import_stim()
+  message("Stim")
+  
+  
 
   # FID
   rev <- fa_import_fid_rev()
@@ -51,6 +56,7 @@ fa_construct_data <- function(path) {
     dplyr::full_join(bal, by = dplyr::join_by(FY, dnum)) %>% 
     dplyr::full_join(exp, by = dplyr::join_by(FY, dnum)) %>% 
     dplyr::full_join(trn, by = dplyr::join_by(FY, dnum)) %>% 
+    dplyr::full_join(stim, by = dplyr::join_by(dnum), multiple = "all", copy = TRUE) %>%
     dplyr::full_join(cydata, by = dplyr::join_by(FY, dnum)) %>% 
     dplyr::full_join(cyallow, by = dplyr::join_by(FY, dnum)) %>% 
     dplyr::full_join(district_budgets, by = dplyr::join_by(FY, dnum)) %>% 
@@ -64,8 +70,6 @@ fa_construct_data <- function(path) {
   message(paste0("Data contructed: ", path))
   
 }
-
-
 
 
 

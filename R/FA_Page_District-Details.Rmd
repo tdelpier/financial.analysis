@@ -1,0 +1,152 @@
+---
+params:
+  district:         52170
+
+---
+
+
+
+## District Details
+
+
+
+```{r ft.align='left'}
+FA_Data_District %>%
+  filter(FY == fiscal.year) %>%
+
+  ## I'll want to add these mutations to the data cleaning file once I'm done
+  mutate(district.sqmi =  as.character(format(round(district.sqmi, 1),
+                                              big.mark = ",")),
+         cy.d.1.dname = tools::toTitleCase(tolower(cy.d.1.dname)),
+         cy.d.pupilcnt.chg.1 = as.character(comma(cy.d.pupilcnt - cy.d.pupilcnt.x1, digits = 0)),
+         cy.d.pupilcnt.chg.5 = as.character(comma(cy.d.pupilcnt - cy.d.pupilcnt.x5, digits = 0)),
+
+         cy.d.pupilcnt.pct.chg.1 = ifelse(cy.d.pupilcnt.pct.chg.1 > 0,
+                                          paste0("+", percent(cy.d.pupilcnt.pct.chg.1)),
+                                          paste0(percent(cy.d.pupilcnt.pct.chg.1))),
+
+         cy.d.pupilcnt.pct.chg.5 = ifelse(cy.d.pupilcnt.pct.chg.5 > 0,
+                                          paste0("+", percent(cy.d.pupilcnt.pct.chg.5)),
+                                          paste0(percent(cy.d.pupilcnt.pct.chg.5))),
+
+         enroll.chg.1 = paste0(cy.d.pupilcnt.chg.1, " (", cy.d.pupilcnt.pct.chg.1,")" ),
+         enroll.chg.5 = paste0(cy.d.pupilcnt.chg.5, " (", cy.d.pupilcnt.pct.chg.5,")" ),
+         flag.out.of.formula = ifelse(cy.d.1.revenuepp > cy.d.1.found.pp, "Yes", "No"),
+         flag.hh = ifelse(flag.hh == 1, "Yes", "No")) %>%
+  select(cy.d.1.dname, dcode, nces.code, isd.name, icode, county.name,
+         flag.hh, flag.out.of.formula, locale.name, district.sqmi,
+         enroll.range, enroll.chg.1, enroll.chg.5) %>%
+
+
+  rename('Name:' = cy.d.1.dname,
+         'District Code:' = dcode,
+         'NCES Code:' = nces.code,
+         'ISD Name:' = isd.name,
+         'ISD Code:' = icode,
+         'County:' = county.name,
+         'Hold Harmless Eligible:' = flag.hh,
+         'Out of Formula'  = flag.out.of.formula,
+         'Locale:' = locale.name,
+         'Square Miles:' = district.sqmi,
+         'Enrollment Range:' = enroll.range,
+         'Enrollment 1-year Change' = enroll.chg.1,
+         'Enrollment 5-year Change' = enroll.chg.5) %>%
+  pivot_longer(cols = everything()) %>%
+  flextable() %>%
+  delete_part(part = "header") %>%
+  bold(j = "name", part = "body") %>%
+  border_remove() %>%
+  autofit() %>%
+  padding(padding = 2, part = "all")
+
+
+```
+
+
+```{r}
+
+map_dist_inlay <- function(dnum){
+  
+  n <- 
+    dist_geo %>% 
+    tibble() %>% 
+    filter(dnum == {{ dnum }}) %>% 
+    select(c_id) %>% 
+    pull() 
+  
+  adjacent_districts <- st_intersects(dist_geo, dist_geo[n, 1], sparse = FALSE)
+  district_adj_geo <- dist_geo[adjacent_districts,] %>% 
+    mutate(highlight = ifelse(dnum == {{ dnum }}, TRUE, FALSE))
+  
+  xmin <-  st_bbox(district_adj_geo)[[1]]
+  ymin <-  st_bbox(district_adj_geo)[[2]]
+  xmax <-  st_bbox(district_adj_geo)[[3]]
+  ymax <-  st_bbox(district_adj_geo)[[4]]
+  
+  # big map
+  state.map <- 
+    ggplot() +
+    geom_sf(data = dist_geo, aes(geometry = geometry), size = 0, fill = "white")+
+    geom_sf(data = district_adj_geo, aes(geometry = geometry, fill = highlight), size = 0)+
+    geom_rect(aes(xmin = xmin, 
+                  ymin = ymin,
+                  xmax = xmax,
+                  ymax = ymax),
+              color = "black",
+              fill = NA,
+              size = .75)+
+    scale_fill_manual(values = c("gray70", mea_red)) +
+    coord_sf(lims_method = "geometry_bbox") +
+    coord_sf(ylim = c(41.75, 47.2), xlim = c(-82.4,-90.1), expand = TRUE) + 
+    theme_void()+
+    theme(legend.position = "none")
+
+  # mini map
+  mini.map <- 
+    ggplot(data = district_adj_geo) +
+    geom_sf(aes(geometry = geometry, fill = highlight), size = 0)+
+    scale_fill_manual(values = c("gray70", mea_red))+
+    geom_sf_text_repel(aes(label = LABEL),
+                       size = 2.75,
+                       color = "black",
+                       bg.color = "white",
+                       bg.r = .3,
+                       box.padding = 0.5) +
+     geom_rect(aes(xmin = xmin, 
+                  ymin = ymin,
+                  xmax = xmax,
+                  ymax = ymax),
+              color = "black",
+              fill = NA,
+              size = .75)+
+    coord_sf(lims_method = "geometry_bbox")+
+    theme_void()+
+    theme(legend.position = "none")
+  
+  
+  map <- plot_grid(mini.map, state.map 
+                   # scale = .8,
+                   )
+  
+  return(map)
+  
+}
+
+
+```
+
+
+
+```{r warning=FALSE}
+
+map_dist_inlay(params$district)
+
+
+```
+
+Report generated on: `r format(Sys.time(), "%B %e, %Y")`
+
+
+
+
+

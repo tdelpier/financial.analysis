@@ -1,0 +1,223 @@
+```{r}
+
+prior.years.to.show <- 9
+
+```
+
+## Budget Comparison
+
+
+
+```{r}
+
+
+
+FA_Data_District %>% 
+  
+    select(FY, fid.r.total.audit, 
+         db.original.total.revenue, fid.r.total.audit.lag1, est.1.rev.total,
+         db.orig.rev.pct.act, fid.r.total.audit.lag1.pct.act, est.1.rev.total.pct.act) %>% 
+
+  filter(FY > (fiscal.year - prior.years.to.show)) %>% 
+  flextable() %>% 
+  set_header_labels(FY = "Fiscal Year",
+                    fid.r.total.audit = "Actual Revenue",
+                    db.original.total.revenue = "District Original Budget",
+                    fid.r.total.audit.lag1 = "Prior Year's Actual Revenue",
+                    est.1.rev.total = "MEA Revenue Estimate",
+                    db.orig.rev.pct.act = "Original Budget % of Actual",
+                    fid.r.total.audit.lag1.pct.act = "Prior Year's Revenue % of Current Actual",
+                    est.1.rev.total.pct.act = "MEA Estimate % of Actual") %>%
+  colformat_num(j = "FY", big.mark = "") %>%
+  colformat_num(j = c("fid.r.total.audit", 
+                      "fid.r.total.audit.lag1",
+                      "db.original.total.revenue", 
+                      "est.1.rev.total"), big.mark = ",")%>%
+  colformat_double(j = c("db.orig.rev.pct.act",
+                         "fid.r.total.audit.lag1.pct.act",
+                         "est.1.rev.total.pct.act"), suffix = "%") %>% 
+  # flextable::footnote(i = 1, j = "fid.r.total.audit.lag1", 
+  #          value = as_paragraph("This column 'estimates' revenue in  the current year by using the prior year's actual total revenue."),
+  #          ref_symbols = c("1"), 
+  #          part = "header") %>% 
+  # flextable::footnote(i = 1, j = "est.1.rev.total", 
+  #          value = as_paragraph("MEA revenue estimate includes federal stimulus."),
+  #          ref_symbols = c("2"), 
+  #          part = "header") %>% 
+  
+  bg(j = "db.orig.rev.pct.act", bg = "#d1e8fa", part = "all") %>% 
+  bg(j = "fid.r.total.audit.lag1.pct.act", bg = "#C2FFDF", part = "all") %>% 
+  bg(j = "est.1.rev.total.pct.act", bg = "#fad1db", part = "all") %>% 
+
+
+  flextable_custom_theme()
+
+
+```
+
+```{r}
+
+district_budget_data <- 
+  FA_Data_District %>% 
+  filter(FY > (fiscal.year - prior.years.to.show),
+         !is.na(est.1.rev.total.pct.act)) %>% 
+  select(FY, db.orig.rev.pct.act, 
+         fid.r.total.audit.lag1.pct.act, 
+         est.1.rev.total.pct.act) %>% 
+  pivot_longer(cols = c(db.orig.rev.pct.act, 
+                        fid.r.total.audit.lag1.pct.act, 
+                        est.1.rev.total.pct.act))
+
+
+district_budget_min <- 
+  district_budget_data %>% 
+  filter(!is.na(value)) %>% 
+  summarise(min = min(value) / 100) %>% 
+  pull()
+
+district_budget_max <- 
+  district_budget_data %>% 
+  filter(!is.na(value)) %>% 
+  summarise(max = max(value) / 100) %>% 
+  pull()
+
+
+district_budget_data %>% 
+  # mutate(label = case_when(FY == max(FY) & name == "db.orig.rev.pct.act"            ~ "Original Budget",
+  #                          FY == max(FY) & name == "fid.r.total.audit.lag1.pct.act" ~ "  Prior Year        ",
+  #                          FY == max(FY) & name == "est.1.rev.total.pct.act"        ~  "MEA Estimate "),
+
+
+  mutate(name = case_when( name == "db.orig.rev.pct.act"            ~ "Original Budget",
+                           name == "fid.r.total.audit.lag1.pct.act" ~ "  Prior Year        ",
+                            name == "est.1.rev.total.pct.act"        ~  "MEA Estimate "),
+                  value = value / 100) %>% 
+  
+  ggplot(aes(x = FY, y = value, 
+             group = name, 
+             # label = label, 
+             color = name, 
+             linetype = name), 
+         size = line_size)+
+  geom_line(size = line_size) +
+  geom_hline(yintercept = 1, size = line_size, alpha = .5) +
+  expand_limits(x = fiscal.year)+
+  
+    # geom_text_repel(aes(label = label, 
+    #                    color = name
+    #                    ),
+    #                 box.padding = .5,
+    #                 # point.padding = 10,
+    #                 
+    #                 min.segment.length = .2,
+    #               # nudge_x = 1.4,
+    #               na.rm = TRUE)+
+  
+  annotate("rect", xmin = 2021, xmax = 2024,
+           ymin = district_budget_min,
+           ymax = district_budget_max * 1.015,
+           alpha = .15) +
+  annotate("text", 
+           label = "ESSER Period",
+           x = 2022.5,
+           y = district_budget_max * 1.005,
+           alpha = .75) +
+  
+  scale_x_continuous(breaks = seq(1990, 2100, by = 1) )+
+  scale_y_continuous(labels = percent_format(), expand = c(0, 0)) +
+  
+  labs(title = 
+"<b>District's <span style='color: #003057'> Original Budget</span></b> , <b><span style='color:#00A651 '>Prior Year's</span></b> , and
+<b><span style='color:#C2002F '> MEA Estimate </span></b> 
+as Percent of Actual Revenue",
+       x = "Fiscal Year",
+       y = "",
+legend = "")+
+  scale_color_manual(values = c(mea_green, mea_red, mea_blue)) +
+  scale_fill_manual(values = c(mea_green, mea_red, mea_blue)) +
+  scale_linetype_manual(values=c("twodash", "solid", "dotted"))+
+  theme(
+    # legend.position = c(.95, .95),
+    # legend.justification = c("right", "top"),
+    legend.box.just = "right",
+    # legend.margin = margin(6, 6, 6, 6),
+    legend.box.background = element_rect(color= mea_gray, size=1),
+    legend.title = element_blank(),
+    legend.position = "bottom",
+    plot.title = element_markdown()) 
+
+
+```
+
+```{r}
+
+
+FA_Data_District %>% 
+  filter(FY > (fiscal.year - prior.years.to.show),
+         !is.na(est.1.rev.total.pct.act)) %>% 
+  select(FY, fid.r.total.audit, db.original.total.revenue, 
+         db.final.total.revenue, db.orig.rev.error, db.final.rev.error) %>% 
+  flextable() %>% 
+  set_header_labels(
+                  FY = "Fiscal Year",
+                  fid.r.total.audit = "Actual Revenue",
+                  db.original.total.revenue = "District Original Budgeted Revenue",
+                  db.final.total.revenue = "District Final Budgeted Revenue",
+                  db.orig.rev.error = "Original Budget Error (Budget - Actual)",
+                  db.final.rev.error = "Final Budget Error (Budget - Actual)"
+                  
+  ) %>% 
+
+  
+  colformat_num(j = "FY", big.mark = "") %>%
+  colformat_double(j = c("fid.r.total.audit",
+                      "db.original.total.revenue", 
+                      "db.final.total.revenue",
+                      "db.orig.rev.error",
+                      "db.final.rev.error"), 
+                big.mark = ",",
+                digits = 0) %>%
+
+  flextable_custom_theme()
+
+
+
+
+```
+
+```{r}
+
+
+FA_Data_District %>% 
+  filter(FY > (fiscal.year - prior.years.to.show),
+         !is.na(est.1.rev.total.pct.act)) %>% 
+  select(FY, fid.e.total.xtrans, db.original.total.expenditure, 
+         db.final.total.expenditure, db.orig.exp.error, db.final.exp.error) %>% 
+  flextable() %>% 
+  set_header_labels(
+                  FY = "Fiscal Year",
+                  fid.e.total.xtrans = "Actual Expenditure",
+                  db.original.total.expenditure = "District Original Budget Expenditure",
+                  db.final.total.expenditure = "District Final Budget Expenditure",
+                  db.orig.exp.error = "Original Budget Error (Budget - Actual)",
+                  db.final.exp.error = "Final Budget Error (Budget - Actual)"
+                  
+  ) %>% 
+
+  
+  colformat_num(j = "FY", big.mark = "") %>%
+  colformat_double(j = c("fid.e.total.xtrans",
+                      "db.original.total.expenditure", 
+                      "db.final.total.expenditure",
+                      "db.orig.exp.error",
+                      "db.final.exp.error"), 
+                big.mark = ",",
+                digits = 0) %>%
+
+  flextable_custom_theme()
+
+
+
+
+
+```

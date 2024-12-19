@@ -31,14 +31,25 @@ fa_import_data <- function(file = "latest") {
 
   
   path <- TannersTools::tt_dir_projects("financial.analysis", "data", fa_data_file) 
+  FA_Data <<- readRDS(path)
   
   
-  fa_data <- readRDS(path)
+  ## Geo Data
+  
+  sf_use_s2(FALSE)
+  
+  dist_geo <<-
+    tt_import_geo_district() %>% 
+    st_set_crs(4269) %>% 
+    st_transform(4269) %>%   
+    drop_crumbs(threshold = units::set_units(1, km^2)) %>% 
+    mutate(c_id = row_number()) %>%   
+    # st_crop(xmin = -82.4, xmax = -90.35, ymin = 41.7, ymax = 47.5) %>%
+    st_make_valid()
+  
+  
+  message("FA data read from: ", path)
   message("Data Import Complete ✓")
-  message("Read from: ", path)
-  return(fa_data)
 
-  
   
 }
-

@@ -1,0 +1,9 @@
+## Federal Stimulus
+
+During the COVID-19 pandemic, the federal government enacted three rounds of economic stimulus through the CARES Act (2020), CRSSA (2020), and ARP (2021). Each of these laws included funding for PK-12 education. The largest portion of federal aid came through the Elementary and Secondary Schools Emergency Relief Fund (ESSER).
+
+Each round of ESSER has different expenditure periods. As of FY 2024, ESSER I and ESSER II have expired. ESSER III must be obligated by September 30th 2024 and liquidated by December 31st 2024. If a district fails to spend these dollars by the end of the expenditure period, it will lose access to the funds.
+
+All federal stimulus funds operate on a reimbursement basis. Once a district has spent the funds on an allowable use, they apply to the Michigan Department of Education (MDE) for reimbursement from their pre-allocated funding. The FY 2024 "Federal Stimulus" estimate (on the Revenue Estimate page) uses district level allocation data from MDE and compares that to expenditure data in the Financial Information Database (FID). These data come from the close the of FY 2023 (i.e., June 30th, 2023).
+
+For more recent information on remaining federal stimulus revenue, the MDE maintains a federal stimulus reimbursement dashboard. To view the total allocated, reimbursed, and remaining federal stimulus for each district visit this website: <https://www.michigan.gov/mde/services/financial-management/grants/cares-act-grant-information/covid-19-spend-dashboard>

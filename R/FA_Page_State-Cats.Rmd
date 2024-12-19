@@ -1,0 +1,57 @@
+---
+---
+
+
+## State Categoricals 
+
+```{r}
+
+FA_Data_District %>%
+  filter(FY > fiscal.year - 2) %>% 
+  select(FY, starts_with("cy.a.8."), starts_with("cy.a.1.")) %>%
+  pivot_longer(cols = c(-FY))%>% 
+  mutate(month = ifelse(str_detect(name, "cy.a.1.") == TRUE, "feb", "aug"),
+         icd = str_sub(name, -3, -1)) %>% 
+  pivot_wider(id_cols = c(FY, icd), names_from = month, values_from = value) %>% 
+  mutate(across(.cols = c(aug, feb), .fns = ~replace_na(.,0))) %>% 
+  group_by(FY) %>% 
+  mutate(aug.data.avalible = ifelse(icd == "000" & aug != 0, 1, NA)) %>% 
+  fill(aug.data.avalible) %>% 
+  mutate(amount = ifelse(is.na(aug.data.avalible), feb, aug)) %>% 
+  select(FY, icd, amount) %>% 
+  pivot_wider(id_cols = icd, 
+              names_from = FY,
+              values_from = amount 
+              ) %>% 
+  filter((.[[2]] + .[[3]] ) > 0) %>% 
+  arrange(-.[[3]]) %>% 
+  left_join(cyallow_names) %>%
+  select(descript, everything()) %>% 
+  select(-icd) %>% 
+  mutate(Change = .[[3]] - .[[2]],
+         "% Change" = Change / .[[2]]) %>% 
+  flextable() %>% 
+  fontsize(size = 8) 
+
+%>% 
+  colformat_double(j = c(.[[2]], .[[3]], .[[4]]), 
+                    big.mark = ",", digits = 0)
+
+%>%
+   colformat_double(j = "% Change", suffix = "%") %>% 
+
+  autofit()
+  # line_spacing(space = .3) %>% 
+  width(width = 5) %>% 
+  padding(padding.top = .01, padding.bottom = .01,part = "body")
+  
+  
+  # height_all(height = .05, part = "all", unit = "in") %>% 
+  # hrule(rule = "exact") %>% 
+  # 
+  # autofit()
+  # 
+
+
+```
+

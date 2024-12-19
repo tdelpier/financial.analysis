@@ -1,0 +1,47 @@
+---
+output: html_document
+---
+
+## State Aid Membership
+
+```{r}
+
+FA_Data_District %>%
+  select(FY, cy.d.pupilcnt, cy.d.pupilcnt.chg, cy.d.pupilcnt.pct.chg) %>%
+  flextable() %>%
+  set_header_labels(FY = "Fiscal Year",
+                    cy.d.pupilcnt = "State Aid Membership",
+                    cy.d.pupilcnt.chg = "Change",
+                    cy.d.pupilcnt.pct.chg = "Pct Change") %>%
+  colformat_num(j = "FY", big.mark = "") %>%
+  colformat_double(j = c("cy.d.pupilcnt", "cy.d.pupilcnt.chg"), big.mark = ",", )%>%
+  colformat_double(j = "cy.d.pupilcnt.pct.chg", suffix = "%") %>% 
+  flextable_custom_theme()
+
+
+```
+
+
+```{r}
+
+FA_Data_District %>%
+  ggplot(aes(x = FY))+
+  geom_line(aes(y = cy.d.pupilcnt), color = mea_gray, size = line_size)+
+  scale_x_continuous(breaks = seq(1990, 2100, by = 1) )+
+  scale_y_continuous(labels = number_format(big.mark = ","))+
+  labs(title = "State Aid Membership",
+       x = "Fiscal Year",
+       y = "")
+
+
+
+
+```
+
+
+
+
+
+
+
+

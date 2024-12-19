@@ -1,0 +1,151 @@
+---
+
+---
+
+
+## Revenue Estimate
+
+
+```{r}
+
+No_FID_Avalible <- 
+  FA_Data_District %>% 
+  filter(FY == fiscal.year - 1) %>% 
+  select(fid.r.total) %>% 
+  mutate(no.fid.avalible = ifelse(is.na(fid.r.total), 1, 0)) %>% 
+  pull()
+
+
+```
+
+
+
+
+`r if(No_FID_Avalible == 1 ){paste("The Financial Information Database (FID) did not include the data necessary to generate an MEA budget estimate for this district.")}`
+
+
+```{r}
+if(No_FID_Avalible == 0 ){
+  
+  FA_Data_District %>%
+    filter(FY >= (fiscal.year - 1)) %>%
+    select(FY, starts_with("tab."))%>%
+    pivot_longer(cols = c(starts_with("tab.")), 
+                 names_to = "Rev_Source", 
+                 values_to = "y") %>% 
+    mutate(time = ifelse(FY == fiscal.year, "current.year", "last.year" )) %>% 
+    pivot_wider(id_cols = Rev_Source, 
+                names_from = time, 
+                values_from = y) %>% 
+    mutate(chg = current.year - last.year,
+           pct.chg = (chg / last.year) * 100,
+           pct.chg = ifelse(is.infinite(pct.chg), NA, pct.chg),
+           Rev_Source = 
+             case_when(
+                        # Local
+                        Rev_Source == "tab.rev.local"           ~ "Total Local Revenue",
+                        Rev_Source == "tab.rev.local.found"     ~ "Local Foundation Share",
+                        Rev_Source == "tab.rev.local.other"     ~ "Local Other",
+                        
+                        # state
+                        Rev_Source == "tab.rev.state"           ~ "Total State Revenue",
+                        Rev_Source == "tab.rev.state.found"     ~ "State Foundation Share",
+                        Rev_Source == "tab.rev.state.sped"      ~ "Special Education",
+                        Rev_Source == "tab.rev.state.31a"       ~ "At-Risk",
+                        Rev_Source == "tab.rev.state.41"        ~ "EL / Bilingual",
+                        
+                            ### New in FY 2024
+                        Rev_Source == "tab.rev.state.31aa"      ~ "Mental Health and Safety",
+                        Rev_Source == "tab.rev.state.29"        ~ "Enrollment Stabilization", 
+                        
+                          # need to update these 
+                        Rev_Source == "tab.rev.state.27l"       ~ "Educator Compensation", 
+                        Rev_Source == "tab.rev.state.147f"      ~ "0.5% Payroll Reimbursement", 
+                        Rev_Source == "tab.rev.state.meals"     ~ "School Meals",
+                        Rev_Source == "tab.rev.state.22l"       ~ "Transportation",
+                        Rev_Source == "tab.rev.state.35j"       ~ "Early Literacy",
+  
+                        ####
+                        
+                        
+                        Rev_Source == "tab.rev.state.mpsers.uaal" ~ "MPSERS UAAL",
+                        # Rev_Source == "tab.rev.state.mpsers.other" ~ "MPSERS Other",
+                        Rev_Source == "tab.rev.state.other"     ~ "State Other",
+                        
+                        # fed 
+                        Rev_Source == "tab.rev.fed"             ~ "Total Federal Revenue",
+                        Rev_Source == "tab.rev.fed.stim"        ~ "Federal Stimulus",
+                        Rev_Source == "tab.rev.fed.other"       ~ "Federal Recurring",
+                        
+                        # other
+                        Rev_Source == "tab.rev.other"           ~ "Other Revenue",
+                        Rev_Source == "tab.rev.other.other"     ~ "Other",
+                        # Rev_Source == "tab.rev.other.ml.adjustment" ~ "ML Adjustment",
+                        
+                        # total
+                        Rev_Source == "tab.rev.total.xstim.xuaal" ~ "Total less Stimulus and UAAL",
+                        Rev_Source == "tab.rev.total.xstim"     ~ "Total less Stimulus",
+                        Rev_Source == "tab.rev.total"           ~ "Total Revenue"
+                                  )) %>% 
+    
+  
+    flextable() %>% 
+    bold(i = ~ Rev_Source %in% c("Total Local Revenue", 
+                               "Total State Revenue",
+                               "Total Federal Revenue",
+                               "Other Revenue",
+                               "Total less Stimulus and UAAL",
+                               "Total less Stimulus",
+                               "Total Revenue"), 
+         bold = TRUE, 
+         part = "body") %>% 
+    
+    set_header_labels(Rev_Source = "",
+                      current.year = paste(fiscal.year, "Estimate"),
+                       # = paste(fiscal.year, "Estimate"),
+  
+                      last.year = paste(fiscal.year - 1, "Audit"),
+                      chg = "Change",
+                      pct.chg = "% Change") %>% 
+    
+    colformat_double(j = c("current.year", 
+                           "last.year", 
+                           "chg"), 
+                     big.mark = ",",
+                     digits = 0) %>%
+    
+    line_spacing(space = .75, part = "body") %>%
+
+    
+    colformat_double(j = "pct.chg", suffix = "%") %>% 
+    padding(i = ~ Rev_Source %in% c(
+                               "Total Local Revenue", 
+                               "Total State Revenue",
+                               "Total Federal Revenue", 
+                               "Other Revenue",
+                               "Total less Stimulus and UAAL"), padding.top =  20) %>% 
+    # flextable::footnote(i = c(9,10), j = 1, 
+    #          value = as_paragraph("The new mental health grant (sec 31aa) and safety grant (sec 97) were not included in the January State Aid Financial Status Report. These values are estimated based on the State's budget."),
+    #          ref_symbols = c("1"), 
+    #          part = "body") %>% 
+    flextable_custom_theme()
+    
+
+}
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

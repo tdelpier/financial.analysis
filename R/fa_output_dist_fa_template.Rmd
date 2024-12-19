@@ -1,0 +1,101 @@
+---
+title: "District Financial Analysis"
+subtitle: "`r paste(district_name, district_code) `"
+notes: footnotes
+# author: "Tanner Delpier, MEA Labor Economist, PhD"
+# date: "`r format(Sys.Date(), '%B %d, %Y')`"
+params:
+  district:         1010
+  page_details:     TRUE
+  page_revest:      TRUE
+  page_budcomp:     TRUE
+  page_stim:        TRUE
+  page_sam:         TRUE
+  page_found:       TRUE
+  page_revexp:      TRUE
+  page_cac:         TRUE
+  page_gfb:         TRUE
+  page_statecat:    TRUE
+  page_transfers:   TRUE
+  page_methods:     TRUE
+---
+
+```{r, echo = FALSE}
+
+sass(sass_file(TannersTools::tt_dir_projects("financial.analysis", "assets", "FA_Style.scss")))
+
+
+
+```
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(dev = "png", 
+                      # dev.args = list(type = "cairo-png"), # anti-aliasing 
+                      echo = FALSE, 
+                      warning = FALSE, 
+                      message = FALSE,
+                      cache = FALSE,
+                      fig.width= 7,
+                      fig.height= 4,
+                      dev = 'svg',
+                      # out.width = "200%",
+                      # out.height = "200%",
+                      fig.align='center',
+                      root.dir = TannersTools::tt_dir_projects())
+
+
+set_flextable_defaults(fonts_ignore=TRUE)
+
+report_dcode <-  params$district
+
+
+```
+
+```{r, child = if(params$page_details == TRUE){"C:/Users/Tdelpier/vault/projects/financial.analysis/R/FA_Page_District-Details.Rmd"}}
+
+```
+
+
+```{r, child = if(params$page_revest == TRUE){"C:/Users/Tdelpier/vault/projects/financial.analysis/R/FA_Page_MEA-Budget.Rmd"}}
+```
+
+
+```{r, child = if(params$page_budcomp == TRUE){"C:/Users/Tdelpier/vault/projects/financial.analysis/R/FA_Page_Budget-Comparison.Rmd"}}
+```
+
+
+```{r, child = if(params$page_sam == TRUE){"C:/Users/Tdelpier/vault/projects/financial.analysis/R/FA_Page_StateAidMembership.Rmd"}}
+```
+
+
+```{r, child = if(params$page_found == TRUE){"C:/Users/Tdelpier/vault/projects/financial.analysis/R/FA_Page_Foundation.Rmd"}}
+```
+
+
+```{r, child = if(params$page_revexp == TRUE){"C:/Users/Tdelpier/vault/projects/financial.analysis/R/FA_Page_Rev-Exp.Rmd"}}
+```
+
+
+```{r, child = if(params$page_gfb == TRUE){"C:/Users/Tdelpier/vault/projects/financial.analysis/R/FA_Page_Fund-Balance.Rmd"}}
+```
+
+
+```{r, child = if(params$page_transfers == TRUE){"C:/Users/Tdelpier/vault/projects/financial.analysis/R/FA_Page_Transfers.Rmd"}}
+```
+
+
+```{r, child = if(params$page_cac == TRUE){"C:/Users/Tdelpier/vault/projects/financial.analysis/R/FA_Page_CAC.Rmd"}}
+```
+
+```{r, child = if(params$page_stim == TRUE){"C:/Users/Tdelpier/vault/projects/financial.analysis/R/FA_Page_Fed-Stim.Rmd"}}
+```
+
+```{r, child = if(params$page_methods == TRUE){"C:/Users/Tdelpier/vault/projects/financial.analysis/R/FA_Page_Data-and-Methods.Rmd"}}
+```
+
+
+
+
+
+

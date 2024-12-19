@@ -1,0 +1,95 @@
+---
+
+---
+
+## Revenue and Expenditure
+
+```{r}
+
+
+
+
+FA_Data_District %>%
+  ungroup() %>% 
+  filter(FY != fiscal.year) %>% 
+  select(FY, fid.r.total.audit, fid.e.total.xtrans, fid.net.chg, fid.rev.expended) %>% 
+  flextable() %>% 
+  set_header_labels(FY = "Fiscal Year",
+                    
+                    ### I need to include the transfers 
+                    ## fid.r.total.audit not fid.r.tota.xtrans 
+                    # removing the transfers makes everything look wrong
+                  fid.r.total.audit = "Total Revenue",
+                  fid.e.total.xtrans = "Total Expenditure",
+                  fid.net.chg = "Net Change",
+                  fid.rev.expended = "% Revenue Expended") %>% 
+   colformat_num(j = "FY", big.mark = "") %>%
+   colformat_double(j = c("fid.r.total.audit", "fid.e.total.xtrans", "fid.net.chg"), 
+                    big.mark = ",", digits = 0) %>%
+   colformat_double(j = "fid.rev.expended", suffix = "%") %>% 
+   flextable_custom_theme()
+
+
+
+  
+  
+```
+
+
+```{r}
+
+FA_Data_District %>% 
+  select(FY, fid.r.total.audit, fid.e.total.xtrans) %>% 
+  pivot_longer(cols = c(fid.r.total.audit, fid.e.total.xtrans)) %>% 
+  filter(!is.na(value)) %>%
+  
+    mutate(name = case_when(name == "fid.r.total.audit"  ~ "Revenue",
+                            name == "fid.e.total.xtrans" ~ "Expenditure")) %>% 
+
+  
+  # mutate(label = case_when(FY == max(FY) & name == "fid.r.total.audit"  ~ "Revenue      ",
+  #                          FY == max(FY) & name == "fid.e.total.xtrans" ~ "Expenditure")) %>% 
+  
+  
+  ggplot(aes(x = FY, y = value, 
+             group = name,  color = name, linetype = name))+
+  geom_line(size = line_size) +
+  expand_limits(x = fiscal.year + 0.5  )+
+  
+  
+  # geom_label_repel(aes(label = label, fill = name),
+  #                  color = "white",
+  #                 nudge_x = .5,
+  #                 na.rm = TRUE)+
+  
+    # geom_text_repel(aes(label = label, color = name),
+    #                # color = "white",
+    #                  min.segment.length = 0.2,
+    #                box.padding = 1,
+    #                # force = .5,
+    #               # nudge_x = .5,
+    #               na.rm = TRUE)+
+  
+  scale_x_continuous(breaks = seq(1990, 2100, by = 1) )+
+  scale_y_continuous(labels = number_format(big.mark = ",")) +
+  labs(title = "<span style='color: #00A651'> Revenue</span> and <span style='color: #C2002F'> Expenditure</span>",
+       x = "Fiscal Year",
+       y = "")+
+  scale_color_manual(values = c(mea_red, mea_green)) +
+  scale_fill_manual(values = c(mea_red, mea_green)) +
+  scale_linetype_manual(values=c("twodash", "solid"))+
+  theme(legend.box.background = element_rect(color= mea_gray, size=1),
+        legend.title = element_blank(),
+        legend.position = "bottom",
+        plot.title = element_markdown())
+
+
+```
+
+
+
+
+
+
+
+

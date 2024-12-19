@@ -1,0 +1,30 @@
+---
+
+---
+
+
+```{r}
+
+FA_Data_District %>% 
+  filter(FY != fiscal.year) %>% 
+  select(FY, fid.e.sal.admin.pct, fid.e.sal.op.serv.pct, fid.e.sal.prof.ed.pct) %>% 
+  flextable() %>% 
+  set_header_labels(FY = "Fiscal Year",
+                    fid.e.sal.admin.pct = "Admin Salary % of Expenditure",
+                    fid.e.sal.op.serv.pct = "Operations and Service Salary % of Expenditure",
+                    fid.e.sal.prof.ed.pct = "Professional Educator Salary % of Expenditure") %>%
+  colformat_num(j = "FY", big.mark = "") %>%
+  colformat_double(j = c("fid.e.sal.admin.pct",
+                         "fid.e.sal.op.serv.pct",
+                         "fid.e.sal.prof.ed.pct"), suffix = "%") %>% 
+  autofit()
+
+
+
+```
+
+
+
+
+
+

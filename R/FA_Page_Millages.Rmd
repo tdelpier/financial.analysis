@@ -1,0 +1,35 @@
+---
+
+
+---
+
+
+## Local Millages
+
+
+
+
+```{r}
+
+FA_Data_District %>% 
+  filter(FY == fiscal.year) %>% 
+  select(cy.d.1.nhs.basic, cy.d.1.nhs.hrmls, cy.d.1.hs.hrmls,
+         cy.d.1.hs.hrmls18, cy.d.1.enhancemnt, cy.d.1.sinkfund, 
+         cy.d.1.debtretire, cy.d.1.otherdebt, 
+         cy.d.1.sev, cy.d.1.tot.nhssev, cy.d.1.hs.sev) %>%
+  pivot_longer(cols = everything()) %>% 
+  flextable()
+
+
+
+```
+
+ - Millage name
+ - description of millage
+ - millage rate
+ - taxable value for that particular millage
+ - actual revenue from millage 
+ - potential millage revenue 
+ - revenue left on the table 
+
+

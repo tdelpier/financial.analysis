@@ -13,6 +13,9 @@
 
 
 
+#' FA FID Rev
+#'
+#' @export
 fa_import_fid_rev <- function(fund = 11){
   
   TannersTools::tt_import_fid_R() %>%
