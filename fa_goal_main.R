@@ -7,23 +7,15 @@ library(vtable)
 library(flextable)
 library(ggtext)
 library(financial.analysis)
-
 library(servr)
 
-
+fiscal.year <- 2024
 # this is the goal
 fa_setup()
 fa_construct_data()
-fa_import_data("raw")
+fa_import_data("raw") %>% fa_dwork()
 
-
-
-# we made it here! 
-
-fiscal.year <- 2024
-FA_Data <- fa_dwork()
-
-
+FA_Data <- fa_import_data("prepped")
 
 FA_Data_District <-  
   FA_Data %>%

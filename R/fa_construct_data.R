@@ -64,7 +64,9 @@ fa_construct_data <- function(path) {
   
   
   
-  fa_data %>% fa_helper_write_fa_to_data_dir("fa_data_raw.rds")
+  fa_data %>% 
+    filter(FY > (fiscal.year - 11)) %>% 
+    fa_helper_write_fa_to_data_dir("fa_data_raw.rds")
   
 }
 

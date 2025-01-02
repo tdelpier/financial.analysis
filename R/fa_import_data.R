@@ -12,12 +12,12 @@ fa_import_data <- function(file) {
   
   path <- TannersTools::tt_dir_projects("financial.analysis", "data", fa_data_file) 
   
+  fa_data <- readRDS(path)
+  
+  
   message("FA data read from: ", path)
   message("Data Import Complete ✓")
-  
-  
-  ## Geo Data
-  
+  return(fa_data)
 
   
 }
