@@ -4,13 +4,20 @@ library(tidyverse)
 library(TannersTools)
 library(scales)
 library(vtable)
+library(flextable)
+library(ggtext)
 library(financial.analysis)
+
+library(servr)
 
 
 # this is the goal
 fa_setup()
 fa_construct_data()
-fa_import_data()
+fa_import_data("raw")
+
+
+
 # we made it here! 
 
 fiscal.year <- 2024
@@ -25,6 +32,8 @@ FA_Data_District <-
   arrange(FY) %>% 
   ungroup()
 
+
+line_size = 1.2
 
 FA_Data_District %>% fa_helper_render_district_fa(1010, 
                                          type = "paged", # "web" or "paged"
@@ -48,3 +57,5 @@ FA_Data_District %>% fa_helper_render_district_fa(1010,
 # 5. cache data
 # 6. open data
 # 7. render reports 
+
+fa_output_render_dist_fa

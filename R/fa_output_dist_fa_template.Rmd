@@ -22,7 +22,7 @@ params:
 
 ```{r, echo = FALSE}
 
-sass(sass_file(TannersTools::tt_dir_projects("financial.analysis", "assets", "FA_Style.scss")))
+sass::sass(sass::sass_file(TannersTools::tt_dir_projects("financial.analysis", "assets", "FA_Style.scss")))
 
 
 
@@ -45,7 +45,7 @@ knitr::opts_chunk$set(dev = "png",
                       root.dir = TannersTools::tt_dir_projects())
 
 
-set_flextable_defaults(fonts_ignore=TRUE)
+flextable::set_flextable_defaults(fonts_ignore=TRUE)
 
 report_dcode <-  params$district
 

@@ -179,8 +179,8 @@ fa_dwork_clean <- function(df) {
 
     # District Details Variables
     group_by(dnum) %>%
-    mutate(enroll.min = as.character(comma(round(min(cy.d.pupilcnt), digits = -1), digits = 0)),
-           enroll.max = as.character(comma(round(max(cy.d.pupilcnt), digits = -1), digits = 0)),
+    mutate(enroll.min = as.character(comma(round(min(cy.d.pupilcnt), digits = -1), accuracy = 0)),
+           enroll.max = as.character(comma(round(max(cy.d.pupilcnt), digits = -1), accuracy = 0)),
            enroll.range = paste(enroll.min, " - ", enroll.max)) %>%
     ungroup()
 

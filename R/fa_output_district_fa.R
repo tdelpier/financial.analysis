@@ -88,9 +88,11 @@ fa_helper_render_district_fa <- function(df, dcode, type = "paged",
     
     
     if(format == "paged"){
-      setwd("FA/Output")
-      pagedown::chrome_print(paste0("FA_", fiscal.year, "_", dcode, "_", district_label, ".html"),
-                             output =  paste0("FA_", fiscal.year, "_", dcode, "_", district_label,".pdf"))
+      # setwd("FA/Output")
+      
+      TannersTools::tt_dir_projects("financial.analysis","output")
+      pagedown::chrome_print(TannersTools::tt_dir_projects("financial.analysis","output", paste0("FA_", fiscal.year, "_", dcode, "_", district_label, ".html")),
+                             output =  TannersTools::tt_dir_projects("financial.analysis","output", paste0("FA_", fiscal.year, "_", dcode, "_", district_label,".pdf")))
       
     }
     
