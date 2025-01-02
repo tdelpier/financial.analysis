@@ -25,7 +25,7 @@ FA_Data_District <-
   ungroup()
 
 
-line_size = 1.2
+# line_size = 1.2
 
 FA_Data_District %>% fa_helper_render_district_fa(1010, 
                                          type = "paged", # "web" or "paged"
