@@ -20,13 +20,6 @@ params:
   page_methods:     TRUE
 ---
 
-```{r, echo = FALSE}
-
-sass::sass(sass::sass_file(TannersTools::tt_dir_projects("financial.analysis", "assets", "FA_Style.scss")))
-
-
-
-```
 
 
 ```{r setup, include=FALSE}
@@ -51,6 +44,16 @@ report_dcode <-  params$district
 
 
 ```
+
+
+```{r, echo = FALSE}
+
+sass::sass(sass::sass_file(TannersTools::tt_dir_projects("financial.analysis", "assets", "FA_Style.scss")))
+
+
+
+```
+
 
 ```{r, child = if(params$page_details == TRUE){"C:/Users/Tdelpier/vault/projects/financial.analysis/R/FA_Page_District-Details.Rmd"}}
 
