@@ -10,6 +10,8 @@ library(financial.analysis)
 # library(servr)
 
 
+
+
 fiscal.year <- 2024
 
 fa_setup()
@@ -17,6 +19,7 @@ fa_construct_data()
 fa_import_data("raw") %>% fa_dwork()
 
 FA_Data <- fa_import_data("prepped")
+
 dist_geo <- fa_import_geo() %>% rename(geometry = geom)
 
 tt_dnum_from_dname("marq")
@@ -43,7 +46,7 @@ FA_Data_District %>%
                                page.cac = TRUE,
                                page.gfb = TRUE,
                                page.transfers = FALSE,
-                               page.methods = TRUE)
+                               page.methods = FALSE)
 
 # I think I want to reorder: 
 # 1. setup
