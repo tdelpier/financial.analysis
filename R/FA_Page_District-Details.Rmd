@@ -63,83 +63,11 @@ FA_Data_District %>%
 ```
 
 
-```{r}
-
-map_dist_inlay <- function(dnum){
-  
-  n <- 
-    dist_geo %>% 
-    tibble() %>% 
-    filter(dnum == {{ dnum }}) %>% 
-    select(c_id) %>% 
-    pull() 
-  
-  adjacent_districts <- st_intersects(dist_geo, dist_geo[n, 1], sparse = FALSE)
-  district_adj_geo <- dist_geo[adjacent_districts,] %>% 
-    mutate(highlight = ifelse(dnum == {{ dnum }}, TRUE, FALSE))
-  
-  xmin <-  st_bbox(district_adj_geo)[[1]]
-  ymin <-  st_bbox(district_adj_geo)[[2]]
-  xmax <-  st_bbox(district_adj_geo)[[3]]
-  ymax <-  st_bbox(district_adj_geo)[[4]]
-  
-  # big map
-  state.map <- 
-    ggplot() +
-    geom_sf(data = dist_geo, aes(geometry = geometry), size = 0, fill = "white")+
-    geom_sf(data = district_adj_geo, aes(geometry = geometry, fill = highlight), size = 0)+
-    geom_rect(aes(xmin = xmin, 
-                  ymin = ymin,
-                  xmax = xmax,
-                  ymax = ymax),
-              color = "black",
-              fill = NA,
-              size = .75)+
-    scale_fill_manual(values = c("gray70", mea_red)) +
-    coord_sf(lims_method = "geometry_bbox") +
-    coord_sf(ylim = c(41.75, 47.2), xlim = c(-82.4,-90.1), expand = TRUE) + 
-    theme_void()+
-    theme(legend.position = "none")
-
-  # mini map
-  mini.map <- 
-    ggplot(data = district_adj_geo) +
-    geom_sf(aes(geometry = geometry, fill = highlight), size = 0)+
-    scale_fill_manual(values = c("gray70", mea_red))+
-    geom_sf_text_repel(aes(label = LABEL),
-                       size = 2.75,
-                       color = "black",
-                       bg.color = "white",
-                       bg.r = .3,
-                       box.padding = 0.5) +
-     geom_rect(aes(xmin = xmin, 
-                  ymin = ymin,
-                  xmax = xmax,
-                  ymax = ymax),
-              color = "black",
-              fill = NA,
-              size = .75)+
-    coord_sf(lims_method = "geometry_bbox")+
-    theme_void()+
-    theme(legend.position = "none")
-  
-  
-  map <- plot_grid(mini.map, state.map 
-                   # scale = .8,
-                   )
-  
-  return(map)
-  
-}
-
-
-```
-
-
 
 ```{r warning=FALSE}
 
-map_dist_inlay(params$district)
+fa_output_map_dist_inlay(df_sf = dist_geo, 
+                         dnum= params$district)
 
 
 ```
