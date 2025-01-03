@@ -22,7 +22,7 @@ FA_Data <- fa_import_data("prepped")
 
 dist_geo <- fa_import_geo() %>% rename(geometry = geom)
 
-tt_dnum_from_dname("marq")
+# tt_dnum_from_dname("marq")
 
 FA_Data_District <-  
   FA_Data %>%
@@ -31,14 +31,12 @@ FA_Data_District <-
   arrange(FY) %>% 
   ungroup()
 
-
-
 FA_Data_District %>% 
   fa_helper_render_district_fa(52170,
                                type = "paged", # "web" or "paged"
                                page.details = TRUE,
                                page.revest = TRUE, 
-                               page.budcomp = TRUE,
+                               page.budcomp = FALSE,
                                page.stim = TRUE,
                                page.sam = TRUE,
                                page.found = TRUE,

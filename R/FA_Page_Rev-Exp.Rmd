@@ -42,11 +42,11 @@ FA_Data_District %>%
   select(FY, fid.r.total.audit, fid.e.total.xtrans) %>% 
   pivot_longer(cols = c(fid.r.total.audit, fid.e.total.xtrans)) %>% 
   filter(!is.na(value)) %>%
+  filter(FY != fiscal.year) %>% 
+
   
     mutate(name = case_when(name == "fid.r.total.audit"  ~ "Revenue",
                             name == "fid.e.total.xtrans" ~ "Expenditure")) %>% 
-
-  
   # mutate(label = case_when(FY == max(FY) & name == "fid.r.total.audit"  ~ "Revenue      ",
   #                          FY == max(FY) & name == "fid.e.total.xtrans" ~ "Expenditure")) %>% 
   

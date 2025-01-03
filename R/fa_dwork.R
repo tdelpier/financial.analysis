@@ -15,7 +15,7 @@
 #' 
 #' @param df requires raw data to be supplied
 #' 
-#' ## Uses
+#' # Uses
 #' 
 #' 'fa_import_data("raw") %>% fa_dwork()'
 #' Then the user can load the "prepped" and save it to an object by calling
