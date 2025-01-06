@@ -11,28 +11,9 @@ params:
 
 
 ```{r ft.align='left'}
+
 FA_Data_District %>%
   filter(FY == fiscal.year) %>%
-
-  ## I'll want to add these mutations to the data cleaning file once I'm done
-  mutate(district.sqmi =  as.character(format(round(district.sqmi, 1),
-                                              big.mark = ",")),
-         cy.d.1.dname = tools::toTitleCase(tolower(cy.d.1.dname)),
-         cy.d.pupilcnt.chg.1 = as.character(comma(cy.d.pupilcnt - cy.d.pupilcnt.x1, digits = 0)),
-         cy.d.pupilcnt.chg.5 = as.character(comma(cy.d.pupilcnt - cy.d.pupilcnt.x5, digits = 0)),
-
-         cy.d.pupilcnt.pct.chg.1 = ifelse(cy.d.pupilcnt.pct.chg.1 > 0,
-                                          paste0("+", percent(cy.d.pupilcnt.pct.chg.1)),
-                                          paste0(percent(cy.d.pupilcnt.pct.chg.1))),
-
-         cy.d.pupilcnt.pct.chg.5 = ifelse(cy.d.pupilcnt.pct.chg.5 > 0,
-                                          paste0("+", percent(cy.d.pupilcnt.pct.chg.5)),
-                                          paste0(percent(cy.d.pupilcnt.pct.chg.5))),
-
-         enroll.chg.1 = paste0(cy.d.pupilcnt.chg.1, " (", cy.d.pupilcnt.pct.chg.1,")" ),
-         enroll.chg.5 = paste0(cy.d.pupilcnt.chg.5, " (", cy.d.pupilcnt.pct.chg.5,")" ),
-         flag.out.of.formula = ifelse(cy.d.1.revenuepp > cy.d.1.found.pp, "Yes", "No"),
-         flag.hh = ifelse(flag.hh == 1, "Yes", "No")) %>%
   select(cy.d.1.dname, dcode, nces.code, isd.name, icode, county.name,
          flag.hh, flag.out.of.formula, locale.name, district.sqmi,
          enroll.range, enroll.chg.1, enroll.chg.5) %>%
@@ -50,8 +31,10 @@ FA_Data_District %>%
          'Square Miles:' = district.sqmi,
          'Enrollment Range:' = enroll.range,
          'Enrollment 1-year Change' = enroll.chg.1,
-         'Enrollment 5-year Change' = enroll.chg.5) %>%
-  pivot_longer(cols = everything()) %>%
+         'Enrollment 5-year Change' = enroll.chg.5) %>% 
+  pivot_longer(cols = everything(),
+               values_to = "value",
+               values_transform = list(value = as.character)) %>% 
   flextable() %>%
   delete_part(part = "header") %>%
   bold(j = "name", part = "body") %>%

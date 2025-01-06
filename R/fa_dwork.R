@@ -34,7 +34,9 @@ fa_dwork <- function(df) {
     fa_dwork_clean() %>%
     fa_dwork_est() %>% 
     fa_dwork_year_changes() %>% 
-    fa_dwork_end() %>%
+    fa_dwork_flags() %>% 
+    fa_dwork_end() %>% 
+    
     fa_helper_write_fa_to_data_dir("fa_data_prepped.rds")
   
 
