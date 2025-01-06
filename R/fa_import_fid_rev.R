@@ -1,19 +1,16 @@
 
 
 
-# REVENUE ######################################################################
-
-
-# This is the classification scheme on the audits 
-# Local			  MC 1xx
-# State 			MC 3xx
-# Federal			MC 4xx (stimulus is suffix 230 and 250 within MC 4xx)
-# Other			  MC 2xx and MC 500-549
-# Transfers	  MC 6xx and MC 550-599
-
-
-
-#' FA FID Rev
+#' Import FID Rev
+#'
+#' This is the classification scheme on the audits 
+#' Local			  MC 1xx
+#' State 			  MC 3xx
+#' Federal			MC 4xx (stimulus is suffix 230 and 250 within MC 4xx)
+#' Other			  MC 2xx and MC 500-549
+#' Transfers	  MC 6xx and MC 550-599
+#'
+#'
 #'
 #' @export
 fa_import_fid_rev <- function(fund = 11){
@@ -46,6 +43,5 @@ fa_import_fid_rev <- function(fund = 11){
   
   
 }
-
 
 

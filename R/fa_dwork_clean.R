@@ -52,7 +52,12 @@ fa_dwork_clean <- function(df) {
            enroll.pct.state.1 = cy.d.1.pupilcnt / enroll.state.1) %>%
     ungroup() %>%
 
+    
+    # this is what I'm changing. This should fix it but I'm worried it'll break something else 
     mutate_if(is.numeric, ~replace(., is.na(.), 0)) %>%
+    mutate(fid.r.total.audit = ifelse(fid.r.total.audit == 0, NA, fid.r.total.audit), 
+           db.original.total.revenue = ifelse(db.original.total.revenue == 0, NA, db.original.total.revenue)) %>% 
+    
 
 
     # FID
