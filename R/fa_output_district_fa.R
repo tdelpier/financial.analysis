@@ -2,7 +2,7 @@
 
 
 
-TannersTools::tt_dir_projects("financial.analysis", "R", "fa_output_dist_fa_template.Rmd")
+# TannersTools::tt_dir_projects("financial.analysis", "R", "fa_output_dist_fa_template.Rmd")
   
 
 #' FA Render one district financial analysis

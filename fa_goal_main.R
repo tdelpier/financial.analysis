@@ -44,7 +44,7 @@ FA_Data_District <-
 
 FA_Data_District %>% 
   fa_helper_render_district_fa(dnum_x,
-                               type = "web", # "web" or "paged"
+                               type = "paged", # "web" or "paged"
                                page.details = FALSE,
                                page.revest = FALSE, 
                                page.budcomp = FALSE,
@@ -56,7 +56,7 @@ FA_Data_District %>%
                                page.cac = FALSE,
                                page.gfb = FALSE,
                                page.transfers = FALSE,
-                               page.milages = TRUE,
+                               page.millages = TRUE,
                                page.methods = FALSE)
 
 # I think I want to reorder: 

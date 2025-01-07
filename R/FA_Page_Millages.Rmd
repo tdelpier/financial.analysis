@@ -1,13 +1,10 @@
----
+------------------------------------------------------------------------
 
-
----
-
+------------------------------------------------------------------------
 
 ## Local Millages
 
-
-
+Millages
 
 ```{r}
 
@@ -42,11 +39,17 @@ FA_Data_District %>%
   flextable_custom_theme()
 
 
+
 ```
 
-Millage Rules
+**Local foundation**
 
-Regional Enhancment Millage 
+**Hold harmless**
 
+**Sinking fund millages** provide revenue for district capital improvements on an annual basis. While these dollars are raised locally, they are regulated by the state through [MCL 380.1212](https://www.legislature.mi.gov/Laws/MCL?objectName=mcl-380-1212). Sinking funds authorized after 2017 are limited to 3 mills for a maximum of 10 years. These funds are restricted to capital improvement, namely real estate, school building construction, school building repair, school security improvements, technology, or transportation vehicles. Voters approve a specific millage rate and the amount raised varies.
 
+**Debt retirement millages** are used to finance bonded debt, for major capital improvements. The state rgulates district bonded debt through [MCL 380.1351a](https://www.legislature.mi.gov/Laws/MCL?objectName=mcl-380-1351a). These millages are restricted for capital improvements including facilities, technology, and transportation. Voters approve a specific amount to be raised and the millage rate varies.
 
+**Regional enhancement millages**
+
+15 mill tax limitation of Article IX of the Michigan Constitution

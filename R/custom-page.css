@@ -1,5 +1,11 @@
 
 
+
+a[href^="http"]:not([class="uri"])::after {
+  content: none;
+}
+
+
 /* page size */
 @page {
   size: 9in 11.5in;
