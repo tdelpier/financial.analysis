@@ -22,6 +22,7 @@ fa_helper_render_district_fa <- function(df, dcode, type = "paged",
                         page.cac = FALSE,
                         page.gfb = TRUE,
                         page.transfers = TRUE,
+                        page.millages = TRUE,
                         page.methods = TRUE){
     
     tt_dir_set_projects()
@@ -63,6 +64,7 @@ fa_helper_render_district_fa <- function(df, dcode, type = "paged",
                     page_cac =       {{ page.cac }},
                     page_gfb =       {{ page.gfb }},
                     page_transfers = {{ page.transfers }},
+                    page_millages =  {{ page.millages }},
                     page_methods =   {{ page.methods }}),
       
       

@@ -17,6 +17,7 @@ params:
   page_cac:         TRUE
   page_gfb:         TRUE
   page_statecat:    TRUE
+  page_millages:    TRUE
   page_transfers:   TRUE
   page_methods:     TRUE
 ---
@@ -91,6 +92,13 @@ sass::sass(sass::sass_file(TannersTools::tt_dir_projects("financial.analysis", "
 
 ```{r, child = if(params$page_transfers == TRUE){"C:/Users/Tdelpier/vault/projects/financial.analysis/R/FA_Page_Transfers.Rmd"}}
 ```
+
+
+```{r, child = if(params$page_millages == TRUE){"C:/Users/Tdelpier/vault/projects/financial.analysis/R/FA_Page_Millages.Rmd"}}
+```
+
+
+
 
 
 ```{r, child = if(params$page_cac == TRUE){"C:/Users/Tdelpier/vault/projects/financial.analysis/R/FA_Page_CAC.Rmd"}}
