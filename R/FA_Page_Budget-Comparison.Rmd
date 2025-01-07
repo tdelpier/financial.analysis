@@ -46,7 +46,7 @@ FA_Data_District %>%
   #          part = "header") %>% 
   
   bg(j = "db.orig.rev.pct.act", bg = "#d1e8fa", part = "all") %>% 
-  bg(j = "fid.r.total.audit.lag1.pct.act", bg = "#C2FFDF", part = "all") %>% 
+  bg(j = "fid.r.total.audit.lag1.pct.act", bg = "#C2FFDF", part = "all") %>%
   bg(j = "est.1.rev.total.pct.act", bg = "#fad1db", part = "all") %>% 
 
 
