@@ -13,6 +13,7 @@ params:
   page_sam:         TRUE
   page_found:       TRUE
   page_revexp:      TRUE
+  page_surplus:     TRUE
   page_cac:         TRUE
   page_gfb:         TRUE
   page_statecat:    TRUE
@@ -77,6 +78,10 @@ sass::sass(sass::sass_file(TannersTools::tt_dir_projects("financial.analysis", "
 
 
 ```{r, child = if(params$page_revexp == TRUE){"C:/Users/Tdelpier/vault/projects/financial.analysis/R/FA_Page_Rev-Exp.Rmd"}}
+```
+
+
+```{r, child = if(params$page_surplus == TRUE){"C:/Users/Tdelpier/vault/projects/financial.analysis/R/FA_Page_Surplus-Deficit.Rmd"}}
 ```
 
 

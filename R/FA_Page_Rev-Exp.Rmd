@@ -12,7 +12,7 @@
 FA_Data_District %>%
   ungroup() %>% 
   filter(FY != fiscal.year) %>% 
-  select(FY, fid.r.total.audit, fid.e.total.xtrans, fid.net.chg, fid.rev.expended) %>% 
+  select(FY, fid.r.total.audit, fid.e.total.xtrans, fid.surplus.deficit, fid.rev.expended) %>% 
   flextable() %>% 
   set_header_labels(FY = "Fiscal Year",
                     
@@ -21,12 +21,15 @@ FA_Data_District %>%
                     # removing the transfers makes everything look wrong
                   fid.r.total.audit = "Total Revenue",
                   fid.e.total.xtrans = "Total Expenditure",
-                  fid.net.chg = "Net Change",
+                  fid.surplus.deficit = "Surplus/Deficit",
                   fid.rev.expended = "% Revenue Expended") %>% 
    colformat_num(j = "FY", big.mark = "") %>%
-   colformat_double(j = c("fid.r.total.audit", "fid.e.total.xtrans", "fid.net.chg"), 
+   colformat_double(j = c("fid.r.total.audit", "fid.e.total.xtrans", "fid.surplus.deficit"), 
                     big.mark = ",", digits = 0) %>%
    colformat_double(j = "fid.rev.expended", suffix = "%") %>% 
+    bg(j = "fid.r.total.audit", bg = "#C2FFDF", part = "all") %>%
+  bg(j = "fid.e.total.xtrans", bg = "#fad1db", part = "all") %>% 
+
    flextable_custom_theme()
 
 

@@ -9,9 +9,6 @@
 #' @export
 fa_dwork_clean <- function(df) {
 
-
-
-
   {{ df }} %>%
     group_by(dnum) %>%
     arrange(FY) %>%
@@ -70,7 +67,7 @@ fa_dwork_clean <- function(df) {
            fid.e.total.xtrans.chg = fid.e.total.xtrans - lag(fid.e.total.xtrans),
            fid.e.total.xtrans.pct.chg = (fid.e.total.xtrans.chg / lag(fid.e.total.xtrans)) * 100,
 
-           fid.net.chg = fid.r.total.audit - fid.e.total.xtrans,
+           fid.surplus.deficit = fid.r.total.audit - fid.e.total.xtrans,
            fid.rev.expended  = (fid.e.total.xtrans / fid.r.total.audit) * 100,
 
            fid.b.fb11.chg = fid.b.fb11 - lag(fid.b.fb11),
@@ -125,7 +122,11 @@ fa_dwork_clean <- function(df) {
            db.orig.exp.error = db.original.total.expenditure - fid.e.total.xtrans,
            db.final.exp.error = db.final.total.expenditure - fid.e.total.xtrans,
            db.orig.exp.pct.act = (db.original.total.expenditure / fid.e.total.xtrans) * 100,
-           db.final.exp.pct.act = (db.final.total.expenditure / fid.e.total.xtrans) * 100
+           db.final.exp.pct.act = (db.final.total.expenditure / fid.e.total.xtrans) * 100,
+           
+           db.orig.surplus.deficit = db.original.total.revenue - db.original.total.expenditure,
+           db.final.surplus.deficit = db.final.total.revenue - db.final.total.expenditure
+           
     ) %>%
     ungroup() %>%
     tt_dnum_psa(dnum = dnum) %>%
