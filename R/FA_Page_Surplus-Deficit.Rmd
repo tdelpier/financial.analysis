@@ -2,7 +2,7 @@
 
 ---
 
-## Surplus / Deficit
+## Actual and Budgeted Surplus / Deficit
 
 ```{r}
 
@@ -10,8 +10,7 @@
 FA_Data_District %>%
   ungroup() %>% 
   filter(FY != fiscal.year) %>% 
-  select(FY, fid.surplus.deficit, 
-         db.orig.surplus.deficit) %>%
+  select(FY, db.orig.surplus.deficit, fid.surplus.deficit) %>%
   flextable() %>%
   set_header_labels(FY = "Fiscal Year",
                     fid.surplus.deficit = "Actual Surplus/Deficit",
@@ -22,8 +21,20 @@ FA_Data_District %>%
                          "db.orig.surplus.deficit"),
                    big.mark = ",",
                    digits = 0) %>%
+  
+  # Option #1. this code does a light shade for the two columns.
   bg(j = "fid.surplus.deficit", bg = "#d1e8fa", part = "all") %>%
-  bg(j = "db.orig.surplus.deficit", bg = "#fad1db", part = "all") %>% 
+  bg(j = "db.orig.surplus.deficit", bg = "#fad1db", part = "all") %>%
+  
+  
+  # option #2. dark shade on the header. Decided to keep it the same
+      # bg(j = "fid.surplus.deficit", bg = mea_blue, part = "header") %>%
+      # color(j = "fid.surplus.deficit",
+      #       color = "white", part = "header") %>%
+      # 
+      # bg(j = "db.orig.surplus.deficit", bg = mea_red, part = "header") %>%
+      # color(j = "db.orig.surplus.deficit",
+      #       color = "white", part = "header") %>%
 
   flextable_custom_theme()
 
@@ -50,11 +61,11 @@ FA_Data_District %>%
   geom_col(aes(y = fid.surplus.deficit), 
            fill = mea_blue,
            width = .25,
-           just = 1)+
+           just = 0)+
   geom_col(aes(y = db.orig.surplus.deficit),
            fill = mea_red,
            width = .25,
-           just = 0) +
+           just = 1) +
   geom_hline(yintercept = 0)+
   scale_x_continuous(breaks = seq(1990, 2100, by = 1) )+
   scale_y_continuous(labels = number_format(big.mark = ",")) +
@@ -68,3 +79,81 @@ FA_Data_District %>%
 ```
 
 
+```{r}
+
+
+FA_Data_District %>% 
+  filter(FY > (fiscal.year - prior.years.to.show),
+         !is.na(est.1.rev.total.pct.act)) %>% 
+  select(FY, db.original.total.revenue, fid.r.total.audit, db.orig.rev.error
+         # db.final.total.revenue, db.final.rev.error
+         ) %>% 
+  flextable() %>% 
+  set_header_labels(
+                  FY = "Fiscal Year",
+                  fid.r.total.audit = "Actual Revenue",
+                  db.original.total.revenue = "District Original Budgeted Revenue",
+                  # db.final.total.revenue = "District Final Budgeted Revenue",
+                  db.orig.rev.error = "Original Budget Error (Budget - Actual)"
+                  # db.final.rev.error = "Final Budget Error (Budget - Actual)"
+                  
+  ) %>% 
+
+  colformat_num(j = "FY", big.mark = "") %>%
+  colformat_double(j = c("fid.r.total.audit",
+                      "db.original.total.revenue", 
+                      # "db.final.total.revenue",
+                      "db.orig.rev.error"
+                      # "db.final.rev.error"
+                      ), 
+                big.mark = ",",
+                digits = 0) %>%
+
+  flextable_custom_theme()
+
+
+
+
+```
+
+
+
+
+
+
+```{r}
+
+
+FA_Data_District %>% 
+  filter(FY > (fiscal.year - prior.years.to.show),
+         !is.na(est.1.rev.total.pct.act)) %>% 
+  select(FY, db.original.total.expenditure, fid.e.total.xtrans, db.orig.exp.error) %>% 
+  flextable() %>% 
+  set_header_labels(
+                  FY = "Fiscal Year",
+                  fid.e.total.xtrans = "Actual Expenditure",
+                  db.original.total.expenditure = "District Original Budget Expenditure",
+                  # db.final.total.expenditure = "District Final Budget Expenditure",
+                  db.orig.exp.error = "Original Budget Error (Budget - Actual)"
+                  # db.final.exp.error = "Final Budget Error (Budget - Actual)"
+                  
+  ) %>% 
+
+  
+  colformat_num(j = "FY", big.mark = "") %>%
+  colformat_double(j = c("fid.e.total.xtrans",
+                      "db.original.total.expenditure", 
+                      # "db.final.total.expenditure",
+                      "db.orig.exp.error"
+                      # "db.final.exp.error"
+                      ), 
+                big.mark = ",",
+                digits = 0) %>%
+
+  flextable_custom_theme()
+
+
+
+
+
+```
