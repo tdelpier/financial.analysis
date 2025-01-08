@@ -31,6 +31,7 @@ flextable_custom_theme <- function(x){
   # header
   x <- align(x, align = "center", part = "header")
   x <- bold(x, bold = TRUE, part = "header")
+  x <- line_spacing(x, space = 0.5, part = "body")
   
   
   

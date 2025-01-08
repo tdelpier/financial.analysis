@@ -12,6 +12,7 @@ fa_setup_default_values <- function() {
   mea_green <<- "#00A651"
   mea_blue <<- "#003057"
   mea_gray <<- "#3F3F3F"
+  mea_lightblue <<- "#009CDE"
   line_size <<- 1.25
   text_size <<- 10
   

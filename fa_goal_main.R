@@ -33,6 +33,7 @@ dist_geo <- fa_import_geo() %>% rename(geometry = geom)
   # pontiac 63030
 
 dnum_x <- tt_dnum_random(1)
+# dnum_x <- 15010 # beaver island
 
 FA_Data_District <-  
   FA_Data %>%
@@ -44,19 +45,19 @@ FA_Data_District <-
 
 FA_Data_District %>% 
   fa_helper_render_district_fa(dnum_x,
-                               type = "web", # "web" or "paged"
-                               page.details = TRUE,
-                               page.revest = TRUE, 
-                               page.budcomp = TRUE,
-                               page.stim = TRUE,
-                               page.sam = TRUE,
+                               type = "paged", # "web" or "paged"
+                               page.details = FALSE,
+                               page.revest = FALSE, 
+                               page.budcomp = FALSE,
+                               page.stim = FALSE,
+                               page.sam = FALSE,
                                page.found = TRUE,
-                               page.revexp = TRUE,
-                               page.surplus = TRUE, 
-                               page.cac = TRUE,
-                               page.gfb = TRUE,
+                               page.revexp = FALSE,
+                               page.surplus = FALSE, 
+                               page.cac = FALSE,
+                               page.gfb = FALSE,
                                page.transfers = FALSE,
-                               page.millages = TRUE,
+                               page.millages = FALSE,
                                page.methods = FALSE)
 
 # I think I want to reorder: 

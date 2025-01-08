@@ -1,9 +1,59 @@
 ## Federal Stimulus
 
-During the COVID-19 pandemic, the federal government enacted three rounds of economic stimulus through the CARES Act (2020), CRSSA (2020), and ARP (2021). Each of these laws included funding for PK-12 education. The largest portion of federal aid came through the Elementary and Secondary Schools Emergency Relief Fund (ESSER).
+During the COVID-19 pandemic, the federal government enacted three rounds of economic stimulus through the CARES Act (2020), CRSSA (2020), and ARP (2021). Each of these laws included funding for PK-12 education. The largest portion of federal aid came through the [Elementary and Secondary Schools Emergency Relief Fund](https://www.ed.gov/grants-and-programs/formula-grants/response-formula-grants/covid-19-emergency-relief-grants/elementary-and-secondary-school-emergency-relief-fund) 
+(ESSER).
 
-Each round of ESSER has different expenditure periods. As of FY 2024, ESSER I and ESSER II have expired. ESSER III must be obligated by September 30th 2024 and liquidated by December 31st 2024. If a district fails to spend these dollars by the end of the expenditure period, it will lose access to the funds.
+The final round of federal stimulus, ESSER III, was required to be be obligated by September 30th 2024 and liquidated by [December 31st 2024](https://www.michigan.gov/-/media/Project/Websites/mde/2021/10/15/ARP_ESSER_III_and_Section_11t.pdf?rev=3af18132fe384c7f823daa8331f98ec9). 
 
-All federal stimulus funds operate on a reimbursement basis. Once a district has spent the funds on an allowable use, they apply to the Michigan Department of Education (MDE) for reimbursement from their pre-allocated funding. The FY 2024 "Federal Stimulus" estimate (on the Revenue Estimate page) uses district level allocation data from MDE and compares that to expenditure data in the Financial Information Database (FID). These data come from the close the of FY 2023 (i.e., June 30th, 2023).
+All federal stimulus funds operate on a reimbursement basis. Once a district had spent the funds on an allowable use, they applied to the Michigan Department of Education (MDE) for reimbursement from their pre-allocated funding. 
 
-For more recent information on remaining federal stimulus revenue, the MDE maintains a federal stimulus reimbursement dashboard. To view the total allocated, reimbursed, and remaining federal stimulus for each district visit this website: <https://www.michigan.gov/mde/services/financial-management/grants/cares-act-grant-information/covid-19-spend-dashboard>
+For more up-to-date information on the total allocated, reimbursed, and remaining federal stimulus for each district, the MDE maintains a federal stimulus [dashboard](https://www.michigan.gov/mde/services/financial-management/grants/cares-act-grant-information/covid-19-spend-dashboard). 
+
+
+
+```{r eval = FALSE}
+
+
+
+FA_Data_District %>%
+  ungroup() %>%
+  filter(FY >= 2019,
+         FY < 2025) %>% 
+  mutate(fid.e.fed.stim.sum.year = 
+           fid.e.fed.stim.esser1 + 
+           # fid.e.fed.stim.crf1 + 
+           # fid.e.fed.stim.crf2 + 
+           fid.e.fed.stim.equity +
+           fid.e.fed.stim.geer1 + fid.e.fed.stim.esser2 +
+         fid.e.fed.stim.essereq2 + fid.e.fed.stim.esser3,
+         fid.e.fed.stim.sum.non.esser = 
+           fid.e.fed.stim.sum.year - fid.e.fed.stim.esser1 - 
+           fid.e.fed.stim.esser2 - fid.e.fed.stim.esser3) %>% 
+select(FY, fid.e.fed.stim.esser1, fid.e.fed.stim.esser2, fid.e.fed.stim.esser3, fid.e.fed.stim.sum.non.esser) %>% 
+  pivot_longer(cols = starts_with("fid.e.fed.stim.")) %>% 
+  mutate(name = case_match(name,
+                           "fid.e.fed.stim.esser1" ~ "ESSER I",
+                           "fid.e.fed.stim.esser2" ~ "ESSER II",
+                           "fid.e.fed.stim.esser3" ~ "ESSER III",
+                           "fid.e.fed.stim.sum.non.esser" ~ "Other Stimulus")) %>% 
+  ggplot(aes(FY, value, fill = name)) +
+  geom_col() +
+  scale_fill_manual(values = c(mea_green, mea_blue, 
+                               mea_red, mea_lightblue)) +
+  scale_x_continuous(breaks = seq(1990, 2100, by = 1) )+
+  scale_y_continuous(labels = number_format(big.mark = ",")) +
+  labs(title = "Federal Stimulus Expenditure",
+       y = "",
+       x = "Fiscal Year",
+       fill = "")+
+  theme(
+    legend.position = "right"
+  )
+
+
+
+  
+
+
+```
+

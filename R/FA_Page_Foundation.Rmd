@@ -50,10 +50,12 @@ FA_Data_District %>%
 
 ```
 
-```{r eval=(district_is_out_of_formula == FALSE)}
-cat('\\pagebreak')
-```
 
+```{r, echo=FALSE, results='asis', eval=(district_is_out_of_formula == FALSE)}
+
+cat("\\newpage")
+
+```
 
 
 
