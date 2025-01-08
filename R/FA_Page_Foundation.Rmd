@@ -18,6 +18,12 @@ district_is_out_of_formula <-
 ```
 
 
+
+`r if(district_is_out_of_formula == FALSE) {
+"The [foundation allowance](https://www.house.mi.gov/hfa/PDF/Alpha/Fiscal_Brief_Basics_of_the_Foundation_Allowance_FY24_Update_Nov23.pdf) 
+ provides districts with the majority of their operating funding. These dollars are distributed on a per pupil basis. Although the per pupil foundation allowance is set by the state, about 20% is paid through local non-homestead property taxes."}`
+
+
 ```{r, Per Pupil Foundation Table, eval=(district_is_out_of_formula == FALSE)}
 
 FA_Data_District %>%

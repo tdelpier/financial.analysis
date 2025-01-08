@@ -86,7 +86,12 @@ fa_helper_render_district_fa <- function(df, dcode, type = "paged",
                                              front_cover = "Front-Cover.svg"
         )
         
-      } 
+      } else if(format == "slides"){
+        
+        output_format = rmarkdown::slidy_presentation()
+        # output_format = rmarkdown::ioslides_presentation()
+
+      }
       
     ) 
     

@@ -89,7 +89,7 @@ FA_Data_District %>%
 
 ```
 
-
+Note: revenue, expenditure, and surplus/deficit refer to the district's "General Fund." 
 
 
 

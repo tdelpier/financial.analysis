@@ -86,7 +86,7 @@ if(No_FID_Avalible == 0 ){
                         Rev_Source == "tab.rev.total.xstim.xuaal" ~ "Total less Stimulus and UAAL",
                         Rev_Source == "tab.rev.total.xstim"     ~ "Total less Stimulus",
                         Rev_Source == "tab.rev.total"           ~ "Total Revenue"
-                                  )) %>% 
+                                  )) %>%
     
   
     flextable() %>% 
@@ -124,6 +124,7 @@ if(No_FID_Avalible == 0 ){
                                "Total Federal Revenue", 
                                "Other Revenue",
                                "Total less Stimulus and UAAL"), padding.top =  20) %>% 
+
     # flextable::footnote(i = c(9,10), j = 1, 
     #          value = as_paragraph("The new mental health grant (sec 31aa) and safety grant (sec 97) were not included in the January State Aid Financial Status Report. These values are estimated based on the State's budget."),
     #          ref_symbols = c("1"), 
@@ -150,7 +151,7 @@ FA_Data_District %>%
   flextable() %>% 
   set_header_labels(FY = "Fiscal Year", 
                     tab.rev.total = "Total Revenue", 
-                    tab.rev.total.xstim.xuaal = "Revenue Less Stimulus and UAAL",
+                    tab.rev.total.xstim.xuaal = "Total less Stimulus and UAAL",
                     tab.rev.fed.stim = "Federal Stimulus",
                     tab.rev.state.mpsers.uaal = "UAAL Payment (147c)"
                     ) %>% 

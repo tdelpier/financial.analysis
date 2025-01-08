@@ -46,7 +46,6 @@ FA_Data_District %>%
 ```
 
 
-
 ```{r warning=FALSE}
 
 fa_output_map_dist_inlay(df_sf = dist_geo, 
