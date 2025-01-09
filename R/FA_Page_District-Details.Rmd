@@ -1,5 +1,6 @@
 ---
 params:
+  type: "xx"
   district:         52170
 
 ---
@@ -44,6 +45,23 @@ FA_Data_District %>%
 
 
 ```
+
+
+
+
+
+```{r}
+
+# 
+# if(params$type  == "slides"){
+# 
+#   knitr::asis_output("\n\n---\n\n")
+# 
+# }
+
+```
+
+
 
 
 ```{r warning=FALSE}

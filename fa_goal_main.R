@@ -45,28 +45,26 @@ FA_Data_District <-
 
 FA_Data_District %>% 
   fa_helper_render_district_fa(dnum_x,
-                               type = "paged", # "web" or "paged"
-                               page.details = TRUE,
-                               page.revest = TRUE, 
-                               page.budcomp = TRUE,
-                               page.stim = TRUE,
-                               page.sam = TRUE,
-                               page.found = TRUE,
-                               page.revexp = TRUE,
-                               page.surplus = TRUE, 
-                               page.cac = FALSE,
-                               page.gfb = TRUE,
+                               type = "paged", # "web", "paged", or "slides"
+                               page.details = FALSE,
+                               page.revest = FALSE, 
+                               page.budcomp = FALSE,
+                               page.stim = FALSE,
+                               page.sam = FALSE,
+                               page.found = FALSE,
+                               page.revexp = FALSE,
+                               page.surplus = TRUE,
+                               page.gfb = FALSE,
                                page.transfers = FALSE,
-                               page.millages = TRUE,
-                               page.methods = FALSE)
+                               page.methods = FALSE,
+                               
+                               # not using
+                               page.millages = FALSE,
+                               page.cac = FALSE
+                               )
 
-# I think I want to reorder: 
-# 1. setup
-# 2. import data
-# 3. dwork
-# 4. construct data
-# 5. cache data
-# 6. open data
-# 7. render reports 
+
+
+
 
 

@@ -2,7 +2,15 @@
 
 ---
 
-## Actual and Budgeted Surplus / Deficit
+## Original Budget and Actual
+
+
+```{r}
+prior.years.to.show <- 9
+```
+
+
+
 
 ```{r}
 
@@ -10,11 +18,12 @@
 FA_Data_District %>%
   ungroup() %>% 
   filter(FY != fiscal.year) %>% 
-  select(FY, db.orig.surplus.deficit, fid.surplus.deficit) %>%
+  select(FY, db.orig.surplus.deficit, fid.surplus.deficit, db.orig.surplus.error) %>%
   flextable() %>%
   set_header_labels(FY = "Fiscal Year",
                     fid.surplus.deficit = "Actual Surplus/Deficit",
-                    db.orig.surplus.deficit = "Original Budget Surplus/Deficit") %>%
+                    db.orig.surplus.deficit = "Original Budget Surplus/Deficit",
+                    db.orig.surplus.error = "Original Budget Error (Budget - Actual)") %>%
   colformat_num(j = "FY",
                 big.mark = "") %>%
   colformat_double(j = c("fid.surplus.deficit",
@@ -40,22 +49,13 @@ FA_Data_District %>%
 
 
 
-  # df %>%
-  # autofit(part = "body") %>%
-  #   theme_vanilla()
-  
-
 
 ```
 
 
-```{r}
-# 
-# 
-#   select(FY, fid.surplus.deficit, 
-#          db.orig.surplus.deficit, db.final.surplus.deficit) %>%
-# 
+```{r eval = FALSE}
 
+# old version of figure no longer in use
 FA_Data_District %>%
   ggplot(aes(x = FY)) +
   geom_col(aes(y = fid.surplus.deficit), 
@@ -69,7 +69,7 @@ FA_Data_District %>%
   geom_hline(yintercept = 0)+
   scale_x_continuous(breaks = seq(1990, 2100, by = 1) )+
   scale_y_continuous(labels = number_format(big.mark = ",")) +
-  labs(title = "<span style='color: #003057'> Actual</span> and <span style='color: #C2002F'> Original Budget</span> Surplus/Deficit",
+  labs(title = "<span style='color: #C2002F '> Original Budget</span> and <span style='color: #003057'> Actual</span> Surplus/Deficit",
        x = "Fiscal Year",
        y = "") +
   theme(
@@ -77,6 +77,44 @@ FA_Data_District %>%
   )
 
 ```
+
+
+```{r }
+
+FA_Data_District %>%
+  filter(FY != fiscal.year,
+        !is.na(fid.surplus.deficit) & !is.na(db.orig.surplus.deficit)) %>% 
+  ggplot(aes(x = FY)) +
+  geom_hline(yintercept = 0)+
+  geom_segment(aes(xend = FY, y = fid.surplus.deficit, yend = db.orig.surplus.deficit)) +
+  geom_point(aes(y = fid.surplus.deficit, 
+                 color = "Actual",
+                 shape = "Actual"), 
+             size = 3, alpha = 1)+
+  geom_point(aes(y = db.orig.surplus.deficit, 
+                 color = "Original Budget",
+                 shape = "Original Budget"),
+           # color = mea_red, 
+           size = 3, alpha = 1) +
+  
+  scale_x_continuous(breaks = seq(1990, 2100, by = 1) )+
+  scale_y_continuous(labels = number_format(big.mark = ",")) +
+  labs(title = "Surplus/Deficit",
+       subtitle = "<span style='color: #C2002F '> Original Budget</span> vs. <span style='color: #003057'>Actual</span>",
+       x = "Fiscal Year",
+       y = "") +
+  scale_color_manual(name = "", values = c("Original Budget" = mea_red, "Actual" = mea_blue))+
+  scale_shape_manual(name = "", values = c("Original Budget" = "circle", "Actual" = "square")) +
+  theme(
+    plot.subtitle = element_markdown(),
+    legend.box.background = element_rect(color= mea_gray, size=1),
+        legend.position = "bottom"  )
+
+
+
+```
+
+
 
 
 \newpage

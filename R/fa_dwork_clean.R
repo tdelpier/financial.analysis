@@ -125,7 +125,9 @@ fa_dwork_clean <- function(df) {
            db.final.exp.pct.act = (db.final.total.expenditure / fid.e.total.xtrans) * 100,
            
            db.orig.surplus.deficit = db.original.total.revenue - db.original.total.expenditure,
-           db.final.surplus.deficit = db.final.total.revenue - db.final.total.expenditure
+           db.final.surplus.deficit = db.final.total.revenue - db.final.total.expenditure, 
+           db.orig.surplus.error = db.orig.surplus.deficit - fid.surplus.deficit,
+           db.final.surplus.error = db.final.surplus.deficit - fid.surplus.deficit
            
     ) %>%
     ungroup() %>%
