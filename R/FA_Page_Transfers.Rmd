@@ -19,21 +19,25 @@ editor_options:
 # dcode <- 11010
 
 
-transfer.back <-
-  fid.e.trans.out %>% 
-  filter(FY > fiscal.year - 6,
-         dnum == params$district,
-         # dnum == 39065 # toggle to work on manually
-         ) %>% 
-  group_by(dnum, fund.group.trans.to, fund.name.trans.to) %>% 
-  summarise(amount.exp = sum(amount.exp, na.rm = TRUE)) %>% 
-  ungroup() %>% 
+# transfer.back <-
+  # fid.e.trans.out %>% 
+
+
+FA_Data_District %>% 
+  fa_helper_fa_data_to_transfer_data() %>% 
+  filter(FY > fiscal.year - 6) %>% 
+  group_by(fund.group.trans.to, fund.name.trans.to)  %>% 
+  summarise(amount.transfered = sum(amount.transfered, na.rm = TRUE)) %>% view()
+  ungroup() %>% view()
   left_join(FID_Bal_Detail, by = c("dnum" = "dnum", "fund.group.trans.to" = "fund")) %>% 
   select(fund.name.trans.to, amount.exp, fb.unrestricted) %>% 
   mutate(amount.transferable = ifelse(amount.exp < fb.unrestricted, amount.exp, fb.unrestricted)) %>% 
   adorn_totals(name = 'Total') %>% 
   tibble()
 
+  
+  
+  
 
 transfer.back.amount <-
   transfer.back %>%   

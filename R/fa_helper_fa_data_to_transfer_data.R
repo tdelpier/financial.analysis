@@ -27,16 +27,20 @@ fa_helper_fa_data_to_transfer_data <- function(df) {
     summarise(value = sum(value, na.rm= TRUE)) %>% 
     filter(value != 0,
            !is.na(value)) %>% 
-    pivot_wider(id_cols = c(FY, dnum, fund), names_from = type, values_from = value) %>% 
+    pivot_wider(id_cols = c(FY, dnum, fund), names_from = type, values_from = value) %>%
     mutate(trans.to = ifelse(is.na(trans.to), 0, trans.to),
-           fb = ifelse(is.na(fb), 0, fb)) %>% 
-    left_join(TannersTools::FID_names_fund, by = "fund")
+           fb = ifelse(is.na(fb), 0, fb)) %>%
+    left_join(TannersTools::FID_names_fund, by = "fund") %>%
+    rename(fund.group.trans.to = fund.group,
+           fund.name.trans.to = fund.name,
+           fund.balance = fb,
+           amount.transfered = trans.to)
 
   
 }
 
 
 
+# I need both total fund balance as well as unrestricted fund balance
 
-
-
+FA_Data_District %>% fa_helper_fa_data_to_transfer_data() %>% view()

@@ -1,12 +1,13 @@
 
 
-
+/* This removes the default behavior to print the URL of a link  */
 a[href^="http"]:not([class="uri"])::after {
   content: none;
 }
 
 
 /* page size */
+/* this is the place to globablly scale content */ 
 @page {
   size: 9in 11.5in;
 }

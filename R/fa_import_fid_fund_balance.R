@@ -10,19 +10,25 @@ fa_import_fid_fund_balance <- function() {
   
   fund_balances <- 
     TannersTools::tt_import_fid_B() %>% 
-    dplyr::filter(majorclass >= 700) %>% 
-    dplyr::mutate(mc_1 = as.numeric(stringr::str_sub(majorclass, 1, 1)),
-                  mc_2 = as.numeric(stringr::str_sub(majorclass, 1, 2)),
-                  amount.bal = amount * -1) %>% 
+    dplyr::filter(majorclass >= 700,
+                  majorclass < 760,
+                  amount != 0,
+                  !is.na(amount)) %>%
+    mutate(restricted = ifelse(majorclass < 730, amount * -1, NA),
+           amount = amount * -1) %>% 
     dplyr::group_by(FY, fund, dnum) %>% 
-    dplyr::summarise(amount = sum(amount.bal, na.rm = TRUE)) %>% 
+    dplyr::summarise(total = sum(amount, na.rm = TRUE),
+                     .restricted = sum(restricted, na.rm = TRUE)) %>% 
     dplyr::ungroup() %>% 
-    dplyr::rename(FundBal = amount) %>% 
+    tidyr::pivot_longer(cols = c(total, .restricted)) %>% 
+    mutate(fund.type = name,
+           fund.type = ifelse(fund.type == "total", "", fund.type),
+           name = paste0(fund, fund.type)) %>% 
     tidyr::pivot_wider(id_cols = c(FY, dnum),
-                       names_from = fund, 
-                       values_from = FundBal, 
+                       names_from = name, 
+                       values_from = value, 
                        names_prefix = "fid.b.fb",
-                       values_fill = 0)
+                       values_fill = 0) 
   
   return(fund_balances)
   
@@ -30,6 +36,30 @@ fa_import_fid_fund_balance <- function() {
 
 
 
+
+
+# 
+# # fund_balances <- 
+#  TannersTools::tt_import_fid_B() %>% 
+#   dplyr::filter(majorclass >= 700,
+#                 majorclass < 760,
+#                 amount != 0,
+#                 !is.na(amount)) %>%
+#     mutate(restricted = ifelse(majorclass < 730, amount * -1, NA),
+#            amount = amount * -1) %>% 
+#   dplyr::group_by(FY, fund, dnum) %>% 
+#   dplyr::summarise(total = sum(amount, na.rm = TRUE),
+#                    .restricted = sum(restricted, na.rm = TRUE)) %>% 
+#   dplyr::ungroup() %>% 
+#   tidyr::pivot_longer(cols = c(total, .restricted)) %>% 
+#    mutate(fund.type = name,
+#           fund.type = ifelse(fund.type == "total", "", fund.type),
+#           name = paste0(fund, fund.type)) %>% 
+#   tidyr::pivot_wider(id_cols = c(FY, dnum),
+#                      names_from = name, 
+#                      values_from = value, 
+#                      names_prefix = "fid.b.fb",
+#                      values_fill = 0) 
 
 
 
