@@ -7,6 +7,7 @@ library(TannersTools)
 # library(flextable)
 # library(ggtext)
 library(financial.analysis)
+library(testthat)
 # library(servr)
 
 # setup 
@@ -25,7 +26,7 @@ dist_geo <- fa_import_geo() %>% rename(geometry = geom)
 
 
 # Choosing District 
-  # tt_dnum_from_dname("pont")
+  tt_dnum_from_dname("clare")
   # marquette 52170
   # flint 25010
   # ann arbor 81010
@@ -34,6 +35,9 @@ dist_geo <- fa_import_geo() %>% rename(geometry = geom)
 
 dnum_x <- tt_dnum_random(1)
 # dnum_x <- 15010 # beaver island
+# dnum_x <- 52170 # Marquette
+# dnum_x <- 18010 # Clare
+
 
 FA_Data_District <-  
   FA_Data %>%
@@ -53,16 +57,16 @@ FA_Data_District %>%
                                page.sam = FALSE,
                                page.found = FALSE,
                                page.revexp = FALSE,
-                               page.surplus = TRUE,
+                               page.surplus = FALSE,
                                page.gfb = FALSE,
-                               page.transfers = FALSE,
+                               page.transfers = TRUE,
                                page.methods = FALSE,
                                
                                # not using
                                page.millages = FALSE,
                                page.cac = FALSE
                                )
-
+``
 
 
 

@@ -20,9 +20,13 @@ fa_helper_fa_data_to_transfer_data <- function(df) {
            starts_with("fid.b"), 
            -ends_with(c("pct", "exp", "chg", "rev"))) %>% 
     pivot_longer(cols = c(starts_with("fid.trans"), starts_with("fid.b"))) %>% 
-    mutate(fund = as.numeric(str_sub(name, -2, -1)),
-           type = ifelse(str_detect(name, "fid.trans.transfer.to.fund"),"trans.to",
-                         ifelse(str_detect(name, "fid.b.fb"), "fb", "none"))) %>% 
+    mutate(fund = str_remove(name, "fid.trans.transfer.to.fund."),
+           fund = str_remove(fund, "fid.b.fb"),
+           fund = str_remove(fund, ".restricted"),
+           fund = as.numeric(fund),
+           type = ifelse(str_detect(name, "fid.trans.transfer.to.fund."), "trans.to", NA),
+           type = ifelse(str_detect(name, "fid.b.fb"), "fb", type),
+           type = ifelse(str_detect(name, "restricted"), "restricted", type)) %>% 
     group_by(FY, dnum, fund, type) %>% 
     summarise(value = sum(value, na.rm= TRUE)) %>% 
     filter(value != 0,
@@ -34,13 +38,11 @@ fa_helper_fa_data_to_transfer_data <- function(df) {
     rename(fund.group.trans.to = fund.group,
            fund.name.trans.to = fund.name,
            fund.balance = fb,
-           amount.transfered = trans.to)
+           transfered.from.gf = trans.to,
+           fund.balance.restricted = restricted) %>% 
+    mutate(fund.balance.unrestricted = fund.balance - fund.balance.restricted)
 
   
 }
 
 
-
-# I need both total fund balance as well as unrestricted fund balance
-
-FA_Data_District %>% fa_helper_fa_data_to_transfer_data() %>% view()
