@@ -20,9 +20,11 @@ FA_Data_District %>%
   filter(FY != fiscal.year) %>% 
   select(FY, db.orig.surplus.deficit, fid.surplus.deficit, db.orig.surplus.error) %>%
   flextable() %>%
+  add_header_lines(values = "Surplus/Deficit") %>% 
+
   set_header_labels(FY = "Fiscal Year",
-                    fid.surplus.deficit = "Actual Surplus/Deficit",
-                    db.orig.surplus.deficit = "Original Budget Surplus/Deficit",
+                    fid.surplus.deficit = "Actual",
+                    db.orig.surplus.deficit = "Original Budget",
                     db.orig.surplus.error = "Original Budget Error (Budget - Actual)") %>%
   colformat_num(j = "FY",
                 big.mark = "") %>%
@@ -127,30 +129,20 @@ FA_Data_District %>%
 FA_Data_District %>% 
   filter(FY > (fiscal.year - prior.years.to.show),
          !is.na(est.1.rev.total.pct.act)) %>% 
-  select(FY, db.original.total.revenue, fid.r.total.audit, db.orig.rev.error
-         # db.final.total.revenue, db.final.rev.error
-         ) %>% 
-  flextable() %>% 
+  select(FY, db.original.total.revenue, fid.r.total.audit, db.orig.rev.error) %>% 
+  flextable() %>%
+  add_header_lines(values = "General Fund Revenue") %>% 
   set_header_labels(
                   FY = "Fiscal Year",
-                  fid.r.total.audit = "Actual Revenue",
-                  db.original.total.revenue = "District Original Budgeted Revenue",
-                  # db.final.total.revenue = "District Final Budgeted Revenue",
-                  db.orig.rev.error = "Original Budget Error (Budget - Actual)"
-                  # db.final.rev.error = "Final Budget Error (Budget - Actual)"
-                  
-  ) %>% 
-
+                  fid.r.total.audit = "Actual",
+                  db.original.total.revenue = "Original Budget",
+                  db.orig.rev.error = "Original Budget Error (Budget - Actual)") %>% 
   colformat_num(j = "FY", big.mark = "") %>%
   colformat_double(j = c("fid.r.total.audit",
                       "db.original.total.revenue", 
-                      # "db.final.total.revenue",
-                      "db.orig.rev.error"
-                      # "db.final.rev.error"
-                      ), 
+                      "db.orig.rev.error"), 
                 big.mark = ",",
                 digits = 0) %>%
-
   flextable_custom_theme()
 
 
@@ -171,30 +163,19 @@ FA_Data_District %>%
          !is.na(est.1.rev.total.pct.act)) %>% 
   select(FY, db.original.total.expenditure, fid.e.total.xtrans, db.orig.exp.error) %>% 
   flextable() %>% 
+  add_header_lines(values = "General Fund Expenditure") %>% 
   set_header_labels(
                   FY = "Fiscal Year",
-                  fid.e.total.xtrans = "Actual Expenditure",
-                  db.original.total.expenditure = "District Original Budget Expenditure",
-                  # db.final.total.expenditure = "District Final Budget Expenditure",
-                  db.orig.exp.error = "Original Budget Error (Budget - Actual)"
-                  # db.final.exp.error = "Final Budget Error (Budget - Actual)"
-                  
-  ) %>% 
-
-  
+                  fid.e.total.xtrans = "Actual",
+                  db.original.total.expenditure = "Original Budget",
+                  db.orig.exp.error = "Original Budget Error (Budget - Actual)") %>% 
   colformat_num(j = "FY", big.mark = "") %>%
   colformat_double(j = c("fid.e.total.xtrans",
                       "db.original.total.expenditure", 
-                      # "db.final.total.expenditure",
-                      "db.orig.exp.error"
-                      # "db.final.exp.error"
-                      ), 
+                      "db.orig.exp.error"), 
                 big.mark = ",",
                 digits = 0) %>%
-
   flextable_custom_theme()
-
-
 
 
 

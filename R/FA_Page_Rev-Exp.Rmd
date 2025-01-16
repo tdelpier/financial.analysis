@@ -14,6 +14,8 @@ FA_Data_District %>%
   filter(FY != fiscal.year) %>% 
   select(FY, fid.r.total.audit, fid.e.total.xtrans, fid.surplus.deficit, fid.rev.expended) %>% 
   flextable() %>% 
+  add_header_lines(values = "General Fund Revenue and Expenditure") %>% 
+
   set_header_labels(FY = "Fiscal Year",
                     
                     ### I need to include the transfers 
@@ -88,8 +90,6 @@ FA_Data_District %>%
 
 
 ```
-
-Note: revenue, expenditure, and surplus/deficit refer to the district's "General Fund." 
 
 
 
