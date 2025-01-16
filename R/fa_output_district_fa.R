@@ -25,7 +25,12 @@ fa_helper_render_district_fa <- function(df, dcode, type = "paged",
                         page.millages = TRUE,
                         page.methods = TRUE){
     
-    tt_dir_set_projects()
+  
+  
+  
+  
+  quietly(tt_dir_projects())
+    
     
     format <- {{ type }}
     
@@ -52,6 +57,7 @@ fa_helper_render_district_fa <- function(df, dcode, type = "paged",
       input = TannersTools::tt_dir_projects("financial.analysis", "R", "fa_output_dist_fa_template.Rmd"),
       output_file = paste0("FA_", fiscal.year, "_", dcode, "_", district_label, ".html"),
       output_dir = TannersTools::tt_dir_projects("financial.analysis", "output"),
+      quiet = TRUE,
       params = list(district =       {{ dcode }},
                     page_details=    {{ page.details }},
                     page_revest =    {{ page.revest }},
@@ -105,6 +111,11 @@ fa_helper_render_district_fa <- function(df, dcode, type = "paged",
       
     }
     
+    ### trying
+
+    message("Completed: ", district_name,", ", district_code)
+    
+    
   }
 
 
@@ -123,8 +134,9 @@ fa_output_district_fa <- function(dnum_fa_requested) {
   purrr::map({{ dnum_fa_requested }}, ~fa_output_possibly_render_district_fa(df = FA_Data, dcode = .))
   
   end_time <- Sys.time()
-  elapsed_time <- end_time - start_time
+  elapsed_time <<- end_time - start_time
   
+  message("Completed fa_output_district_fa function ✅" )  
   
 }
 

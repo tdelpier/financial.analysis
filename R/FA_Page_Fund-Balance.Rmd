@@ -2,7 +2,7 @@
 
 ---
 
-## General Fund Balance
+## Fund Balance
 
 ```{r}
 
@@ -12,12 +12,14 @@ FA_Data_District %>%
   filter(FY != fiscal.year) %>% 
   select(FY, fid.b.fb11, fid.b.fb11.chg, fid.b.fb11.pct.chg, fid.b.fb.11.pct.rev, fid.b.fb.11.pct.exp) %>%  
   flextable() %>% 
+  add_header_lines(values = "General Fund") %>% 
+
   set_header_labels(FY = "Fiscal Year",
-                  fid.b.fb11 = "GF Balance",
-                  fid.b.fb11.chg = "GF Change",
-                  fid.b.fb11.pct.chg = "GF % Change",
-                  fid.b.fb.11.pct.rev = "GF Balance % Revenue",
-                  fid.b.fb.11.pct.exp = "GF Balance % Expenditure") %>% 
+                  fid.b.fb11 = "Amount",
+                  fid.b.fb11.chg = "Change",
+                  fid.b.fb11.pct.chg = "% Change",
+                  fid.b.fb.11.pct.rev = "% of Revenue",
+                  fid.b.fb.11.pct.exp = "% of Expenditure") %>% 
   colformat_num(j = "FY",
                 big.mark = "") %>%
   colformat_double(j = c("fid.b.fb11", 
@@ -30,13 +32,6 @@ FA_Data_District %>%
                    suffix = "%") %>% 
   flextable_custom_theme()
  
-
-
-  # df %>% 
-  # autofit(part = "body") %>% 
-  #   theme_vanilla()
-  
-
 
 ```
 
@@ -61,5 +56,43 @@ FA_Data_District %>%
        y = "")
 
 ```
+
+
+
+\newpage
+
+
+
+```{r}
+
+
+FA_Data_District %>% 
+  filter(FY == fiscal.year - 1) %>% 
+  ungroup() %>% 
+  fa_helper_fa_data_to_transfer_data() %>% 
+  ungroup() %>% 
+  select(fund.name.trans.to, fund.balance.restricted, fund.balance.unrestricted, fund.balance) %>% 
+  flextable() %>% 
+    add_header_lines(values = "Current Year Fund Balances") %>% 
+
+  set_header_labels(fund.name.trans.to = "Fund",
+                    fund.balance.restricted = "Restricted",
+                    fund.balance.unrestricted = "Unrestricted",
+                    fund.balance = "Total") %>% 
+  colformat_double(j = c("fund.balance.restricted", 
+                         "fund.balance.unrestricted",
+                         "fund.balance"), 
+                   big.mark = ",",
+                   digits = 0) %>%
+
+  flextable_custom_theme()
+
+
+
+
+
+```
+
+
 
 

@@ -15,7 +15,6 @@ fa_helper_fa_data_to_transfer_data <- function(df) {
   
   df %>% 
     ungroup() %>% 
-    # filter(dnum == 52170) %>% 
     select(FY, dnum, starts_with("fid.trans"), 
            starts_with("fid.b"), 
            -ends_with(c("pct", "exp", "chg", "rev"))) %>% 
@@ -29,20 +28,20 @@ fa_helper_fa_data_to_transfer_data <- function(df) {
            type = ifelse(str_detect(name, "restricted"), "restricted", type)) %>% 
     group_by(FY, dnum, fund, type) %>% 
     summarise(value = sum(value, na.rm= TRUE)) %>% 
-    filter(value != 0,
-           !is.na(value)) %>% 
-    pivot_wider(id_cols = c(FY, dnum, fund), names_from = type, values_from = value) %>%
+    pivot_wider(id_cols = c(FY, dnum, fund), names_from = type, values_from = value) %>% 
+    left_join(TannersTools::FID_names_fund, by = "fund") %>% 
     mutate(trans.to = ifelse(is.na(trans.to), 0, trans.to),
            fb = ifelse(is.na(fb), 0, fb)) %>%
-    left_join(TannersTools::FID_names_fund, by = "fund") %>%
     rename(fund.group.trans.to = fund.group,
            fund.name.trans.to = fund.name,
            fund.balance = fb,
            transfered.from.gf = trans.to,
            fund.balance.restricted = restricted) %>% 
-    mutate(fund.balance.unrestricted = fund.balance - fund.balance.restricted)
-
+    mutate(fund.balance.unrestricted = fund.balance - fund.balance.restricted) %>% 
+    filter(fund.balance != 0 | 
+             fund.balance.restricted != 0 | 
+             fund.balance.unrestricted != 0 |
+             transfered.from.gf != 0) 
+  
   
 }
-
-

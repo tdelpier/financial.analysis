@@ -8,16 +8,21 @@ editor_options:
 
 ## Transfers
 
-```{r}
 
+
+
+```{r}
 district_fb_transfer_data <- 
   FA_Data_District %>% 
   fa_helper_fa_data_to_transfer_data() %>% 
   ungroup()
 
 funds_to_include <- c(21, 22, 23, 24, 26, 27, 28, 29, seq(40, 49))
+```
 
 
+
+```{r}
 var_to_words <- function(var) {
   
   FA_Data_District %>% 
@@ -27,8 +32,11 @@ var_to_words <- function(var) {
     pull()
   
 }
+```
 
 
+
+```{r, include = FALSE, message = FALSE}
 total_amount_to_transfer_back <- 
   district_fb_transfer_data %>% 
   filter(FY == fiscal.year - 1,
@@ -57,6 +65,7 @@ new_gf_bal_pct_exp <- new_gf_bal / var_to_words(fid.e.total.xtrans)
 
 
 ```
+
 
 In `r var_to_words(FY)`, `r var_to_words(district.label)` had a general
 fund balance of
@@ -117,129 +126,3 @@ district_fb_transfer_data %>%
 
 ```
 
-```{r, eval = FALSE}
-# 
-# #replace dcode with: params$district
-# 
-# # dcode <- 18010
-# # dcode <- 33020
-# # dcode <- 57030
-# # dcode <- 39065
-# # dcode <- 11010
-# 
-# 
-# # transfer.back <-
-#   # fid.e.trans.out %>% 
-# 
-# 
-# FA_Data_District %>% 
-#   fa_helper_fa_data_to_transfer_data() %>% 
-#   filter(FY > fiscal.year - 6) %>% 
-#   group_by(fund.group.trans.to, fund.name.trans.to)  %>% 
-#   summarise(amount.transfered = sum(amount.transfered, na.rm = TRUE)) %>% view()
-#   ungroup() %>% view()
-#   left_join(FID_Bal_Detail, by = c("dnum" = "dnum", "fund.group.trans.to" = "fund")) %>% 
-#   select(fund.name.trans.to, amount.exp, fb.unrestricted) %>% 
-#   mutate(amount.transferable = ifelse(amount.exp < fb.unrestricted, amount.exp, fb.unrestricted)) %>% 
-#   adorn_totals(name = 'Total') %>% 
-#   tibble()
-# 
-#   
-#   
-#   
-# 
-# transfer.back.amount <-
-#   transfer.back %>%   
-#   filter(fund.name.trans.to == "Total") %>% 
-#   select(amount.transferable) %>%
-#   mutate(amount.transferable = ifelse(amount.transferable == "-", "0", amount.transferable), 
-#          amount.transferable = as.numeric(amount.transferable)) %>% 
-#   pull()
-# 
-# 
-# fb.data <- 
-#   FA_Data_District %>% 
-#     filter(!is.na(fid.b.fb11)) %>% 
-#     filter(FY == max(FY)) %>% 
-#     select(FY, fid.b.fb11, fid.r.total.audit, fid.e.total.xtrans, district.label) %>% 
-#   mutate(fb.rev.pct = fid.b.fb11 / fid.r.total.audit, 
-#          fb.exp.pct = fid.b.fb11/ fid.e.total.xtrans)
-#     
-# 
-# adjusted.fund.balance <- 
-#   fb.data  %>% 
-#   select(fid.b.fb11) %>% 
-#   mutate(adjusted.fund.balance = fid.b.fb11 + transfer.back.amount) %>% 
-#   pull()
-# 
-# 
-#   # transfer.back %>% 
-#   # filter(fund.name.trans.to == "Total") %>% 
-#   # select(transfer.back) %>% 
-#   # pull() 
-#   
-# rev <- fb.data %>% select(fid.r.total.audit) %>% pull()
-# exp <- fb.data %>% select(fid.e.total.xtrans) %>% pull()
-# 
-# adjusted.fund.balance.rev.pct <- 
-#   (adjusted.fund.balance / rev) %>% 
-#   percent()
-# 
-# adjusted.fund.balance.exp.pct <-
-#   (adjusted.fund.balance / exp) %>% 
-#   percent()
-# 
-
-```
-
-```{r, eval = FALSE}
-# 
-# if(transfer.back.amount > 0 ){
-#   
-#   transfer.back %>% 
-#   # select(fund.name.trans.to, a amount.transferable) %>%
-#   filter(amount.transferable > 0) %>% 
-#   flextable() %>% 
-#   add_header_lines(values = "Funds Avalible to Transfer Back to the General Fund") %>% 
-#   set_header_labels(amount.exp = "Transfer in Prior Five Years",
-#                     fb.unrestricted = "Current Unrestricted Fund Balance",
-#                     fund.name.trans.to = "Fund",
-#                     amount.transferable = "Fund Balances Transferable") %>% 
-#    colformat_double(j =  "amount.transferable", 
-#                     big.mark = ",", digits = 0)%>% 
-#   flextable::footnote(i = 2, j = 4, 
-#            value = as_paragraph("Transferable fund balance includes all spendable unrestricted funds including committed, assigned, and unassigned fund blance that could be transfered to the General Fund."),
-#            ref_symbols = c("1"), 
-#            part = "header") %>% 
-#   flextable_custom_theme()
-# 
-#   
-#   
-# }
-# 
-
-```
-
-```{r, eval = FALSE}
-# 
-# if(transfer.back.amount > 0 ){
-#   
-#   fid.e.trans.out %>% 
-#     filter(FY > fiscal.year - 6,
-#            dnum == params$district) %>% 
-#     select(FY, fund.name.trans.to, amount.exp) %>% 
-#     filter(amount.exp > 25000) %>% 
-#     flextable() %>% 
-#     add_header_lines(values = "Transfers from the General Fund By Year") %>% 
-#     set_header_labels(FY = "Fiscal Year",
-#                       fund.name.trans.to = "Transfer to Fund",
-#                       amount.exp = "Amount") %>% 
-#      colformat_num(j = "FY", big.mark = "") %>%
-#      colformat_double(j = "amount.exp", 
-#                       big.mark = ",", digits = 0)  %>% 
-#     add_footer_lines(values = "* Only transfers greater than $25,000 are displayed") %>% 
-#     flextable_custom_theme()
-#   
-# }
-
-```

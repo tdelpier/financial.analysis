@@ -15,6 +15,7 @@ fiscal.year <- 2024
 fa_setup()
 
 
+
 # construct the data from scratch
 fa_construct_data()
 fa_import_data("raw") %>% fa_dwork()
@@ -58,15 +59,22 @@ FA_Data_District %>%
                                page.found = FALSE,
                                page.revexp = FALSE,
                                page.surplus = FALSE,
-                               page.gfb = FALSE,
-                               page.transfers = TRUE,
+                               page.gfb = TRUE,
+                               page.transfers = FALSE,
                                page.methods = FALSE,
                                
                                # not using
                                page.millages = FALSE,
                                page.cac = FALSE
                                )
-``
+
+
+
+
+fa_output_district_fa(dnum_x)
+
+
+
 
 
 
