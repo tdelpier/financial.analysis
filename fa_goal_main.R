@@ -27,17 +27,13 @@ dist_geo <- fa_import_geo() %>% rename(geometry = geom)
 
 
 # Choosing District 
-  tt_dnum_from_dname("clare")
-  # marquette 52170
-  # flint 25010
-  # ann arbor 81010
-  # beaver island 15010
-  # pontiac 63030
+  tt_dnum_from_dname("grosse")
 
 dnum_x <- tt_dnum_random(1)
 # dnum_x <- 15010 # beaver island
 # dnum_x <- 52170 # Marquette
 # dnum_x <- 18010 # Clare
+dnum_x <- 82055 # Grosse Pointe 
 
 
 FA_Data_District <-  
@@ -59,12 +55,12 @@ FA_Data_District %>%
                                page.found = FALSE,
                                page.revexp = FALSE,
                                page.surplus = FALSE,
-                               page.gfb = TRUE,
+                               page.gfb = FALSE,
                                page.transfers = FALSE,
                                page.methods = FALSE,
                                
                                # not using
-                               page.millages = FALSE,
+                               page.millages = TRUE,
                                page.cac = FALSE
                                )
 

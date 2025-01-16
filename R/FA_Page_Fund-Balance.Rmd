@@ -65,7 +65,6 @@ FA_Data_District %>%
 
 ```{r}
 
-
 FA_Data_District %>% 
   filter(FY == fiscal.year - 1) %>% 
   ungroup() %>% 
@@ -73,8 +72,7 @@ FA_Data_District %>%
   ungroup() %>% 
   select(fund.name.trans.to, fund.balance.restricted, fund.balance.unrestricted, fund.balance) %>% 
   flextable() %>% 
-    add_header_lines(values = "Current Year Fund Balances") %>% 
-
+  add_header_lines(values = "Fund Balances") %>% 
   set_header_labels(fund.name.trans.to = "Fund",
                     fund.balance.restricted = "Restricted",
                     fund.balance.unrestricted = "Unrestricted",
@@ -86,9 +84,6 @@ FA_Data_District %>%
                    digits = 0) %>%
 
   flextable_custom_theme()
-
-
-
 
 
 ```

@@ -8,9 +8,6 @@ editor_options:
 
 ## Transfers
 
-
-
-
 ```{r}
 district_fb_transfer_data <- 
   FA_Data_District %>% 
@@ -20,9 +17,8 @@ district_fb_transfer_data <-
 funds_to_include <- c(21, 22, 23, 24, 26, 27, 28, 29, seq(40, 49))
 ```
 
-
-
 ```{r}
+
 var_to_words <- function(var) {
   
   FA_Data_District %>% 
@@ -32,9 +28,8 @@ var_to_words <- function(var) {
     pull()
   
 }
+
 ```
-
-
 
 ```{r, include = FALSE, message = FALSE}
 total_amount_to_transfer_back <- 
@@ -66,23 +61,22 @@ new_gf_bal_pct_exp <- new_gf_bal / var_to_words(fid.e.total.xtrans)
 
 ```
 
-
 In `r var_to_words(FY)`, `r var_to_words(district.label)` had a general
-fund balance of
-`r var_to_words(fid.b.fb11) %>% currency(digits = 0)`.
+fund balance of `r var_to_words(fid.b.fb11) %>% currency(digits = 0)`.
 That equates to
 `r (var_to_words(fid.b.fb.11.pct.rev) / 100) %>% percent()` of total
 revenue and `r (var_to_words(fid.b.fb.11.pct.exp) / 100) %>% percent()`
 of total expenditure. In the last 5 years,
 `r total_transfered_out_in_5_years %>% currency(digits = 0)` was
-transferred out of the General Fund. As of `r var_to_words(FY)`, `r var_to_words(district.label)` maintained `r total_amount_to_transfer_back %>% currency(digits = 0)` of unrestricted rersources outside of the General Fund. These dollars can be transfered to the General Fund. If these funds
-were transferred to the General Fund, it would total `r new_gf_bal %>% currency(digits = 0)`--which would
-equate to `r new_gf_bal_pct_rev %>% percent()` of revenue and
+transferred out of the General Fund. As of `r var_to_words(FY)`,
+`r var_to_words(district.label)` maintained
+`r total_amount_to_transfer_back %>% currency(digits = 0)` of
+unrestricted rersources outside of the General Fund. These dollars can
+be transfered to the General Fund. If these funds were transferred to
+the General Fund, it would total
+`r new_gf_bal %>% currency(digits = 0)`--which would equate to
+`r new_gf_bal_pct_rev %>% percent()` of revenue and
 `r new_gf_bal_pct_exp %>% percent()` of expenditure respectively.
-
-
-
-
 
 ```{r}
 
@@ -104,9 +98,8 @@ district_fb_transfer_data %>%
 
 ```
 
-
-
 ```{r}
+
 district_fb_transfer_data %>% 
   filter(fund %in% funds_to_include,
          transfered.from.gf != 0,
@@ -123,6 +116,4 @@ district_fb_transfer_data %>%
   flextable_custom_theme()
 
 
-
 ```
-
