@@ -4,13 +4,7 @@
 
 ## Local Millages
 
-**Local foundation**
-
-**Hold harmless**
-
-**Sinking fund millages** provide revenue for district capital improvements on an annual basis. While these dollars are raised locally, they are regulated by the state through [MCL 380.1212](https://www.legislature.mi.gov/Laws/MCL?objectName=mcl-380-1212). Sinking funds authorized after 2017 are limited to 3 mills for a maximum of 10 years. These funds are restricted to capital improvement, namely real estate, school building construction, school building repair, school security improvements, technology, or transportation vehicles. Voters approve a specific millage rate and the amount raised varies.
-
-**Debt retirement millages** are used to finance bonded debt, for major capital improvements. The state rgulates district bonded debt through [MCL 380.1351a](https://www.legislature.mi.gov/Laws/MCL?objectName=mcl-380-1351a). These millages are restricted for capital improvements including facilities, technology, and transportation. Voters approve a specific amount to be raised and the millage rate varies.
+In Michigan, revenue from local millages is retained locally but regulated by the state.  
 
 ```{r}
 
@@ -28,14 +22,14 @@ tv_total <-
 
 FA_Data_District %>% 
   filter(FY == fiscal.year) %>% 
-  select(cy.d.1.nhs.basic, cy.d.1.hs.hrmls, cy.d.1.sinkfund, 
-         cy.d.1.debtretire) %>%
-  rename("Local foundation" = cy.d.1.nhs.basic,
+  select(cy.d.1.nhs.basic, cy.d.1.sinkfund, 
+         cy.d.1.debtretire, cy.d.1.hs.hrmls) %>%
+  rename("Foundation allowance" = cy.d.1.nhs.basic,
          "Hold harmless" = cy.d.1.hs.hrmls,
          "Sinking fund" = cy.d.1.sinkfund,
          "Debt retirement" = cy.d.1.debtretire) %>% 
   pivot_longer(cols = everything()) %>% 
-  mutate(tv = ifelse(name == "Local foundation", tv_nhs, tv_total),
+  mutate(tv = ifelse(name == "Foundation allowance", tv_nhs, tv_total),
          est.rev = (tv / 1000) * value) %>% 
   flextable() %>% 
   set_header_labels(name = "Millage Type",
@@ -48,28 +42,16 @@ FA_Data_District %>%
 
 ```
 
-**Regional enhancement millages**
 
-15 mill tax limitation of Article IX of the Michigan Constitution
+To earn their full **foundation allowance**, districts are responsible for a local share determined by [MCL 380.1211](https://www.legislature.mi.gov/Laws/MCL?objectName=MCL-380-1211). A district's local share of the foundation allowance is 18 mills or their millage rate from 1993, whichever is lower. Districts are not permitted to raise an operating millage rate higher than their local foundation allowance share. 
 
+**Sinking fund millages** provide revenue for district capital improvements on an annual basis. While these dollars are raised locally, they are regulated by the state through [MCL 380.1212](https://www.legislature.mi.gov/Laws/MCL?objectName=mcl-380-1212). Sinking funds authorized after 2017 are limited to 3 mills for a maximum of 10 years. These funds are restricted to capital improvement, namely real estate, school building construction, school building repair, school security improvements, technology, or transportation vehicles. Voters approve a specific millage rate and the amount raised varies.
 
-```{r}
+**Debt retirement millages** are used to finance bonded debt for major capital improvements. The state regulates district bonded debt through [MCL 380.1351a](https://www.legislature.mi.gov/Laws/MCL?objectName=mcl-380-1351a). These millages are restricted for capital improvements including facilities, technology, and transportation. Voters approve a specific amount to be raised and the millage rate varies.
 
-# working to get REM data in here
-
-
-# x1 <- 
-#   fa_import_cy_data() %>% 
-#   mutate(dnum = as.numeric(dcode.x),
-#          inum = as.numeric(cy.d.1.isd)) %>% 
-#   tt_dnum_isd() %>% 
-#   filter(flag.isd == 1,
-#          FY == fiscal.year) %>% 
-#   select(
-#     inum, cy.d.1.dname,
-#     cy.d.1.enhancemnt, cy.d.1.sev)
+**Hold harmless** dstricts, which are defined as those that had a foundation allowance higher than $6,500 per student in FY 1995, are permitted by [MCL 380.1211](https://www.legislature.mi.gov/Laws/MCL?objectName=MCL-380-1211) to levy an additional millage on all taxable value. This millage rate enables hold harmless districts to increase their per pupil foundation allowance with inflation. A district's 1995 foundation allowance can be found at MDE's [State Aid Status Report](https://mdoe.state.mi.us/samspublic/Home/StatusReportDetail). 
 
 
+More details on each districts taxable value can be found at MDE's [Taxable Value System](https://mdoe.state.mi.us/TVS/Menu). 
 
-```
 
