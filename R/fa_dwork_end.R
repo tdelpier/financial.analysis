@@ -12,8 +12,12 @@ fa_dwork_end <- function(df){
     # found my problem. Where do I do state total? 
     
     # State Total 
-    est.1.rev.state = cy.a.1.000 + est.1.rev.state.manual + 
-      ((cy.a.1.991 + cy.a.1.992) * -1), # here to take out deductions from a failure to submit docs to the state
+    
+    est.1.rev.state.single.payments = 0,
+    
+    
+    est.1.rev.state = 
+      cy.a.1.000 + est.1.rev.state.manual - cy.a.1.9999 - cy.a.1.8888,
     
     est.1.rev.state.error = est.1.rev.state - fid.r.state, 
     est.1.rev.state.pct.act = (est.1.rev.state / fid.r.state) * 100,

@@ -2,14 +2,9 @@
 params:
   type: "xx"
   district:         52170
-
 ---
 
-
-
 ## District Details
-
-
 
 ```{r ft.align='left'}
 
@@ -46,24 +41,6 @@ FA_Data_District %>%
 
 ```
 
-
-
-
-
-```{r}
-
-# 
-# if(params$type  == "slides"){
-# 
-#   knitr::asis_output("\n\n---\n\n")
-# 
-# }
-
-```
-
-
-
-
 ```{r warning=FALSE}
 
 fa_output_map_dist_inlay(df_sf = dist_geo, 
@@ -72,9 +49,12 @@ fa_output_map_dist_inlay(df_sf = dist_geo,
 
 ```
 
-Report generated on: `r format(Sys.time(), "%B %e, %Y")`
+**Report generated on**: `r format(Sys.time(), "%B %e, %Y")`
 
+```{r}
 
+district_note <- FA_Data_District %>% filter(FY == fiscal.year) %>% select(district.notes) %>% pull()
 
+```
 
-
+**Additional district notes**: `r district_note`
