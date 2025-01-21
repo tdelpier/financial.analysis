@@ -49,7 +49,7 @@ To earn their full **foundation allowance**, districts are responsible for a loc
 
 **Debt retirement millages** are used to finance bonded debt for major capital improvements. The state regulates district bonded debt through [MCL 380.1351a](https://www.legislature.mi.gov/Laws/MCL?objectName=mcl-380-1351a). These millages are restricted for capital improvements including facilities, technology, and transportation. Voters approve a specific amount to be raised and the millage rate varies.
 
-**Hold harmless** dstricts, which are defined as those that had a foundation allowance higher than $6,500 per student in FY 1995, are permitted by [MCL 380.1211](https://www.legislature.mi.gov/Laws/MCL?objectName=MCL-380-1211) to levy an additional millage on all taxable value. This millage rate enables hold harmless districts to increase their per pupil foundation allowance with inflation. A district's 1995 foundation allowance can be found at MDE's [State Aid Status Report](https://mdoe.state.mi.us/samspublic/Home/StatusReportDetail). 
+**Hold harmless** districts, which are defined as those that had a foundation allowance higher than $6,500 per student in FY 1995, are permitted by [MCL 380.1211](https://www.legislature.mi.gov/Laws/MCL?objectName=MCL-380-1211) to levy an additional millage on all taxable value. This millage rate enables hold harmless districts to increase their per pupil foundation allowance with inflation. A district's 1995 foundation allowance can be found at MDE's [State Aid Status Report](https://mdoe.state.mi.us/samspublic/Home/StatusReportDetail). 
 
 
 More details on each districts taxable value can be found at MDE's [Taxable Value System](https://mdoe.state.mi.us/TVS/Menu). 
