@@ -71,8 +71,8 @@ of total expenditure. In the last 5 years,
 transferred out of the General Fund. As of `r var_to_words(FY)`,
 `r var_to_words(district.label)` maintained
 `r total_amount_to_transfer_back %>% currency(digits = 0)` of
-unrestricted rersources outside of the General Fund. These dollars can
-be transfered to the General Fund. If these funds were transferred to
+unrestricted resources outside of the General Fund. These dollars can
+be transferred to the General Fund. If these funds were transferred to
 the General Fund, it would total
 `r new_gf_bal %>% currency(digits = 0)`--which would equate to
 `r new_gf_bal_pct_rev %>% percent()` of revenue and
