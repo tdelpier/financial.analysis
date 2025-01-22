@@ -81,7 +81,7 @@ fa_helper_render_district_fa <- function(df, dcode, type = "paged",
                                                  toc_float = TRUE, 
                                                  number_sections = FALSE,
                                                  css = "custom-page.css",
-                                                 front_cover = "Front-Cover.svg")
+                                                 front_cover = "Front-Cover_Draft.svg")
         
         
       } else if(format == "paged"){
@@ -89,7 +89,7 @@ fa_helper_render_district_fa <- function(df, dcode, type = "paged",
         output_format = pagedown::html_paged(toc = TRUE, 
                                              number_sections = FALSE,
                                              css = c("default-fonts", "custom-page.css", "default"),
-                                             front_cover = "Front-Cover.svg"
+                                             front_cover = "Front-Cover_Draft.svg"
         )
         
       } else if(format == "slides"){
