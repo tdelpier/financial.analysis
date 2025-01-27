@@ -6,6 +6,8 @@ prior.years.to.show <- 9
 
 ## Budget Comparison
 
+This page is intended to asses the accuracy of the **current MEA revenue estimate** (as detailed in the "Revenue Estimate" section). Consequently, the table and figure below do not show the MEA revenue estimated in that year. Rather, they apply the current mechanical model used to estimate revenue to historical data. For comparison, the table and figure also include the **actual revenue** (received by the district's General Fund), the district's **original budget** (showing their revenue estimate as of July), and the **baseline** (which assumes no change in revenue from the previous fiscal year). 
+
 
 
 ```{r}
@@ -23,11 +25,11 @@ FA_Data_District %>%
   set_header_labels(FY = "Fiscal Year",
                     fid.r.total.audit = "Actual Revenue",
                     db.original.total.revenue = "District Original Budget",
-                    fid.r.total.audit.lag1 = "Prior Year's Actual Revenue",
-                    est.1.rev.total = "MEA Revenue Estimate",
+                    fid.r.total.audit.lag1 = "Baseline Revenue",
+                    est.1.rev.total = "Current MEA Revenue Estimate",
                     db.orig.rev.pct.act = "Original Budget % of Actual",
-                    fid.r.total.audit.lag1.pct.act = "Prior Year's Revenue % of Current Actual",
-                    est.1.rev.total.pct.act = "MEA Estimate % of Actual") %>%
+                    fid.r.total.audit.lag1.pct.act = "Baseline % of Actual",
+                    est.1.rev.total.pct.act = "Current MEA Estimate % of Actual") %>%
   colformat_num(j = "FY", big.mark = "") %>%
   colformat_num(j = c("fid.r.total.audit", 
                       "fid.r.total.audit.lag1",
@@ -55,7 +57,7 @@ FA_Data_District %>%
 
 ```
 
-```{r}
+```{r, fig.height = 3.5}
 
 district_budget_data <- 
   FA_Data_District %>% 
@@ -89,7 +91,7 @@ district_budget_data %>%
 
 
   mutate(name = case_when( name == "db.orig.rev.pct.act"            ~ "Original Budget",
-                           name == "fid.r.total.audit.lag1.pct.act" ~ "  Prior Year        ",
+                           name == "fid.r.total.audit.lag1.pct.act" ~ "  Baseline        ",
                             name == "est.1.rev.total.pct.act"        ~  "MEA Estimate "),
                   value = value / 100) %>% 
   
@@ -127,7 +129,7 @@ district_budget_data %>%
   scale_y_continuous(labels = percent_format(), expand = c(0, 0)) +
   
   labs(title = 
-"<b>District's <span style='color: #003057'> Original Budget</span></b> , <b><span style='color:#00A651 '>Prior Year's</span></b> , and
+"<b>District's <span style='color: #003057'> Original Budget</span></b> , <b><span style='color:#00A651 '>Baseline</span></b> , and
 <b><span style='color:#C2002F '> MEA Estimate </span></b> 
 as Percent of Actual Revenue",
        x = "Fiscal Year",
@@ -148,4 +150,3 @@ legend = "")+
 
 
 ```
-
