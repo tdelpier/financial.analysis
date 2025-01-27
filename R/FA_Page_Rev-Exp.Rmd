@@ -29,7 +29,7 @@ FA_Data_District %>%
    colformat_double(j = c("fid.r.total.audit", "fid.e.total.xtrans", "fid.surplus.deficit"), 
                     big.mark = ",", digits = 0) %>%
    colformat_double(j = "fid.rev.expended", suffix = "%") %>% 
-    bg(j = "fid.r.total.audit", bg = "#C2FFDF", part = "all") %>%
+  bg(j = "fid.r.total.audit", bg = "#C2FFDF", part = "all") %>%
   bg(j = "fid.e.total.xtrans", bg = "#fad1db", part = "all") %>% 
 
    flextable_custom_theme()

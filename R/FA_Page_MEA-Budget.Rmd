@@ -104,7 +104,7 @@ if(No_FID_Avalible == 0 ){
                       current.year = paste(fiscal.year, "Estimate"),
                        # = paste(fiscal.year, "Estimate"),
   
-                      last.year = paste(fiscal.year - 1, "Audit"),
+                      last.year = paste(fiscal.year - 1, "Actual"),
                       chg = "Change",
                       pct.chg = "% Change") %>% 
     
@@ -181,7 +181,7 @@ FA_Data_District %>%
  
   ggplot(aes(x = FY, y = value, 
              group = name,  color = name, linetype = name))+
-  geom_rect(xmin = 2023, xmax = 2024, 
+  geom_rect(xmin = fiscal.year - 1, xmax = fiscal.year, 
             ymin = -Inf, 
             ymax = max(FA_Data_District$tab.rev.total) * 1.025, color = NA, 
             fill = mea_gray, alpha = .01)+

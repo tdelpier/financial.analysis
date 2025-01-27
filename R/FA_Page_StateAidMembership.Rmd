@@ -4,7 +4,7 @@ output: html_document
 
 ## State Aid Membership
 
-State aid membership is the blended enrollment count used by the state to determine funding. The count is the sum of 90% of the October count and 10% from the previous school year's February count. This "membership" is defined in state law in [MCL 388.1606(4)](https://www.legislature.mi.gov/Laws/MCL?objectName=MCL-388-1606). Regulatory guidance is produced each year through MDE's annual [Pupil Accounting Manual](https://www.michigan.gov/mde/services/financial-management/state-aid/publications/pupil-accounting-manual-pam) (PAM).
+State aid membership is the blended enrollment count used by the state to determine funding. This metric is the sum of 90% of the October count and 10% from the previous school year's February count. This "membership" is defined in state law in [MCL 388.1606(4)](https://www.legislature.mi.gov/Laws/MCL?objectName=MCL-388-1606). Regulatory guidance is produced each year through MDE's annual [Pupil Accounting Manual](https://www.michigan.gov/mde/services/financial-management/state-aid/publications/pupil-accounting-manual-pam) (PAM).
 
 
 
@@ -20,6 +20,8 @@ FA_Data_District %>%
   colformat_num(j = "FY", big.mark = "") %>%
   colformat_double(j = c("cy.d.pupilcnt", "cy.d.pupilcnt.chg"), big.mark = ",", )%>%
   colformat_double(j = "cy.d.pupilcnt.pct.chg", suffix = "%") %>% 
+  bg(j = "cy.d.pupilcnt", bg = "#d1e8fa", part = "all") %>%
+
   flextable_custom_theme()
 
 
