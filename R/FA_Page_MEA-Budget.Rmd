@@ -136,6 +136,10 @@ if(No_FID_Avalible == 0 ){
 
 ```
 
+Note, the 3% MPSERS reimbursement appropriated in [sec. 147g](https://www.legislature.mi.gov/Laws/MCL?objectName=MCL-388-1747G&QueryID=166333142)
+was not reported in the January [State Aid Status Report](https://mdoe.state.mi.us/samspublic/Home/StatusReport). Consequently, this categorical is not included in the 2025 revenue estimate. While the total revenue estimate will biased downward, sec. 147g does not impact the fiscal capacity of the district because all revenues from this section are matched to costs. 
+
+
 
 \newpage
 

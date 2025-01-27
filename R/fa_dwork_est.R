@@ -68,7 +68,7 @@ fa_dwork_est <- function(df){
       ### Not automatically listed
       
       # 31aa - mental health
-      est.1.rev.state.31aa = ifelse("cy.a.1.174" %in% names(.), cy.a.1.174, 0), # they've never distributed 31aa in January 
+      est.1.rev.state.31aa =  cy.a.1.174, 
       est.8.rev.state.31aa = cy.a.8.174,
       
       # 97 - school safety 
