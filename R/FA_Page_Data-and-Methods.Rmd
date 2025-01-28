@@ -1,16 +1,39 @@
-## Data and Methods
+## Notes
+
+### Data
 
 All data in this report come from public sources:
 
--   [The Financial Information Database](https://www.mischooldata.org/financial-data-files/) 
-(FID) is the primary source for actual revenue, expenditure, fund balances, fund transfers, and federal stimulus expenditure. 
--   [The State Aid Financial Status Report](https://mdoe.state.mi.us/samspublic/Home/StatusReport) 
-provides information on the district's state aid membership, foundation allowance, and categoricals provided by the state. 
--   [Geographic data](https://gis-michigan.opendata.arcgis.com/) 
-were collected from the State of Michigan's Open GIS Data, which is used to generate the district map and calculate geographic area of the district. 
--  [ Federal stimulus](https://www.michigan.gov/mde/services/school-performance-supports/educational-supports/tools-and-resources/program-allocations) initial allocations were collected from the Michigan Department of Education's "Program Allocation" webpage. 
+-   [The Financial Information Database](https://www.mischooldata.org/financial-data-files/) (FID) is the primary source for actual revenue, expenditure, fund balances, fund transfers, and federal stimulus expenditure.
+-   [The State Aid Financial Status Report](https://mdoe.state.mi.us/samspublic/Home/StatusReport) (SASR) provides information on the district's state aid membership, foundation allowance, and categoricals provided by the state.
+-   [Geographic data](https://gis-michigan.opendata.arcgis.com/) were collected from the State of Michigan's Open GIS Data, which is used to generate the district map and calculate geographic area of the district.
+-   [Federal stimulus](https://www.michigan.gov/mde/services/school-performance-supports/educational-supports/tools-and-resources/program-allocations) initial allocations were collected from the Michigan Department of Education's "Program Allocation" webpage.
 -   District budget data is not available in tabular form but is publicly available through "Budgetary Comparison Schedules" found in district financial audits. These budget data were collected from the audits by MEA.
 
+### Revenue Estimate Methods
+
+adflkajdfl;'kjadfj
+
+lkjdfkjdf
+
+lkjdfkjdf
+
+lkajdl;fkjdf
+
+### Difference from Audit
+
 Revenue figures in this report may differ from total General Fund revenues reported in the audit. Revenue majorclasses above 540 were removed from FID total revenue to approximate audited General Fund revenue. Remaining discrepancies are attributable to modifications made between the audit and FID reporting or differences between GASB and FID classification of some revenue sources, specifically those typically categorized as "Other Financing Sources."
+
+### Federal Stimulus
+
+During the COVID-19 pandemic, the federal government enacted three rounds of economic stimulus through the CARES Act (2020), CRSSA (2020), and ARP (2021). Each of these laws included funding for PK-12 education. The largest portion of federal aid came through the [Elementary and Secondary Schools Emergency Relief Fund](https://www.ed.gov/grants-and-programs/formula-grants/response-formula-grants/covid-19-emergency-relief-grants/elementary-and-secondary-school-emergency-relief-fund) (ESSER).
+
+The final round of federal stimulus, ESSER III, was required to be be obligated by September 30th 2024 and liquidated by [December 31st 2024](https://www.michigan.gov/-/media/Project/Websites/mde/2021/10/15/ARP_ESSER_III_and_Section_11t.pdf?rev=3af18132fe384c7f823daa8331f98ec9).
+
+All federal stimulus funds operate on a reimbursement basis. Once a district had spent the funds on an allowable use, they applied to the Michigan Department of Education (MDE) for reimbursement from their pre-allocated funding.
+
+For more up-to-date information on the total allocated, reimbursed, and remaining federal stimulus for each district, the MDE maintains a federal stimulus [dashboard](https://www.michigan.gov/mde/services/financial-management/grants/cares-act-grant-information/covid-19-spend-dashboard).
+
+### Other
 
 All years reported in this report are school fiscal years (FY), which end on June 30th and start on July 1st each year. For example the 2018-19 school year is labeled "2019."

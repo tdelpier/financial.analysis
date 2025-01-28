@@ -1,9 +1,10 @@
----
+------------------------------------------------------------------------
 
----
-
+------------------------------------------------------------------------
 
 ## Revenue Estimate
+
+The table below uses state data to display actual revenue for `r fiscal.year - 1` and estimated revenue for FY `r fiscal.year`. Data for the actual revenue column comes from the [Financial Information Database](https://www.mischooldata.org/financial-data-files/) (FID) as well as the the end-of-year August [State Aid Status Report](https://mdoe.state.mi.us/samspublic/Home/StatusReport) (SASR). The FY `r fiscal.year` estimate is produced by updating actual revenue from FY `r fiscal.year - 1` with January SASR data. Additional adjustments are made where payments in the January SASR do not reflect the [state's budget](https://www.legislature.mi.gov/Laws/MCLTablesAndAppropriationActs).
 
 
 ```{r}
@@ -18,11 +19,7 @@ No_FID_Avalible <-
 
 ```
 
-
-
-
 `r if(No_FID_Avalible == 1 ){paste("The Financial Information Database (FID) did not include the data necessary to generate an MEA budget estimate for this district.")}`
-
 
 ```{r}
 if(No_FID_Avalible == 0 ){
@@ -30,6 +27,7 @@ if(No_FID_Avalible == 0 ){
   FA_Data_District %>%
     filter(FY >= (fiscal.year - 1)) %>%
     select(FY, starts_with("tab."))%>%
+    # select(FY, everything(), tab.rev.total, tab.rev.total.xstim, tab.rev.total.xstim.xuaal) %>% 
     pivot_longer(cols = c(starts_with("tab.")), 
                  names_to = "Rev_Source", 
                  values_to = "y") %>% 
@@ -37,6 +35,14 @@ if(No_FID_Avalible == 0 ){
     pivot_wider(id_cols = Rev_Source, 
                 names_from = time, 
                 values_from = y) %>% 
+    
+    # specifying the order of rows
+    mutate(n = row_number(),
+           n = ifelse(Rev_Source == "tab.rev.total.xstim", 100, n),
+           n = ifelse(Rev_Source == "tab.rev.total.xstim.xuaal", 101, n)) %>% 
+    arrange(n) %>% 
+    select(-n) %>% 
+
     mutate(chg = current.year - last.year,
            pct.chg = (chg / last.year) * 100,
            pct.chg = ifelse(is.infinite(pct.chg), NA, pct.chg),
@@ -59,16 +65,17 @@ if(No_FID_Avalible == 0 ){
                         Rev_Source == "tab.rev.state.29"        ~ "Enrollment Stabilization", 
                         
                           # need to update these 
-                        Rev_Source == "tab.rev.state.27l"       ~ "Educator Compensation", 
-                        Rev_Source == "tab.rev.state.147f"      ~ "0.5% Payroll Reimbursement", 
-                        Rev_Source == "tab.rev.state.meals"     ~ "School Meals",
+                        # Rev_Source == "tab.rev.state.27l"       ~ "Educator Compensation", 
+
+                        # Rev_Source == "tab.rev.state.meals"     ~ "School Meals",
                         Rev_Source == "tab.rev.state.22l"       ~ "Transportation",
-                        Rev_Source == "tab.rev.state.35j"       ~ "Early Literacy",
+                        # Rev_Source == "tab.rev.state.35j"       ~ "Early Literacy",
   
                         ####
                         
                         
                         Rev_Source == "tab.rev.state.mpsers.uaal" ~ "MPSERS UAAL",
+                        Rev_Source == "tab.rev.state.mspers.other"      ~ "MPSERS Other", 
                         # Rev_Source == "tab.rev.state.mpsers.other" ~ "MPSERS Other",
                         Rev_Source == "tab.rev.state.other"     ~ "State Other",
                         
@@ -83,23 +90,17 @@ if(No_FID_Avalible == 0 ){
                         # Rev_Source == "tab.rev.other.ml.adjustment" ~ "ML Adjustment",
                         
                         # total
-                        Rev_Source == "tab.rev.total.xstim.xuaal" ~ "Total less Stimulus and UAAL",
+                        Rev_Source == "tab.rev.total"           ~ "Total Revenue",
                         Rev_Source == "tab.rev.total.xstim"     ~ "Total less Stimulus",
-                        Rev_Source == "tab.rev.total"           ~ "Total Revenue"
-                                  )) %>%
+                        Rev_Source == "tab.rev.total.xstim.xuaal" ~ "Total less Stimulus and UAAL"
+
+
+                                  )) %>% 
     
   
     flextable() %>% 
-    bold(i = ~ Rev_Source %in% c("Total Local Revenue", 
-                               "Total State Revenue",
-                               "Total Federal Revenue",
-                               "Other Revenue",
-                               "Total less Stimulus and UAAL",
-                               "Total less Stimulus",
-                               "Total Revenue"), 
-         bold = TRUE, 
-         part = "body") %>% 
     
+    # headers
     set_header_labels(Rev_Source = "",
                       current.year = paste(fiscal.year, "Estimate"),
                        # = paste(fiscal.year, "Estimate"),
@@ -108,27 +109,51 @@ if(No_FID_Avalible == 0 ){
                       chg = "Change",
                       pct.chg = "% Change") %>% 
     
+    
+    # column formatting 
     colformat_double(j = c("current.year", 
                            "last.year", 
                            "chg"), 
                      big.mark = ",",
                      digits = 0) %>%
-    
-    line_spacing(space = .75, part = "body") %>%
-
-    
+  
     colformat_double(j = "pct.chg", suffix = "%") %>% 
+    
+    
+    # bolding section subtotals 
+    bold(i = ~ Rev_Source %in% c("Total Local Revenue", 
+                               "Total State Revenue",
+                               "Total Federal Revenue",
+                               "Other Revenue",
+                               "Total Revenue"), 
+         bold = TRUE, 
+         part = "body") %>% 
+  
+    # horizontal spacing between sections
     padding(i = ~ Rev_Source %in% c(
                                "Total Local Revenue", 
                                "Total State Revenue",
                                "Total Federal Revenue", 
-                               "Other Revenue",
-                               "Total less Stimulus and UAAL"), padding.top =  20) %>% 
-
-    # flextable::footnote(i = c(9,10), j = 1, 
-    #          value = as_paragraph("The new mental health grant (sec 31aa) and safety grant (sec 97) were not included in the January State Aid Financial Status Report. These values are estimated based on the State's budget."),
-    #          ref_symbols = c("1"), 
-    #          part = "body") %>% 
+                               "Other Revenue"), padding.top =  15) %>% 
+    padding(i = ~ Rev_Source %in% c("Other Revenue"), padding.bottom =  15) %>% 
+    
+    
+    # indentation 
+    padding(i = ~ Rev_Source %in% c("Local Foundation Share", "Local Other",
+                                    "State Foundation Share", "Special Education",
+                                    "At-Risk", "EL / Bilingual",
+                                    "Mental Health and Safety", "Enrollment Stabilization",
+                                    "Transportation", "MPSERS UAAL", "MPSERS Other", 
+                                    "State Other",
+                                    "Federal Stimulus", "Federal Recurring",
+                                    "Total less Stimulus", "Total less Stimulus and UAAL"
+                                    ), padding.left = 15) %>% 
+    
+    
+    
+    # color coding totals
+    bg(i = ~ Rev_Source == "Total Revenue", bg = "#d1e8fa",  part = "body") %>% 
+    bg(i = ~ Rev_Source == "Total less Stimulus and UAAL", bg = "#C2FFDF",  part = "body") %>% 
     flextable_custom_theme()
     
 
@@ -136,14 +161,7 @@ if(No_FID_Avalible == 0 ){
 
 ```
 
-Note, the 3% MPSERS reimbursement appropriated in [sec. 147g](https://www.legislature.mi.gov/Laws/MCL?objectName=MCL-388-1747G&QueryID=166333142)
-was not reported in the January [State Aid Status Report](https://mdoe.state.mi.us/samspublic/Home/StatusReport). Consequently, this categorical is not included in the 2025 revenue estimate. While the total revenue estimate will biased downward, sec. 147g does not impact the fiscal capacity of the district because all revenues from this section are matched to costs. 
-
-
-
 \newpage
-
-
 
 ```{r}
 
@@ -170,9 +188,7 @@ FA_Data_District %>%
 
 ```
 
-
-Note: "Revenue Less Stimulus and UAAL" is the preferred measure to fill out MEA's Cost Alignment Calculator (CAC). These dollars represent revenues that are not one-time federal stimulus nor 147c payments that must by law be submitted to the Office of Retirement Services (ORS). 
-
+Note: "Revenue Less Stimulus and UAAL" is the preferred measure to fill out MEA's Cost Alignment Calculator (CAC). These dollars represent revenues that are not one-time federal stimulus nor 147c payments that must by law be submitted to the Office of Retirement Services (ORS).
 
 ```{r}
 
@@ -212,13 +228,3 @@ FA_Data_District %>%
         legend.box = )
 
 ```
-
-
-
-
-
-
-
-
-
-

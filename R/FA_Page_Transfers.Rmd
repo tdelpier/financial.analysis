@@ -98,22 +98,28 @@ district_fb_transfer_data %>%
 
 ```
 
+\newline
+
+
 ```{r}
 
 district_fb_transfer_data %>% 
   filter(fund %in% funds_to_include,
          transfered.from.gf != 0,
-         FY >= fiscal.year - 5) %>% 
+         FY >= fiscal.year - 10) %>% 
   ungroup() %>% 
-  select(FY, fund.name.trans.to, transfered.from.gf, fund.balance.unrestricted) %>% 
+  select(FY, fund.name.trans.to, transfered.from.gf) %>% 
   flextable() %>% 
-  add_header_lines(values = "Transfers Out of the General Fund and Unrestricted Fund Balance") %>% 
-  set_header_labels(fund.balance.unrestricted = "Unrestricted Fund Balance",
-                    fund.name.trans.to = "Fund",
-                    transfered.from.gf = "Transfer from General Fund") %>% 
+  add_header_lines(values = "Transfers Out of the General Fund") %>% 
+  set_header_labels(fund.name.trans.to = "Fund",
+                    transfered.from.gf = "Amount") %>% 
   colformat_num(j = "FY", big.mark = "") %>%
-  colformat_double(j = c("transfered.from.gf", "fund.balance.unrestricted"), big.mark = ",", )%>%
+  colformat_double(j = c("transfered.from.gf"), big.mark = ",", )%>%
   flextable_custom_theme()
 
 
 ```
+
+
+
+
