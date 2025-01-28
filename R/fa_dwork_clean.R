@@ -4,7 +4,7 @@
 
 
 #' FA data work
-#'
+#' 
 #'
 #' @export
 fa_dwork_clean <- function(df) {
@@ -43,7 +43,8 @@ fa_dwork_clean <- function(df) {
     ungroup() %>%
 
     group_by(FY) %>%
-    mutate(enroll.state.8 = sum(cy.d.8.pupilcnt, na.rm = TRUE) / 2, # dividing by 2 because ISDs include all the membership of al their consitutent districts
+    mutate(enroll.state.8 = sum(cy.d.8.pupilcnt, na.rm = TRUE) / 2, 
+           # dividing by 2 because ISDs include all the membership of all their constituent districts
            enroll.state.1 = sum(cy.d.1.pupilcnt, na.rm = TRUE) / 2,
            enroll.pct.state.8 = cy.d.8.pupilcnt / enroll.state.8,
            enroll.pct.state.1 = cy.d.1.pupilcnt / enroll.state.1) %>%
@@ -58,7 +59,6 @@ fa_dwork_clean <- function(df) {
 
 
     # FID
-    # left_join(FID, by = c("dnum" = "dnum", "FY" = "FY")) %>%
     group_by(dnum) %>%
     arrange(FY) %>%
     mutate(fid.r.total.audit.chg = fid.r.total.audit - lag(fid.r.total.audit),
@@ -97,11 +97,6 @@ fa_dwork_clean <- function(df) {
 
     # EEM
 
-    # left_join(district_id, by = "dnum") %>%
-
-
-    # ESSER / Federal Stimlus
-    # full_join(Stim, by = "dnum") %>%
     group_by(dnum) %>%
     mutate(stim.alloc.total = stim.alloc.esser1 + stim.alloc.esser2 +
              stim.alloc.esser3 + stim.alloc.geer1 + stim.alloc.equity +
@@ -113,7 +108,6 @@ fa_dwork_clean <- function(df) {
 
     # Budget
 
-    # left_join(DB, by = c("dnum" = "dnum", "FY" = "FY")) %>%
     mutate(db.orig.rev.error = db.original.total.revenue - fid.r.total.audit,
            db.final.rev.error = db.final.total.revenue - fid.r.total.audit,
            db.orig.rev.pct.act = (db.original.total.revenue / fid.r.total.audit) * 100,

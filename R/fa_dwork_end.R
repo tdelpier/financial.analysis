@@ -13,7 +13,7 @@ fa_dwork_end <- function(df){
     
     # State Total 
     
-    est.1.rev.state.single.payments = 0,
+    # est.1.rev.state.single.payments = 0,
     
     
     est.1.rev.state = 
@@ -70,28 +70,25 @@ fa_dwork_end <- function(df){
     tab.rev.state.sped =         ifelse(FY == fiscal.year, est.1.rev.state.sped, est.8.rev.state.sped),
     tab.rev.state.31a =          ifelse(FY == fiscal.year, est.1.rev.state.31a, est.8.rev.state.31a),
     tab.rev.state.mpsers.uaal =  ifelse(FY == fiscal.year, est.1.rev.state.mpsers.uaal, est.8.rev.state.mpsers.uaal),
+    tab.rev.state.mspers.other =  ifelse(FY == fiscal.year, est.1.rev.state.mpsers.other, est.8.rev.state.mpsers.other),
     tab.rev.state.41 =           ifelse(FY == fiscal.year, est.1.rev.state.41, est.8.rev.state.41), ,
-    # tab.rev.state.mpsers.other = ifelse(FY == fiscal.year, est.1.rev.state.mpsers.other, est.8.rev.state.mpsers.other)
-    
+
     
     # Changed in FY 2024
     tab.rev.state.31aa =         ifelse(FY == fiscal.year, est.1.rev.state.31aa, est.8.rev.state.31aa),
-    tab.rev.state.35j =          ifelse(FY == fiscal.year, est.1.rev.state.35j,est.8.rev.state.35j),
+    # tab.rev.state.35j =          ifelse(FY == fiscal.year, est.1.rev.state.35j,est.8.rev.state.35j),
     tab.rev.state.29 =           ifelse(FY == fiscal.year, est.1.rev.state.29, est.8.rev.state.29),
-    tab.rev.state.27l =          ifelse(FY == fiscal.year, est.1.rev.state.27l, est.8.rev.state.27l),
-    tab.rev.state.147f =         ifelse(FY == fiscal.year, est.1.rev.state.147f, est.8.rev.state.147f),
-    tab.rev.state.meals =        ifelse(FY == fiscal.year, est.1.rev.state.meals, est.8.rev.state.meals),
+    # tab.rev.state.27l =          ifelse(FY == fiscal.year, est.1.rev.state.27l, est.8.rev.state.27l),
+    # tab.rev.state.meals =        ifelse(FY == fiscal.year, est.1.rev.state.meals, est.8.rev.state.meals),
     tab.rev.state.22l =          ifelse(FY == fiscal.year, est.1.rev.state.22l, est.8.rev.state.22l),
-    ########
-    
+
     
     # state other 
     est.rev.state.listed.regularly = tab.rev.state.found + tab.rev.state.sped + 
       tab.rev.state.31a + tab.rev.state.41 + tab.rev.state.mpsers.uaal,
     
-    est.rev.state.listed.this.year = tab.rev.state.31aa + tab.rev.state.35j +
-      tab.rev.state.29 + tab.rev.state.27l + tab.rev.state.147f +
-      tab.rev.state.meals + tab.rev.state.22l, 
+    est.rev.state.listed.this.year = tab.rev.state.31aa  +
+      tab.rev.state.29 + tab.rev.state.mspers.other + tab.rev.state.22l, 
     
     est.rev.state.listed = est.rev.state.listed.regularly + est.rev.state.listed.this.year, 
     

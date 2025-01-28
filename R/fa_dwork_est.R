@@ -60,12 +60,25 @@ fa_dwork_est <- function(df){
       est.8.rev.state.mpsers.uaal = cy.a.8.573 + cy.a.8.583,
       
       # MPSERS Other
-      # est.1.rev.state.mpsers.other = cy.a.1.572 + cy.a.1.079 + cy.a.1.082,
-      # est.8.rev.state.mpsers.other = cy.a.8.572 + cy.a.8.079 + cy.a.8.082,
+      est.1.rev.state.mpsers.other = cy.a.1.079 + cy.a.1.082 + cy.a.1.572 + cy.a.1.598 + cy.a.1.588 + cy.a.1.587,
+      cy.a.8.598 = ifelse("cy.a.8.598" %in% names(.), cy.a.8.598, 0),
+      est.8.rev.state.mpsers.other = cy.a.8.079 + cy.a.8.082 + cy.a.8.572 + cy.a.8.598 + cy.a.8.588 + cy.a.8.587,
       
       
+      # 22l - Transportation 
+      est.1.rev.state.22l = cy.a.1.106, 
+      est.8.rev.state.22l = ifelse("cy.a.8.106" %in% names(.), cy.a.8.106, 0),
       
-      ### Not automatically listed
+      # Universal Meals
+      est.1.rev.state.meals = cy.a.1.235 + cy.a.1.335 + cy.a.1.354,
+      est.8.rev.state.meals = ifelse(FY > 2023 & cy.a.8.000 != 0, 
+                                     cy.a.8.235 + cy.a.8.335 + cy.a.8.354,
+                                     cy.a.8.235),
+      
+      # 29 - enrollment stabilization
+      est.1.rev.state.29 = cy.a.1.076,
+      est.8.rev.state.29 = ifelse("cy.a.8.076" %in% names(.), cy.a.8.076, 0),
+      
       
       # 31aa - mental health
       est.1.rev.state.31aa =  cy.a.1.174, 
@@ -79,31 +92,15 @@ fa_dwork_est <- function(df){
       est.1.rev.state.29 = cy.a.1.076,
       est.8.rev.state.29 = ifelse("cy.a.8.076" %in% names(.), cy.a.8.076, 0),
       
-      # 35j - early literacy
-      est.1.rev.state.35j = 0,
-      est.8.rev.state.35j = 0,
-      
       # 22l - Transportation 
       est.1.rev.state.22l = cy.a.1.106, 
-      est.8.rev.state.22l = ifelse("cy.a.8.106" %in% names(.), cy.a.8.106, 0),
+      est.8.rev.state.22l = cy.a.8.106,
       
       # Universal Meals
       est.1.rev.state.meals = cy.a.1.235 + cy.a.1.335 + cy.a.1.354,
       est.8.rev.state.meals = ifelse(FY > 2023 & cy.a.8.000 != 0, 
                                      cy.a.8.235 + cy.a.8.335 + cy.a.8.354,
                                      cy.a.8.235),
-      
-      # 27l Educator Compensation
-      est.1.rev.state.27l = cy.a.1.858, 
-      est.8.rev.state.27l = ifelse("cy.a.8.858" %in% names(.), cy.a.8.858, 0),
-      
-      # 147f - 0.5% Payroll reimbursement 
-      est.1.rev.state.147f = cy.a.1.587,
-      est.8.rev.state.147f = ifelse("cy.a.8.587" %in% names(.), cy.a.8.587, 0),
-      
-      # state manual blank
-      est.1.rev.state.manual = 0, 
-      
       
       
       
