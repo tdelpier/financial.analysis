@@ -30,6 +30,7 @@ FA_Data_District %>%
                          "fid.b.fb.11.pct.rev", 
                          "fid.b.fb.11.pct.exp"), 
                    suffix = "%") %>% 
+  bg(j = "fid.b.fb.11.pct.exp", bg = mea_gray_light , part = "all") %>%
   flextable_custom_theme()
  
 

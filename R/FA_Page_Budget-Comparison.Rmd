@@ -47,9 +47,9 @@ FA_Data_District %>%
   #          ref_symbols = c("2"), 
   #          part = "header") %>% 
   
-  bg(j = "db.orig.rev.pct.act", bg = "#d1e8fa", part = "all") %>% 
-  bg(j = "fid.r.total.audit.lag1.pct.act", bg = "#C2FFDF", part = "all") %>%
-  bg(j = "est.1.rev.total.pct.act", bg = "#fad1db", part = "all") %>% 
+  bg(j = "db.orig.rev.pct.act", bg = mea_blue_light, part = "all") %>% 
+  bg(j = "fid.r.total.audit.lag1.pct.act", bg = mea_gray_light, part = "all") %>%
+  bg(j = "est.1.rev.total.pct.act", bg = mea_red_light, part = "all") %>% 
 
 
   flextable_custom_theme()
@@ -183,8 +183,8 @@ FA_Data_District %>%
                    digits = 0) %>%
   
   # Option #1. this code does a light shade for the two columns.
-  bg(j = "fid.surplus.deficit", bg = "#d1e8fa", part = "all") %>%
-  bg(j = "db.orig.surplus.deficit", bg = "#fad1db", part = "all") %>%
+  bg(j = "fid.surplus.deficit", bg = mea_blue_light, part = "all") %>%
+  bg(j = "db.orig.surplus.deficit", bg = mea_red_light, part = "all") %>%
   
   
   # option #2. dark shade on the header. Decided to keep it the same

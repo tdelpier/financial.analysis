@@ -4,7 +4,7 @@
 
 ## Revenue Estimate
 
-The table below uses state data to display actual revenue for `r fiscal.year - 1` and estimated revenue for FY `r fiscal.year`. Data for the actual revenue column comes from the [Financial Information Database](https://www.mischooldata.org/financial-data-files/) (FID) as well as the the end-of-year August [State Aid Status Report](https://mdoe.state.mi.us/samspublic/Home/StatusReport) (SASR). The FY `r fiscal.year` estimate is produced by updating actual revenue from FY `r fiscal.year - 1` with January SASR data. Additional adjustments are made where payments in the January SASR do not reflect the [state's budget](https://www.legislature.mi.gov/Laws/MCLTablesAndAppropriationActs).
+The table below uses state data to display actual revenue for FY `r fiscal.year - 1` and estimated revenue for FY `r fiscal.year`. Data for the actual revenue column comes from the [Financial Information Database](https://www.mischooldata.org/financial-data-files/) (FID) as well as the the end-of-year August [State Aid Status Report](https://mdoe.state.mi.us/samspublic/Home/StatusReport) (SASR). The FY `r fiscal.year` estimate is produced by updating actual revenue from FY `r fiscal.year - 1` with January SASR data. Additional adjustments are made where payments in the January SASR do not reflect the [state's budget](https://www.legislature.mi.gov/Laws/MCLTablesAndAppropriationActs).
 
 
 ```{r}
@@ -152,8 +152,8 @@ if(No_FID_Avalible == 0 ){
     
     
     # color coding totals
-    bg(i = ~ Rev_Source == "Total Revenue", bg = "#d1e8fa",  part = "body") %>% 
-    bg(i = ~ Rev_Source == "Total less Stimulus and UAAL", bg = "#C2FFDF",  part = "body") %>% 
+    bg(i = ~ Rev_Source == "Total Revenue", bg = mea_blue_light,  part = "body") %>% 
+    bg(i = ~ Rev_Source == "Total less Stimulus and UAAL", bg = mea_green_light,  part = "body") %>% 
     flextable_custom_theme()
     
 
@@ -180,8 +180,8 @@ FA_Data_District %>%
   colformat_double(j = c("tab.rev.total", "tab.rev.total.xstim.xuaal", 
                          "tab.rev.fed.stim", "tab.rev.state.mpsers.uaal"), 
                     big.mark = ",", digits = 0) %>%
-  bg(j = "tab.rev.total.xstim.xuaal", bg = "#C2FFDF", part = "all") %>% 
-  bg(j = "tab.rev.total", bg = "#d1e8fa", part = "all") %>% 
+  bg(j = "tab.rev.total.xstim.xuaal", bg = mea_green_light, part = "all") %>% 
+  bg(j = "tab.rev.total", bg = mea_blue_light, part = "all") %>% 
 
   flextable_custom_theme()
 
@@ -204,7 +204,7 @@ FA_Data_District %>%
   geom_rect(xmin = fiscal.year - 1, xmax = fiscal.year, 
             ymin = -Inf, 
             ymax = max(FA_Data_District$tab.rev.total) * 1.025, color = NA, 
-            fill = mea_gray, alpha = .01)+
+            fill = mea_gray_light)+
   coord_cartesian(clip = 'off')+
   annotate("text", 
          label = "Estimate",

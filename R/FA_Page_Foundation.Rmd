@@ -36,7 +36,7 @@ FA_Data_District %>%
   colformat_num(j = "FY", big.mark = "") %>%
   colformat_num(j = c("cy.d.found.pp", "cy.d.found.pp.chg"), big.mark = ",")%>%
   colformat_double(j = "cy.d.found.pp.pct.chg", suffix = "%") %>% 
-  bg(j = "cy.d.found.pp", bg = "#e3e3e3" , part = "all") %>%
+  bg(j = "cy.d.found.pp", bg = mea_gray_light , part = "all") %>%
 
   flextable_custom_theme()
 
@@ -85,7 +85,7 @@ FA_Data_District %>%
                       "cy.d.found.rev", 
                       "cy.d.found.rev.chg"), big.mark = ",") %>% 
   colformat_double(j = "cy.d.found.rev.pct.chg", suffix = "%") %>% 
-  bg(j = "cy.d.found.rev", bg = "#e3e3e3" , part = "all") %>%
+  bg(j = "cy.d.found.rev", bg = mea_gray_light , part = "all") %>%
 
   flextable_custom_theme() 
 
@@ -112,8 +112,6 @@ FA_Data_District %>%
 
 
 ```{r eval = district_is_out_of_formula }
-
-
 
 FA_Data_District %>%
   select(FY, flag.out.of.formula, cy.d.1.pupilcnt, 

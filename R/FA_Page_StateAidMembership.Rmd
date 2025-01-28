@@ -20,7 +20,7 @@ FA_Data_District %>%
   colformat_num(j = "FY", big.mark = "") %>%
   colformat_double(j = c("cy.d.pupilcnt", "cy.d.pupilcnt.chg"), big.mark = ",", )%>%
   colformat_double(j = "cy.d.pupilcnt.pct.chg", suffix = "%") %>% 
-  bg(j = "cy.d.pupilcnt", bg = "#d1e8fa", part = "all") %>%
+  bg(j = "cy.d.pupilcnt", bg = mea_blue_light, part = "all") %>%
 
   flextable_custom_theme()
 
