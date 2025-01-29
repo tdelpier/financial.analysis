@@ -121,7 +121,7 @@ fa_dwork_est <- function(df){
       est.1.rev.other = lag(fid.r.other),
       
       est.1.rev.other.error = est.1.rev.other - fid.r.other,
-      est.1.rev.other.pct.act = est.1.rev.other / fid.r.other
+      est.1.rev.other.pct.act = (est.1.rev.other / fid.r.other) * 100
       
     )
   
