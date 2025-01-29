@@ -99,9 +99,6 @@ sass::sass(sass::sass_file(TannersTools::tt_dir_projects("financial.analysis", "
 ```
 
 
-
-
-
 ```{r, child = if(params$page_cac == TRUE){"C:/Users/Tdelpier/vault/projects/financial.analysis/R/FA_Page_CAC.Rmd"}}
 ```
 

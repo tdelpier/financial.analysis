@@ -14,16 +14,17 @@ fa_helper_render_district_fa <- function(df, dcode, type = "paged",
                         page.details = TRUE,
                         page.revest = TRUE, 
                         page.budcomp= TRUE,
-                        page.stim = TRUE,
                         page.sam = TRUE,
                         page.found = TRUE,
                         page.revexp = TRUE,
-                        page.surplus = TRUE,
+                        page.surplus = FALSE,
                         page.cac = FALSE,
                         page.gfb = TRUE,
                         page.transfers = TRUE,
                         page.millages = TRUE,
-                        page.methods = TRUE){
+                        page.methods = TRUE,
+                        page.stim = FALSE
+                        ){
     
   
   
@@ -79,6 +80,7 @@ fa_helper_render_district_fa <- function(df, dcode, type = "paged",
         
         output_format = rmarkdown::html_document(toc = TRUE, 
                                                  toc_float = TRUE, 
+                                                 toc_depth = 3,
                                                  number_sections = FALSE,
                                                  css = "custom-page.css",
                                                  front_cover = "Front-Cover_Draft.svg")
@@ -87,6 +89,7 @@ fa_helper_render_district_fa <- function(df, dcode, type = "paged",
       } else if(format == "paged"){
         
         output_format = pagedown::html_paged(toc = TRUE, 
+                                             toc_depth = 1,
                                              number_sections = FALSE,
                                              css = c("default-fonts", "custom-page.css", "default"),
                                              front_cover = "Front-Cover_Draft.svg"
