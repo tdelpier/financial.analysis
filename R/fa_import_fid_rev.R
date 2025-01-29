@@ -16,7 +16,7 @@
 fa_import_fid_rev <- function(fund = 11){
   
   TannersTools::tt_import_fid_R() %>%
-    dplyr::filter(fund == {{ fund }}) %>%
+    dplyr::filter(fund %in% {{ fund }}) %>%
     dplyr::mutate(dcode = as.numeric(dcode),
            mc_1 = stringr::str_sub(majorclass, 1, 1),
            mc_2 = as.numeric(stringr::str_sub(majorclass, 1, 2)),
@@ -43,5 +43,4 @@ fa_import_fid_rev <- function(fund = 11){
   
   
 }
-
 
