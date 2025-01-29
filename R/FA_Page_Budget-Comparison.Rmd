@@ -48,7 +48,7 @@ FA_Data_District %>%
   #          part = "header") %>% 
   
   bg(j = "db.orig.rev.pct.act", bg = mea_blue_light, part = "all") %>% 
-  bg(j = "fid.r.total.audit.lag1.pct.act", bg = mea_gray_light, part = "all") %>%
+  bg(j = "fid.r.total.audit.lag1.pct.act", bg = mea_green_light, part = "all") %>%
   bg(j = "est.1.rev.total.pct.act", bg = mea_red_light, part = "all") %>% 
 
 
@@ -101,6 +101,15 @@ district_budget_data %>%
              color = name, 
              linetype = name), 
          size = line_size)+
+    annotate("rect", xmin = 2021, xmax = 2024,
+           ymin = district_budget_min,
+           ymax = district_budget_max * 1.015,
+           fill = mea_gray_light) +
+  annotate("text", 
+           label = "ESSER Period",
+           x = 2022.5,
+           y = district_budget_max * 1.005,
+           alpha = .75) +
   geom_line(size = line_size) +
   geom_hline(yintercept = 1, size = line_size, alpha = .5) +
   expand_limits(x = fiscal.year)+
@@ -115,15 +124,7 @@ district_budget_data %>%
     #               # nudge_x = 1.4,
     #               na.rm = TRUE)+
   
-  annotate("rect", xmin = 2021, xmax = 2024,
-           ymin = district_budget_min,
-           ymax = district_budget_max * 1.015,
-           alpha = .15) +
-  annotate("text", 
-           label = "ESSER Period",
-           x = 2022.5,
-           y = district_budget_max * 1.005,
-           alpha = .75) +
+
   
   scale_x_continuous(breaks = seq(1990, 2100, by = 1) )+
   scale_y_continuous(labels = percent_format(), expand = c(0, 0)) +
