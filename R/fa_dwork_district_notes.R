@@ -22,6 +22,8 @@ fa_helper_add_district_notes <- function(df, dnum, note) {
 fa_dwork_district_notes <- function(df) {
   
   df %>%
+    fa_helper_add_district_notes(82090, "The district maintains a seperate Special Education fund. ") %>% 
+  
     fa_helper_add_district_notes(43040, "Baldwin changed their fund structure in 2019 resulting in a large reduction in both General Fund revenue and expenditure.") 
     
    
