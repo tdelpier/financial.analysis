@@ -51,7 +51,7 @@ fa_dwork_year_changes <- function(df){
         # jan 2025 SASR only includes less 40% of the total appropriation 
       
 
-      est.1.rev.state.meals = est.8.rev.state.meals, 
+      # est.1.rev.state.meals = est.8.rev.state.meals, 
       # increase in state budget to school meals but Jan 2025 SASR shows big decrease
 
       
@@ -61,7 +61,7 @@ fa_dwork_year_changes <- function(df){
         est.1.rev.state.manual.99g + est.1.rev.state.manual.35m + est.1.rev.state.manual.104h
       - cy.a.1.174 + est.1.rev.state.31aa # subtract listed 31aa and add calculated 31aa
       - cy.a.8.250 + est.1.rev.state.41  # subtract listed 41 and add calculated 41 
-      - cy.a.1.235 - cy.a.1.335 - cy.a.1.354 + est.1.rev.state.meals # replacing school meals because it's not all come in
+      # - cy.a.1.235 - cy.a.1.335 - cy.a.1.354 + est.1.rev.state.meals # replacing school meals because it's not all come in
       - cy.a.1.079 + lag(cy.a.8.079) #147a(2) not fully included in jan 2025 SASR\
       - cy.a.1.082 + lag(cy.a.8.082) # same 147e
       

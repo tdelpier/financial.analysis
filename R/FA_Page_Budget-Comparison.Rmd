@@ -154,6 +154,8 @@ legend = "")+
 
 \newpage
 
+### Surplus/Deficit
+
 The following table and figure compares the surplus or deficit expected by the district in their original budget  to the actual surplus or deficit. A **surplus** occurs revenue is greater than expenditure within a fiscal year. A **deficit** occurs revenue is lesser than expenditure within a fiscal year. 
 
 
@@ -270,6 +272,9 @@ FA_Data_District %>%
 
 
 \newpage
+
+
+### Revenue and Expenditure
 
 The following two tables compare General Fund revenue and expenditure expected in the district's original budget to the actual revenue earned and expenditure spent in that fiscal year. 
 

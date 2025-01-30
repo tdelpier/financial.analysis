@@ -80,19 +80,18 @@ fa_helper_render_district_fa <- function(df, dcode, type = "paged",
         
         output_format = rmarkdown::html_document(toc = TRUE, 
                                                  toc_float = TRUE, 
-                                                 toc_depth = 3,
                                                  number_sections = FALSE,
                                                  css = "custom-page.css",
-                                                 front_cover = "Front-Cover_Draft.svg")
+                                                 front_cover = "Front-Cover.svg")
         
         
       } else if(format == "paged"){
         
         output_format = pagedown::html_paged(toc = TRUE, 
-                                             toc_depth = 1,
+                                             # toc_depth = 1,
                                              number_sections = FALSE,
                                              css = c("default-fonts", "custom-page.css", "default"),
-                                             front_cover = "Front-Cover_Draft.svg"
+                                             front_cover = "Front-Cover.svg"
         )
         
       } else if(format == "slides"){

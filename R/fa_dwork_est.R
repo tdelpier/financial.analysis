@@ -69,12 +69,6 @@ fa_dwork_est <- function(df){
       est.1.rev.state.22l = cy.a.1.106, 
       est.8.rev.state.22l = ifelse("cy.a.8.106" %in% names(.), cy.a.8.106, 0),
       
-      # Universal Meals
-      est.1.rev.state.meals = cy.a.1.235 + cy.a.1.335 + cy.a.1.354,
-      est.8.rev.state.meals = ifelse(FY > 2023 & cy.a.8.000 != 0, 
-                                     cy.a.8.235 + cy.a.8.335 + cy.a.8.354,
-                                     cy.a.8.235),
-      
       # 29 - enrollment stabilization
       est.1.rev.state.29 = cy.a.1.076,
       est.8.rev.state.29 = ifelse("cy.a.8.076" %in% names(.), cy.a.8.076, 0),

@@ -16,7 +16,7 @@ fa_dwork_end <- function(df){
     # est.1.rev.state.single.payments = 0,
     
     
-    fid.r.state.to.cy.a.8.000.error = fid.r.state - cy.a.8.000,
+    fid.r.state.to.cy.a.8.000.error = fid.r.state - (cy.a.8.000 - est.8.rev.state.meals),
     # fid.r.state.to.cy.a.8.000.error = ifelse(x < 0, 0, x),
     # error between august state payment and actual recieved 
     
@@ -24,6 +24,7 @@ fa_dwork_end <- function(df){
       cy.a.1.000 # start with total January SASR 
     + est.1.rev.state.manual # add manual cat and adjustments 
     + lag(fid.r.state.to.cy.a.8.000.error) # add FID to August SASR error from last year
+    - est.1.rev.state.meals # school meals revenue don't go to the general fund
     - cy.a.1.9999 - cy.a.1.8888, # subtracting out any deductions
     
     est.1.rev.state.error = est.1.rev.state - fid.r.state, 
@@ -85,19 +86,21 @@ fa_dwork_end <- function(df){
     
     # Changed in FY 2024
     tab.rev.state.31aa =         ifelse(FY == fiscal.year, est.1.rev.state.31aa, est.8.rev.state.31aa),
-    # tab.rev.state.35j =          ifelse(FY == fiscal.year, est.1.rev.state.35j,est.8.rev.state.35j),
     tab.rev.state.29 =           ifelse(FY == fiscal.year, est.1.rev.state.29, est.8.rev.state.29),
+    tab.rev.state.22l =          ifelse(FY == fiscal.year, est.1.rev.state.22l, est.8.rev.state.22l),
+    
+    # tab.rev.state.35j =          ifelse(FY == fiscal.year, est.1.rev.state.35j,est.8.rev.state.35j),
     # tab.rev.state.27l =          ifelse(FY == fiscal.year, est.1.rev.state.27l, est.8.rev.state.27l),
     # tab.rev.state.meals =        ifelse(FY == fiscal.year, est.1.rev.state.meals, est.8.rev.state.meals),
-    tab.rev.state.22l =          ifelse(FY == fiscal.year, est.1.rev.state.22l, est.8.rev.state.22l),
 
     
     # state other 
     est.rev.state.listed.regularly = tab.rev.state.found + tab.rev.state.sped + 
-      tab.rev.state.31a + tab.rev.state.41 + tab.rev.state.mpsers.uaal,
+      tab.rev.state.31a + tab.rev.state.41 + 
+      tab.rev.state.mpsers.uaal + tab.rev.state.mspers.other,
     
     est.rev.state.listed.this.year = tab.rev.state.31aa  +
-      tab.rev.state.29 + tab.rev.state.mspers.other + tab.rev.state.22l, 
+      tab.rev.state.29  + tab.rev.state.22l, 
     
     est.rev.state.listed = est.rev.state.listed.regularly + est.rev.state.listed.this.year, 
     
