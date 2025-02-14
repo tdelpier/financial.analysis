@@ -125,10 +125,10 @@ fa_dwork_clean <- function(df) {
            
     ) %>%
     ungroup() %>%
-    tt_dnum_psa(dnum = dnum) %>%
-    tt_dnum_isd(dnum = dnum) %>%
-    filter(flag.charter == 0,
-           flag.isd == 0) %>%
+    # tt_dnum_psa(dnum = dnum) %>%
+    # tt_dnum_isd(dnum = dnum) %>%
+    # filter(flag.charter == 0,
+    #        flag.isd == 0) %>%
 
 
     # Transformations for ML Process

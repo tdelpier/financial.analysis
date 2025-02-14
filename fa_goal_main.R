@@ -27,7 +27,7 @@ dist_geo <- fa_import_geo() %>% rename(geometry = geom)
 
 
 # Choosing District 
- tt_dnum_from_dname("chip")
+ tt_dnum_from_dname("kent")
 
 dnum_x <- tt_dnum_random(1)
 # dnum_x <- 15010 # beaver island
@@ -41,6 +41,8 @@ dnum_x <- 76210 #sandusky
 dnum_x <- 82090 # Lincoln Park
 dnum_x <- 82160
 dnum_x <- 54025
+dnum_x <- 82340 # huron problem
+
 
 
 
@@ -56,15 +58,15 @@ FA_Data_District %>%
   fa_helper_render_district_fa(dnum_x,
                                type = "paged", # "web", "paged", or "slides"
                                page.details = FALSE,
-                               page.revest = TRUE, 
+                               page.revest = FALSE, 
                                page.budcomp = FALSE,
                                page.stim = FALSE,
-                               page.sam = FALSE,
-                               page.found = FALSE,
-                               page.revexp = FALSE,
+                               page.sam = TRUE,
+                               page.found = TRUE,
+                               page.revexp = TRUE,
                                page.surplus = FALSE,
-                               page.gfb = FALSE,
-                               page.transfers = FALSE,
+                               page.gfb = TRUE,
+                               page.transfers = TRUE,
                                page.methods = TRUE,
                                
                                # not using
@@ -76,6 +78,13 @@ FA_Data_District %>%
 
 
 
+
+
+fa_output_district_fa(dnum_x)
+
+
+# There's a better way to do this
+  # want to pull all the dcodes and make sure the data is correct before running
 dnum_x <- 
   district_id %>% 
   mutate(dnum = as.numeric(dcode)) %>% 
@@ -84,10 +93,4 @@ dnum_x <-
   filter(flag.charter == 0,
          flag.isd == 0) %>% 
   select(dnum) %>% pull()
-
-
-fa_output_district_fa(dnum_x)
-
-
-
 

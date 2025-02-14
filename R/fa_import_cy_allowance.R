@@ -35,6 +35,11 @@ fa_import_cy_allowance <- function() {
                                      876, 879), 
                                  "8888", icd)) %>%
   
+      
+      
+      
+      
+      
       group_by(FY, month, dcode, icd) %>% 
       summarise(amount = sum(amount, na.rm = TRUE)) %>% 
       ungroup() %>%
