@@ -6,6 +6,9 @@ editor_options:
     wrap: 72
 ---
 
+
+
+
 ## Transfers
 
 ```{r}
@@ -15,6 +18,25 @@ district_fb_transfer_data <-
   ungroup()
 
 funds_to_include <- c(21, 22, 23, 24, 26, 27, 28, 29, seq(40, 49))
+
+
+transfer_back_calc <- 
+  district_fb_transfer_data %>% 
+  filter(FY != fiscal.year) %>% 
+  filter(fund %in% funds_to_include) %>% 
+  arrange(fund, FY) %>%  
+  select(FY, fund, fund.name.trans.to, fb.total,transfered.from.gf) %>%  
+  group_by(fund) %>%
+  mutate(transfer.cumulative = cumsum(transfered.from.gf),
+         transfer.back.possible = accumulate2(.x = transfered.from.gf[-1],
+                          .y = fb.total[-1],
+                          .f = ~ min(.x + ..2, ..3),
+                          .init = transfered.from.gf[1])
+
+  ) %>% 
+  filter(max(transfer.cumulative) > 0)
+
+
 ```
 
 ```{r}
@@ -31,8 +53,13 @@ var_to_words <- function(var) {
 
 ```
 
+
+
+
+
+
 ```{r, include = FALSE, message = FALSE}
-total_amount_to_transfer_back <- 
+non_restricted_balance <- 
   district_fb_transfer_data %>% 
   filter(FY == fiscal.year - 1,
          fund %in% funds_to_include) %>% 
@@ -41,17 +68,34 @@ total_amount_to_transfer_back <-
   pull()
 
 
-total_transfered_out_in_5_years <- 
+total_transfered_out_in_10_years <- 
   district_fb_transfer_data %>% 
   ungroup() %>% 
   filter(fund %in% funds_to_include,
          transfered.from.gf != 0,
-         FY >= fiscal.year - 5) %>% 
+         FY >= fiscal.year - 10) %>% 
   summarise(amount = sum(transfered.from.gf, na.rm = TRUE)) %>% 
   pull()
 
 
-new_gf_bal <- var_to_words(fid.b.fb11) + total_amount_to_transfer_back
+total_amount_to_transfer_back <- 
+  transfer_back_calc %>% 
+  ungroup() %>% 
+  filter(FY == fiscal.year - 1) %>% 
+  summarise(transfer.back.possible = sum(transfer.back.possible, na.rm = TRUE)) %>% 
+  pull()
+
+
+# this is the easy but wrong way to do it
+# total_amount_to_transfer_back <- 
+#   if(total_transfered_out_in_10_years > non_restricted_balance) {
+#   non_restricted_balance
+#     } else {total_transfered_out_in_10_years}
+
+
+
+
+new_gf_bal <- var_to_words(fid.b.fb.11) + total_amount_to_transfer_back
 
 new_gf_bal_pct_rev <- new_gf_bal / var_to_words(fid.r.total.audit)
 
@@ -59,46 +103,10 @@ new_gf_bal_pct_exp <- new_gf_bal / var_to_words(fid.e.total.xtrans)
 
 
 
-```
-
-In `r var_to_words(FY)`, `r var_to_words(district.label)` had a general
-fund balance of `r var_to_words(fid.b.fb11) %>% currency(digits = 0)`.
-That equates to
-`r (var_to_words(fid.b.fb.11.pct.rev) / 100) %>% percent()` of total
-revenue and `r (var_to_words(fid.b.fb.11.pct.exp) / 100) %>% percent()`
-of total expenditure. In the last 5 years,
-`r total_transfered_out_in_5_years %>% currency(digits = 0)` was
-transferred out of the General Fund. As of `r var_to_words(FY)`,
-`r var_to_words(district.label)` maintained
-`r total_amount_to_transfer_back %>% currency(digits = 0)` of
-unrestricted resources outside of the General Fund. These dollars can
-be transferred to the General Fund. If these funds were transferred to
-the General Fund, it would total
-`r new_gf_bal %>% currency(digits = 0)`--which would equate to
-`r new_gf_bal_pct_rev %>% percent()` of revenue and
-`r new_gf_bal_pct_exp %>% percent()` of expenditure respectively.
-
-```{r}
-
-district_fb_transfer_data %>% 
-  filter(FY == fiscal.year - 1,
-         !is.na(fund.balance.unrestricted),
-         fund.balance.unrestricted != 0,
-         fund %in% funds_to_include) %>% 
-  ungroup() %>% 
-  select(fund.name.trans.to, fund.balance.unrestricted) %>% 
-
-  janitor::adorn_totals(name = 'Total') %>% 
-
-  flextable() %>% 
-  add_header_lines(values = "Current Fund Balance Avalible to Transfer Back to the General Fund") %>% 
-  set_header_labels(fund.balance.unrestricted = "Unrestricted Fund Balance",
-                    fund.name.trans.to = "Fund") %>% 
-  flextable_custom_theme()
 
 ```
 
-\newline
+Dollars transferred out of the General Fund are not recorded in the General Fund balance. While many interfund transfers are routine and benign, large transfers out of the General Fund can make the district appear artificially worse off financially. The following table lists each major transfer out of the General Fund. 
 
 
 ```{r}
@@ -114,12 +122,96 @@ district_fb_transfer_data %>%
   set_header_labels(fund.name.trans.to = "Fund",
                     transfered.from.gf = "Amount") %>% 
   colformat_num(j = "FY", big.mark = "") %>%
-  colformat_double(j = c("transfered.from.gf"), big.mark = ",", )%>%
+  colformat_double(j = c("transfered.from.gf"), big.mark = ",", digits = 0)%>%
   flextable_custom_theme()
 
 
 ```
 
+The figure below shows the total transfer out of the General Fund by fiscal year. 
+
+```{r, fig.height = 2.5}
+district_fb_transfer_data %>% 
+  filter(FY <= fiscal.year - 1) %>% 
+  group_by(FY) %>% 
+  summarise(value = sum(transfered.from.gf, na.rm = TRUE)) %>% 
+  ggplot(aes(FY, value)) +
+  geom_col() +
+  scale_x_continuous(breaks = seq(1990, 2100, by = 1))+
+  scale_y_continuous(labels = comma_format(), 
+                     # limits = c(0, max_fb)
+                     )+
+  labs(title = "Total Transfers out of the General Fund Balance",
+       x = "Fiscal Year",
+       y = "")
+
+
+```
+
+
+
+
+
+In `r var_to_words(FY)`, `r var_to_words(district.label)` had a general
+fund balance of `r var_to_words(fid.b.fb.11) %>% currency(digits = 0)`.
+That equates to
+`r (var_to_words(fid.b.fb.11.pct.rev) / 100) %>% percent()` of total
+revenue and `r (var_to_words(fid.b.fb.11.pct.exp) / 100) %>% percent()`
+of total expenditure. In the last 10 years,
+`r total_transfered_out_in_10_years %>% currency(digits = 0)` was
+transferred out of the General Fund. 
+As reported in their `r var_to_words(FY)` state financial data,
+`r var_to_words(district.label)` maintained
+`r non_restricted_balance %>% currency(digits = 0)` of
+non-restricted resources (i.e., committed, assigned, or unassigned) outside of the General Fund. Up to `r total_amount_to_transfer_back %>% currency(digits = 0)` dollars may be eligible to be transferred back to the General Fund. If these resources were transferred back to the General Fund, it would total
+`r new_gf_bal %>% currency(digits = 0)`--which would equate to
+`r new_gf_bal_pct_rev %>% percent()` of revenue and
+`r new_gf_bal_pct_exp %>% percent()` of expenditure respectively. 
+
+
+```{r}
+
+transfer_back_calc %>% 
+  ungroup() %>% 
+  filter(FY == fiscal.year - 1) %>% 
+  select(fund.name.trans.to, transfer.back.possible) %>% 
+  adorn_totals() %>% 
+  flextable() %>% 
+  add_header_lines(values = paste0("Estimated Amount to Transfer Back to General Fund, FY ", 
+                                    fiscal.year-1)) %>% 
+  set_header_labels(fund.name.trans.to = "Fund",
+                    transfer.back.possible = "GF transfer back calculation") %>% 
+  colformat_double(j = c("transfer.back.possible"), big.mark = ",", digits = 0) %>% 
+  bold(i = ~fund.name.trans.to == "Total") %>% 
+  flextable_custom_theme()
+
+```
+
+The following table shows the iterative calculation by fund used to estimate the total eligible assets to be transfered back to the General Fund. The calculation assumes that resources transferred from the General Fund can be transferred back unless the receiving fund balance, but that the non-General fund cannot transfer back more revenue than it maintains in it's end of year balance. 
+
+```{r}
+
+transfer_back_calc %>% 
+  ungroup() %>% 
+  select(FY, fund.name.trans.to, transfered.from.gf, fb.total, transfer.back.possible) %>% 
+  flextable() %>% 
+  add_header_lines(values = "Transfers Back to General Fund Calculation") %>% 
+  set_header_labels(FY = "Fiscal Year",
+                    fund.name.trans.to = "Fund",
+                    transfered.from.gf = "Amount transfered from GF",
+                    fb.total = "Fund blance total",
+                    transfer.back.possible = "GF transfer back calculation") %>% 
+
+  colformat_double(big.mark = ",",
+                   digits = 0) %>% 
+  colformat_num(j = "FY",
+                big.mark = "") %>% 
+  flextable_custom_theme()
+  
+
+
+
+```
 
 
 
