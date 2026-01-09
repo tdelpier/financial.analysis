@@ -16,6 +16,12 @@ fa_helper_render_isd_fa<- function(dnum) {
            dnum == {{ dnum }})
   
   
+  Transfer_Data_ISD <- 
+    isd_transfers %>% 
+    ungroup() %>% 
+    filter(dnum == {{ dnum }})
+  
+  
   district_name <- FA_Data_ISD$dname[1]
 
   district_code <-

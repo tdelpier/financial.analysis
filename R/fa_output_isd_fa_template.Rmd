@@ -230,21 +230,15 @@ element_fig_isd_fund_balance(fund = 26)
 
 ```{r}
 
-isd_transfers %>% 
-  filter(dnum == dnum_x) %>% 
-  ungroup() %>% 
+Transfer_Data_ISD %>% 
   select(transfer.from.fund.name, transfer.to.fund.name, amount) %>% 
   flextable() %>% 
-
-
   add_header_lines(values = "Transfers") %>% 
-
   set_header_labels(transfer.from.fund.name = "From", 
                     transfer.to.fund.name = "To",
                     amount = "Amount") %>% 
    colformat_double(j = "amount", 
                     big.mark = ",", digits = 0) %>%
-
   flextable_custom_theme()
 
 

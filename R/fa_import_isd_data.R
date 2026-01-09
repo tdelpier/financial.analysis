@@ -1,23 +1,23 @@
 
-
-isd_cydata <- 
-  TannersTools::tt_import_cy_data(8) %>% 
-  mutate(dnum = as.numeric(dcode)) %>% 
-  tt_dnum_isd(dnum) %>% 
-  filter(flag.isd == 1)
-
-
-isd_dnums_dnames <-
-  isd_cydata %>% 
-  filter(FY == fiscal.year - 1) %>% 
-  select(dnum, dname) 
-
-
-isd_dnums <- 
-  isd_cydata %>% 
-  filter(FY == fiscal.year - 1) %>% 
-  select(dnum) %>% 
-  pull()
+# 
+# isd_cydata <- 
+#   TannersTools::tt_import_cy_data(8) %>% 
+#   mutate(dnum = as.numeric(dcode)) %>% 
+#   TannersTools::tt_dnum_isd(dnum) %>% 
+#   filter(flag.isd == 1)
+# 
+# 
+# isd_dnums_dnames <-
+#   isd_cydata %>% 
+#   filter(FY == fiscal.year - 1) %>% 
+#   select(dnum, dname) 
+# 
+# 
+# isd_dnums <- 
+#   isd_cydata %>% 
+#   filter(FY == fiscal.year - 1) %>% 
+#   select(dnum) %>% 
+#   pull()
 
 
 
@@ -38,9 +38,14 @@ fa_import_isd_data <- function() {
     filter(flag.isd == 1)
   
   
-  isd_dnums <- 
+  isd_dnums_dnames <- 
     isd_cydata %>% 
     filter(FY == fiscal.year - 1) %>% 
+    select(dnum, dname)
+  
+  
+  isd_dnums <- 
+    isd_dnums_dnames %>% 
     select(dnum) %>% 
     pull()
   
@@ -89,7 +94,7 @@ fa_import_isd_data <- function() {
     mutate(bal.pct.rev = bal / rev * 100,
            bal.pct.exp = bal/ exp * 100) %>% 
     replace(is.na(.), 0) %>% 
-    full_join(isd_dnums_dnames, join_by(dnum))
+    full_join(isd_dnums_dnames, join_by(dnum)) 
     
   
   # transfers 
