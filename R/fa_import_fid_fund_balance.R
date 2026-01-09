@@ -8,34 +8,53 @@
 #' @export
 fa_import_fid_fund_balance <- function() {
   
-  fund_balances <- 
+  fb_basic <- 
     TannersTools::tt_import_fid_B() %>% 
     dplyr::filter(majorclass >= 700,
                   majorclass < 760,
                   amount != 0,
-                  !is.na(amount)) %>%
-    mutate(restricted = ifelse(majorclass < 730, amount * -1, NA),
-           amount = amount * -1) %>% 
-    dplyr::group_by(FY, fund, dnum) %>% 
-    dplyr::summarise(total = sum(amount, na.rm = TRUE),
-                     .restricted = sum(restricted, na.rm = TRUE)) %>% 
+                  !is.na(amount)) 
+  
+  fb_type <- 
+    fb_basic%>%
+    dplyr::mutate(fb.type = case_match(majorclass, 
+                                       c(710, 711) ~ "nonspendable",
+                                       c(720, 721) ~ "restricted",
+                                       c(730, 731) ~ "committed",
+                                       c(740, 741) ~ "assigned",
+                                       c(750, 751) ~ "unassigned",
+                                       .default = "unassigned")) %>% 
+    dplyr::group_by(FY, fund, dnum, fb.type) %>% 
+    dplyr::summarise(amount = sum(amount, na.rm = TRUE) * -1) %>% 
     dplyr::ungroup() %>% 
-    tidyr::pivot_longer(cols = c(total, .restricted)) %>% 
-    mutate(fund.type = name,
-           fund.type = ifelse(fund.type == "total", "", fund.type),
-           name = paste0(fund, fund.type)) %>% 
-    tidyr::pivot_wider(id_cols = c(FY, dnum),
-                       names_from = name, 
-                       values_from = value, 
-                       names_prefix = "fid.b.fb",
-                       values_fill = 0) 
+    mutate(name = paste0(fund, ".", fb.type)) %>% 
+    tidyr::pivot_wider(id_cols = c(FY, dnum), 
+                       values_from = amount, 
+                       names_from = name,
+                       names_prefix = "fid.b.fb.",
+                       values_fill = 0)
+  
+  fb_total <-
+    fb_basic %>% 
+    dplyr::group_by(FY, fund, dnum) %>% 
+    dplyr::summarise(amount = sum(amount, na.rm = TRUE) * -1) %>% 
+    dplyr::ungroup() %>% 
+    tidyr::pivot_wider(id_cols = c(FY, dnum), 
+                       values_from = amount, 
+                       names_from = fund,
+                       names_prefix = "fid.b.fb.",
+                       values_fill = 0)
+  
+  
+  fund_balances <-
+    fb_total %>% 
+    left_join(fb_type, by = join_by(FY == FY, dnum == dnum))
+  
+  
   
   return(fund_balances)
   
 }
-
-
-
 
 
 # 
