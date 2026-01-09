@@ -2,13 +2,8 @@
 
 library(tidyverse)
 library(TannersTools)
-# library(scales)
-# library(vtable)
-# library(flextable)
-# library(ggtext)
 library(financial.analysis)
 library(testthat)
-# library(servr)
 
 # setup 
 fiscal.year <- 2025
@@ -20,15 +15,22 @@ fa_setup()
 fa_construct_data()
 fa_import_data("raw") %>% fa_dwork()
 
-
 # load the data
 FA_Data <- fa_import_data("prepped")
 dist_geo <- fa_import_geo() %>% rename(geometry = geom)
 
+fund_names <- 
+  TannersTools::FID_names_fund %>% 
+  mutate(var.name = paste0("fid.b.fb.", fund))
+recode_vec <- setNames(fund_names$var.name, fund_names$fund.name)
+
 
 # Choosing District 
  tt_dnum_from_dname("kent")
-
+ tt_dnum_from_dname("benzie")
+ tt_dnum_from_dname("utica")
+ 
+ 
 dnum_x <- tt_dnum_random(1)
 # dnum_x <- 15010 # beaver island
 # dnum_x <- 18010 # Clare
@@ -42,14 +44,17 @@ dnum_x <- 82090 # Lincoln Park
 dnum_x <- 82160
 dnum_x <- 54025
 dnum_x <- 82340 # huron problem
-
-
+dnum_x <- 39065 # gull lake
+dnum_x <- 25180
+dnum_x <- 10015
+dnum_x <- 41050 # Caledonia        
+dnum_x <- 50210 # Utica
 
 
 FA_Data_District <-  
   FA_Data %>%
   filter(dnum == dnum_x ,
-         FY > (fiscal.year - 10)) %>%
+         FY >= (fiscal.year - 10)) %>%
   arrange(FY) %>% 
   ungroup()
 
@@ -61,13 +66,13 @@ FA_Data_District %>%
                                page.revest = FALSE, 
                                page.budcomp = FALSE,
                                page.stim = FALSE,
-                               page.sam = TRUE,
-                               page.found = TRUE,
-                               page.revexp = TRUE,
+                               page.sam = FALSE,
+                               page.found = FALSE,
+                               page.revexp = FALSE,
                                page.surplus = FALSE,
                                page.gfb = TRUE,
                                page.transfers = TRUE,
-                               page.methods = TRUE,
+                               page.methods = FALSE,
                                
                                # not using
                                page.millages = FALSE,
