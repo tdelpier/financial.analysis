@@ -70,10 +70,10 @@ fa_dwork_clean <- function(df) {
            fid.surplus.deficit = fid.r.total.audit - fid.e.total.xtrans,
            fid.rev.expended  = (fid.e.total.xtrans / fid.r.total.audit) * 100,
 
-           fid.b.fb11.chg = fid.b.fb11 - lag(fid.b.fb11),
-           fid.b.fb11.pct.chg = (fid.b.fb11.chg / lag(fid.b.fb11)) * 100,
-           fid.b.fb.11.pct.rev = (fid.b.fb11 / fid.r.total.audit) * 100,
-           fid.b.fb.11.pct.exp = (fid.b.fb11 / fid.e.total.xtrans) * 100,
+           fid.b.fb.11.chg = fid.b.fb.11 - lag(fid.b.fb.11),
+           fid.b.fb.11.pct.chg = (fid.b.fb.11.chg / lag(fid.b.fb.11)) * 100,
+           fid.b.fb.11.pct.rev = (fid.b.fb.11 / fid.r.total.audit) * 100,
+           fid.b.fb.11.pct.exp = (fid.b.fb.11 / fid.e.total.xtrans) * 100,
 
            fid.e.fed.stim.total = fid.e.fed.stim.esser1 + fid.e.fed.stim.esser2 +
              fid.e.fed.stim.esser3 + fid.e.fed.stim.geer1 + fid.e.fed.stim.equity +
