@@ -21,12 +21,12 @@ fa_helper_render_district_fa <- function(df, dcode, type = "paged",
                         page.cac = FALSE,
                         page.gfb = TRUE,
                         page.transfers = TRUE,
+                        page_transfers_alt,
                         page.millages = TRUE,
                         page.methods = TRUE,
                         page.stim = FALSE
                         ){
     
-  
   
   
   
@@ -38,7 +38,7 @@ fa_helper_render_district_fa <- function(df, dcode, type = "paged",
     FA_Data_District <-  
       df %>%
       filter(dnum == {{ dcode }},
-             FY > (fiscal.year - 10)) %>%
+             FY >= (fiscal.year - 10)) %>%
       arrange(FY) %>% 
       ungroup()
     
@@ -52,6 +52,9 @@ fa_helper_render_district_fa <- function(df, dcode, type = "paged",
     
     district_code <- 
       FA_Data_District$dcode[1]
+    
+    
+    fa_helper_do_transfers_page(FA_Data_District, {{ page.transfers }})
     
     
     rmarkdown::render(
@@ -70,7 +73,8 @@ fa_helper_render_district_fa <- function(df, dcode, type = "paged",
                     page_surplus =   {{ page.surplus }},
                     page_cac =       {{ page.cac }},
                     page_gfb =       {{ page.gfb }},
-                    page_transfers = {{ page.transfers }},
+                    page_transfers = do_transfers_page,
+                    page_transfers_alt = do_transfers_alt_page,
                     page_millages =  {{ page.millages }},
                     page_methods =   {{ page.methods }}),
       
