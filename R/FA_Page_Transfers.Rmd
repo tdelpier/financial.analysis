@@ -17,8 +17,6 @@ district_fb_transfer_data <-
   fa_helper_fa_data_to_transfer_data() %>% 
   ungroup()
 
-funds_to_include <- c(21, 22, 23, 24, 26, 27, 28, 29, seq(40, 49))
-
 
 transfer_back_calc <- 
   district_fb_transfer_data %>% 
@@ -73,7 +71,7 @@ total_transfered_out_in_10_years <-
   ungroup() %>% 
   filter(fund %in% funds_to_include,
          transfered.from.gf != 0,
-         FY >= fiscal.year - 10) %>% 
+         FY >= fiscal.year - 11) %>% 
   summarise(amount = sum(transfered.from.gf, na.rm = TRUE)) %>% 
   pull()
 
@@ -106,7 +104,7 @@ new_gf_bal_pct_exp <- new_gf_bal / var_to_words(fid.e.total.xtrans)
 
 ```
 
-Dollars transferred out of the General Fund are not recorded in the General Fund balance. While many interfund transfers are routine and benign, large transfers out of the General Fund can make the district appear artificially worse off financially. The following table lists each major transfer out of the General Fund. 
+Dollars transferred out of the General Fund are not recorded in the General Fund balance. While many interfund transfers are routine and benign, large transfers out of the General Fund can make the district appear artificially worse off financially. The following table lists each major transfer out of the General Fund. Note, transfers to the food service fund typically cannot be transfered back to the General Fund. For this reason, these transfers are excluded.  
 
 
 ```{r}
@@ -114,7 +112,7 @@ Dollars transferred out of the General Fund are not recorded in the General Fund
 district_fb_transfer_data %>% 
   filter(fund %in% funds_to_include,
          transfered.from.gf != 0,
-         FY >= fiscal.year - 10) %>% 
+         FY >= fiscal.year - 11) %>% 
   ungroup() %>% 
   select(FY, fund.name.trans.to, transfered.from.gf) %>% 
   flextable() %>% 

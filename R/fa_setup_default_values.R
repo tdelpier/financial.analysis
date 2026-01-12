@@ -23,5 +23,7 @@ fa_setup_default_values <- function() {
   line_size <<- 1.25
   text_size <<- 10
   
+  funds_to_include <<- c(21, 22, 23, 24, 26, 27, 28, 29, seq(40, 49))
+  
 }
 
