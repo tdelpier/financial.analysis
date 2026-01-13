@@ -154,7 +154,7 @@ if(No_FID_Avalible == 0 ){
     # color coding totals
     bg(i = ~ Rev_Source == "Total Revenue", bg = mea_blue_light,  part = "body") %>% 
     bg(i = ~ Rev_Source == "Total less Stimulus and UAAL", bg = mea_green_light,  part = "body") %>% 
-    flextable_custom_theme()
+    flextable_custom_theme(title = "Table x. Revenue Estimate")
     
 
 }
@@ -183,7 +183,7 @@ FA_Data_District %>%
   bg(j = "tab.rev.total.xstim.xuaal", bg = mea_green_light, part = "all") %>% 
   bg(j = "tab.rev.total", bg = mea_blue_light, part = "all") %>% 
 
-  flextable_custom_theme()
+  flextable_custom_theme(title = "Table x. Revenue Less Stimulus and UAAL")
 
 
 ```
@@ -215,7 +215,7 @@ FA_Data_District %>%
   expand_limits(x = fiscal.year + 0.5  )+
   scale_x_continuous(breaks = seq(1990, 2100, by = 1) )+
   scale_y_continuous(labels = number_format(big.mark = ",")) +
-  labs(title = "<span style='color: #003057'> Total Revenue</span> and <span style='color: #00A651'> Revenue less Stimuls and UAAL</span>",
+  labs(title = "Figure x. <span style='color: #003057'> Total Revenue</span> and <span style='color: #00A651'> Revenue less Stimuls and UAAL</span>",
        x = "Fiscal Year",
        y = "")+
   scale_color_manual(values = c(mea_green, mea_blue)) +

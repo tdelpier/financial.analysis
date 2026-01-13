@@ -14,8 +14,6 @@ FA_Data_District %>%
   filter(FY != fiscal.year) %>% 
   select(FY, fid.r.total.audit, fid.e.total.xtrans, fid.surplus.deficit, fid.rev.expended) %>% 
   flextable() %>% 
-  add_header_lines(values = "General Fund Revenue and Expenditure") %>% 
-
   set_header_labels(FY = "Fiscal Year",
                     
                     ### I need to include the transfers 
@@ -32,7 +30,7 @@ FA_Data_District %>%
   bg(j = "fid.r.total.audit", bg = mea_green_light, part = "all") %>%
   bg(j = "fid.e.total.xtrans", bg = mea_red_light, part = "all") %>% 
 
-   flextable_custom_theme()
+   flextable_custom_theme(title = "Table x. General Fund Revenue and Expenditure")
 
 
 
@@ -77,7 +75,7 @@ FA_Data_District %>%
   
   scale_x_continuous(breaks = seq(1990, 2100, by = 1) )+
   scale_y_continuous(labels = number_format(big.mark = ",")) +
-  labs(title = "<span style='color: #00A651'> Revenue</span> and <span style='color: #C2002F'>Expenditure</span>",
+  labs(title = "Figure x. <span style='color: #00A651'> Revenue</span> and <span style='color: #C2002F'>Expenditure</span>",
        x = "Fiscal Year",
        y = "")+
   scale_color_manual(values = c(mea_red, mea_green)) +

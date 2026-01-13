@@ -36,7 +36,7 @@ FA_Data_District %>%
                     value = "Millage Rate",
                     tv = "Taxable Value (TV)",
                     est.rev = "Estimated Revenue") %>% 
-  flextable_custom_theme()
+  flextable_custom_theme(title = "Table x. Estimated Millage Revenue")
 
 
 
