@@ -25,5 +25,13 @@ fa_setup_default_values <- function() {
   
   funds_to_include <<- c(21, 22, 23, 24, 26, 27, 28, 29, seq(40, 49))
   
+  fund_names <<- 
+    TannersTools::FID_names_fund %>% 
+    mutate(var.name = paste0("fid.b.fb.", fund))
+  
+  recode_vec <<- setNames(fund_names$var.name, fund_names$fund.name)
+  
+  
+  
 }
 

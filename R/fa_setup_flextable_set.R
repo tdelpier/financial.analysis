@@ -39,7 +39,8 @@ flextable_custom_theme <- function(flex_table, title){
     bold(bold = TRUE, part = "header") %>% 
     # hline_top(border = fp_border_default(width = 0), part = "header") %>% 
     line_spacing(space = .5, part = "body") %>% 
-    autofit()  
+    autofit()  %>% 
+    htmltools_value(ft.shadow = FALSE)
   
 } 
 
