@@ -6,9 +6,9 @@ All data in this report come from public sources:
 
 -   [The Financial Information Database](https://www.mischooldata.org/financial-data-files/) (FID) is the primary source for actual revenue, expenditure, fund balances, fund transfers, and federal stimulus expenditure.
 -   [The State Aid Financial Status Report](https://mdoe.state.mi.us/samspublic/Home/StatusReport) (SASR) provides information on the district's state aid membership, foundation allowance, and categoricals provided by the state.
--   [Geographic data](https://gis-michigan.opendata.arcgis.com/) were collected from the State of Michigan's Open GIS Data, which is used to generate the district map and calculate geographic area of the district.
+-   [Geographic data](https://gis-michigan.opendata.arcgis.com/) were collected from the State of Michigan's Open GIS Data.
 -   [Federal stimulus](https://www.michigan.gov/mde/services/school-performance-supports/educational-supports/tools-and-resources/program-allocations) initial allocations were collected from the Michigan Department of Education's "Program Allocation" webpage.
--   District budget data is not available in tabular form but is publicly available through "Budgetary Comparison Schedules" found in district financial audits. These budget data were collected from the audits by MEA.
+-   District budget data is not available in tabular form but is publicly available through "Budgetary Comparison Schedules" found in district financial audits. These budget data were collected from the audits by MEA staff member, Lindsay Cook, who's work is integral to the creation of this report.
 
 All years reported in this report are school fiscal years (FY), which end on June 30th and start on July 1st each year. For example the 2018-19 school year is labeled "2019."
 

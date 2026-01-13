@@ -22,7 +22,7 @@ FA_Data_District %>%
   colformat_double(j = "cy.d.pupilcnt.pct.chg", suffix = "%") %>% 
   bg(j = "cy.d.pupilcnt", bg = mea_blue_light, part = "all") %>%
 
-  flextable_custom_theme()
+  flextable_custom_theme(title = "Table x. State Aid Membership")
 
 
 ```

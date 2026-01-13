@@ -104,31 +104,44 @@ new_gf_bal_pct_exp <- new_gf_bal / var_to_words(fid.e.total.xtrans)
 
 ```
 
-Dollars transferred out of the General Fund are not recorded in the General Fund balance. While many interfund transfers are routine and benign, large transfers out of the General Fund can make the district appear artificially worse off financially. The following table lists each major transfer out of the General Fund. Note, transfers to the food service fund typically cannot be transfered back to the General Fund. For this reason, these transfers are excluded.  
+Dollars transferred out of the General Fund are not recorded in the General Fund balance. While many interfund transfers are routine and benign, large transfers out of the General Fund can make the district appear artificially worse off financially. Table xx lists each transfer out of the General Fund. Note, some transfers, including those to the food service fund, cannot be transferred back to the General Fund.  
 
 
 ```{r}
 
+dist_gf_rev <-
+  FA_Data_District %>%
+  select(FY, fid.r.total.audit)
+
+# add percent of GF revenue from that year. 
 district_fb_transfer_data %>% 
-  filter(fund %in% funds_to_include,
+  filter(
+    # fund %in% funds_to_include,
          transfered.from.gf != 0,
          FY >= fiscal.year - 11) %>% 
   ungroup() %>% 
   select(FY, fund.name.trans.to, transfered.from.gf) %>% 
+  group_by(FY) %>% 
+  group_modify(~.x %>%   adorn_totals(where = "row", name = "Subtotal")) %>% 
+  left_join(dist_gf_rev, by = "FY") %>% 
+  mutate(pct.of.gf.rev = (transfered.from.gf / fid.r.total.audit) * 100) %>% 
+  select(-fid.r.total.audit) %>% 
   flextable() %>% 
-  add_header_lines(values = "Transfers Out of the General Fund") %>% 
+  hline(i = ~ fund.name.trans.to == "Subtotal", border = fp_border_default()) %>% 
+  bold(i = ~ fund.name.trans.to == "Subtotal", bold = TRUE) %>%
   set_header_labels(fund.name.trans.to = "Fund",
-                    transfered.from.gf = "Amount") %>% 
+                    transfered.from.gf = "Amount",
+                    pct.of.gf.rev = "% of General Fund Revenue") %>% 
   colformat_num(j = "FY", big.mark = "") %>%
-  colformat_double(j = c("transfered.from.gf"), big.mark = ",", digits = 0)%>%
-  flextable_custom_theme()
+  colformat_double(j = "pct.of.gf.rev", suffix = "%", digits = 2) %>% 
+  colformat_double(j = c("transfered.from.gf"), big.mark = ",", digits = 0) %>%
+  flextable_custom_theme(title = "Table x. Transfers Out of the General Fund")
 
 
 ```
 
-The figure below shows the total transfer out of the General Fund by fiscal year. 
 
-```{r, fig.height = 2.5}
+```{r, fig.height = 2.5, eval=FALSE}
 district_fb_transfer_data %>% 
   filter(FY <= fiscal.year - 1) %>% 
   group_by(FY) %>% 
@@ -139,7 +152,7 @@ district_fb_transfer_data %>%
   scale_y_continuous(labels = comma_format(), 
                      # limits = c(0, max_fb)
                      )+
-  labs(title = "Total Transfers out of the General Fund Balance",
+  labs(title = "Figure x. Total Transfers out of the General Fund Balance",
        x = "Fiscal Year",
        y = "")
 
@@ -175,13 +188,13 @@ transfer_back_calc %>%
   select(fund.name.trans.to, transfer.back.possible) %>% 
   adorn_totals() %>% 
   flextable() %>% 
-  add_header_lines(values = paste0("Estimated Amount to Transfer Back to General Fund, FY ", 
-                                    fiscal.year-1)) %>% 
+
   set_header_labels(fund.name.trans.to = "Fund",
                     transfer.back.possible = "GF transfer back calculation") %>% 
   colformat_double(j = c("transfer.back.possible"), big.mark = ",", digits = 0) %>% 
   bold(i = ~fund.name.trans.to == "Total") %>% 
-  flextable_custom_theme()
+  flextable_custom_theme(title =  paste0("Table x. Estimated Amount to Transfer Back to General Fund, FY ", 
+                                    fiscal.year-1))
 
 ```
 
@@ -193,7 +206,6 @@ transfer_back_calc %>%
   ungroup() %>% 
   select(FY, fund.name.trans.to, transfered.from.gf, fb.total, transfer.back.possible) %>% 
   flextable() %>% 
-  add_header_lines(values = "Transfers Back to General Fund Calculation") %>% 
   set_header_labels(FY = "Fiscal Year",
                     fund.name.trans.to = "Fund",
                     transfered.from.gf = "Amount transfered from GF",
@@ -204,7 +216,7 @@ transfer_back_calc %>%
                    digits = 0) %>% 
   colformat_num(j = "FY",
                 big.mark = "") %>% 
-  flextable_custom_theme()
+  flextable_custom_theme(title = "Table x. Transfers Back to General Fund Calculation")
   
 
 

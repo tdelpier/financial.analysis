@@ -13,6 +13,12 @@
 #' @export
 fa_helper_fa_data_to_transfer_data <- function(df) {
   
+  
+  rev <- 
+    FA_Data_District %>% 
+    select(FY, fid.r.total.audit)
+  
+  transfer_data <- 
   df %>% 
     ungroup() %>% 
     select(FY, dnum, starts_with("fid.trans"), 
@@ -38,12 +44,10 @@ fa_helper_fa_data_to_transfer_data <- function(df) {
     rename(fund.group.trans.to = fund.group,
            fund.name.trans.to = fund.name,
            transfered.from.gf = trans.to) %>%
-    mutate(fund.balance.unrestricted = fb.unassigned + fb.assigned + fb.committed) 
+    mutate(fund.balance.unrestricted = fb.unassigned + fb.assigned + fb.committed) %>% 
+    left_join(rev, by = "FY") 
   
+  return(transfer_data)
   
 }
-
-
-
-
 
