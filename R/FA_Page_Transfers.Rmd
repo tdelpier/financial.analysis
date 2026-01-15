@@ -198,7 +198,7 @@ transfer_back_calc %>%
 
 ```
 
-The following table shows the iterative calculation by fund used to estimate the total eligible assets to be transfered back to the General Fund. The calculation assumes that resources transferred from the General Fund can be transferred back unless the receiving fund balance, but that the non-General fund cannot transfer back more revenue than it maintains in it's end of year balance. 
+The following table shows the iterative calculation by fund used to estimate the total assets eligible to be transfered back to the General Fund. The calculation assumes that resources transferred out of the General Fund can be transferred back unless the receiving fund balance falls below the cumulative transfer in. 
 
 ```{r}
 
