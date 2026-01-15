@@ -14,6 +14,7 @@ fa_construct_data <- function(path) {
   # CY
   cydata <- fa_import_cy_data()
   cyallow <- fa_import_cy_allowance()
+  cyadjust <- fa_import_cy_adjust()
   message("cy done")
   
   
@@ -51,6 +52,11 @@ fa_construct_data <- function(path) {
   message("FID transfer")
   
   
+  # NRS
+  nrs <- fa_import_nrs()
+  message("NRS")
+  
+  
   fa_data <- 
     rev %>% 
     dplyr::full_join(bal, by = dplyr::join_by(FY, dnum)) %>% 
@@ -59,7 +65,9 @@ fa_construct_data <- function(path) {
     dplyr::full_join(stim, by = dplyr::join_by(dnum), multiple = "all", copy = TRUE) %>%
     dplyr::full_join(cydata, by = dplyr::join_by(FY, dnum)) %>% 
     dplyr::full_join(cyallow, by = dplyr::join_by(FY, dnum)) %>% 
+    dplyr::full_join(cyadjust, by = dplyr::join_by(FY, dnum)) %>% 
     dplyr::full_join(district_budgets, by = dplyr::join_by(FY, dnum)) %>% 
+    dplyr::full_join(nrs, by = dplyr::join_by(FY, dnum)) %>% 
     dplyr::full_join(district_id, by = dplyr::join_by(dnum))
   
   
