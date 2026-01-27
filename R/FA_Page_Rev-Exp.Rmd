@@ -80,7 +80,7 @@ FA_Data_District %>%
        y = "")+
   scale_color_manual(values = c(mea_red, mea_green)) +
   scale_fill_manual(values = c(mea_red, mea_green)) +
-  scale_linetype_manual(values=c("twodash", "solid"))+
+  scale_linetype_manual(values=c("twodash", "solid")) +
   theme(legend.box.background = element_rect(color= mea_gray, size=1),
         legend.title = element_blank(),
         legend.position = "bottom",

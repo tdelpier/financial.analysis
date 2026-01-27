@@ -49,7 +49,7 @@ FA_Data_District %>%
   scale_y_continuous(labels = percent_format(), 
                      # limits = c(0, max_fb)
                      )+
-  labs(title = "General Fund Balance % Expenditure",
+  labs(title = "Figure xx. General Fund Balance % Expenditure",
        x = "Fiscal Year",
        y = "") 
 
