@@ -30,14 +30,20 @@ fa_dwork_clean <- function(df) {
            cy.d.pupilcnt = ifelse(is.na(cy.d.8.pupilcnt), cy.d.1.pupilcnt, cy.d.8.pupilcnt),
            cy.d.pupilcnt.chg = cy.d.pupilcnt - lag(cy.d.pupilcnt),
            cy.d.pupilcnt.pct.chg = (cy.d.pupilcnt.chg / lag(cy.d.pupilcnt)) * 100,
-
+           
+           cy.d.pylunch = ifelse(cy.d.8.pylunch == 0 | is.na(cy.d.8.pylunch), cy.d.1.pylunch, cy.d.8.pylunch),
+           cy.d.pylunch.chg = cy.d.pylunch - lag(cy.d.pylunch),
+           cy.d.pylunch.pct.chg = (cy.d.pylunch.chg / lag(cy.d.pylunch)) * 100,
+           cy.d.pylunch.pct.of.pupilcnt = (cy.d.pylunch / cy.d.pupilcnt) * 100, 
+            
+    
            cy.d.found.pp = ifelse(is.na(cy.d.8.found.pp), cy.d.1.found.pp, cy.d.8.found.pp),
            cy.d.found.pp.chg = cy.d.found.pp - lag(cy.d.found.pp),
            cy.d.found.pp.pct.chg = (cy.d.found.pp.chg / lag(cy.d.found.pp)) * 100,
 
            cy.d.found.rev = ifelse(is.na(cy.d.8.found.rev), cy.d.1.found.rev, cy.d.8.found.rev),
            cy.d.found.rev.chg = cy.d.found.rev - lag(cy.d.found.rev),
-           cy.d.found.rev.pct.chg = (cy.d.found.rev.chg / lag(cy.d.found.rev)) * 100,
+           cy.d.found.rev.pct.chg = (cy.d.found.rev.chg / lag(cy.d.found.rev)) * 100
 
     ) %>%
     ungroup() %>%

@@ -79,15 +79,20 @@ fa_dwork_end <- function(df){
     tab.rev.state.found =        ifelse(FY == fiscal.year, est.1.rev.state.found, est.8.rev.state.found),
     tab.rev.state.sped =         ifelse(FY == fiscal.year, est.1.rev.state.sped, est.8.rev.state.sped),
     tab.rev.state.31a =          ifelse(FY == fiscal.year, est.1.rev.state.31a, est.8.rev.state.31a),
-    tab.rev.state.mpsers.uaal =  ifelse(FY == fiscal.year, est.1.rev.state.mpsers.uaal, est.8.rev.state.mpsers.uaal),
-    tab.rev.state.mspers.other =  ifelse(FY == fiscal.year, est.1.rev.state.mpsers.other, est.8.rev.state.mpsers.other),
     tab.rev.state.41 =           ifelse(FY == fiscal.year, est.1.rev.state.41, est.8.rev.state.41), ,
-
     
-    # Changed in FY 2024
     tab.rev.state.31aa =         ifelse(FY == fiscal.year, est.1.rev.state.31aa, est.8.rev.state.31aa),
     tab.rev.state.29 =           ifelse(FY == fiscal.year, est.1.rev.state.29, est.8.rev.state.29),
     tab.rev.state.22l =          ifelse(FY == fiscal.year, est.1.rev.state.22l, est.8.rev.state.22l),
+    tab.rev.state.cte =          ifelse(FY == fiscal.year, est.1.rev.state.cte, est.8.rev.state.cte),
+    tab.rev.state.edcomp =       ifelse(FY == fiscal.year, est.1.rev.state.edcomp, est.8.rev.state.edcomp),
+    
+    tab.rev.state.mpsers.uaal =  ifelse(FY == fiscal.year, est.1.rev.state.mpsers.uaal, est.8.rev.state.mpsers.uaal),
+    tab.rev.state.mpsers.netother = ifelse(FY == fiscal.year, est.1.rev.state.mpsers.netother, est.8.rev.state.mpsers.netother),
+    tab.rev.state.mspers.other =  ifelse(FY == fiscal.year, est.1.rev.state.mpsers.other, est.8.rev.state.mpsers.other),
+
+    
+    # Changed in FY 2024
     
     # tab.rev.state.35j =          ifelse(FY == fiscal.year, est.1.rev.state.35j,est.8.rev.state.35j),
     # tab.rev.state.27l =          ifelse(FY == fiscal.year, est.1.rev.state.27l, est.8.rev.state.27l),
@@ -95,12 +100,21 @@ fa_dwork_end <- function(df){
 
     
     # state other 
-    est.rev.state.listed.regularly = tab.rev.state.found + tab.rev.state.sped + 
-      tab.rev.state.31a + tab.rev.state.41 + 
-      tab.rev.state.mpsers.uaal + tab.rev.state.mspers.other,
+    est.rev.state.listed.regularly = 
+      tab.rev.state.found + 
+      tab.rev.state.sped + 
+      tab.rev.state.31a + 
+      tab.rev.state.41,
     
-    est.rev.state.listed.this.year = tab.rev.state.31aa  +
-      tab.rev.state.29  + tab.rev.state.22l, 
+    est.rev.state.listed.this.year = 
+      tab.rev.state.31aa  +
+      tab.rev.state.29  + 
+      tab.rev.state.22l + 
+      tab.rev.state.cte + 
+      tab.rev.state.edcomp +
+      tab.rev.state.mpsers.uaal + 
+      tab.rev.state.mpsers.netother + 
+      tab.rev.state.mspers.other, 
     
     est.rev.state.listed = est.rev.state.listed.regularly + est.rev.state.listed.this.year, 
     
@@ -119,9 +133,16 @@ fa_dwork_end <- function(df){
     
     
     # Total
-    tab.rev.total.xstim.xuaal = tab.rev.local + tab.rev.state + tab.rev.fed + tab.rev.other - tab.rev.fed.stim - tab.rev.state.mpsers.uaal,
-    tab.rev.total.xstim = tab.rev.local + tab.rev.state + tab.rev.fed + tab.rev.other - tab.rev.fed.stim, 
-    tab.rev.total = tab.rev.total.xstim + tab.rev.fed.stim
+    
+    tab.rev.total = tab.rev.local + tab.rev.state + tab.rev.fed + tab.rev.other, 
+      # tab.rev.total.xstim = tab.rev.total - tab.rev.fed.stim, 
+      # tab.rev.total.xstim.xuaal = tab.rev.total - tab.rev.fed.stim - tab.rev.state.mpsers.uaal,
+    
+    tab.rev.net.zero.and.stim = tab.rev.state.edcomp + tab.rev.state.mpsers.uaal + tab.rev.state.mpsers.netother + tab.rev.fed.stim,
+    tab.rev.total.xstim.xnet = tab.rev.total - tab.rev.net.zero.and.stim, 
+    
+    
+    
     
     
   ) 

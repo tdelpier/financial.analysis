@@ -15,7 +15,7 @@
 #' 
 #' @param df requires raw data to be supplied
 #' 
-#' # Uses
+#' Uses
 #' 
 #' 'fa_import_data("raw") %>% fa_dwork()'
 #' Then the user can load the "prepped" and save it to an object by calling
@@ -25,7 +25,7 @@
 #' @export
 fa_dwork <- function(df) {
   
-  fiscal.year <- 2024
+  # fiscal.year <- 2026
   # I need to change this at some point
     # it can't be automatic but I don't really want to mess with it very often
     # needs to be obvious where to change it. 
