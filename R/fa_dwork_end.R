@@ -1,10 +1,19 @@
 
 
+
 #' FA data work end
 #'
 #'
 #' @export
 fa_dwork_end <- function(df){
+  
+  
+  rev_est_variable_suffixes <- 
+    c("local.found", "local.other",
+      "state.found", "state.sped", "state.31a", "state.41", 
+      "state.31aa", "state.29", "state.22l", "state.cte", "state.edcomp",
+      "state.mpsers.uaal", "state.mpsers.netother", "state.mpsers.other")
+
   
   {{ df }} %>% 
   mutate(
@@ -48,7 +57,8 @@ fa_dwork_end <- function(df){
     db.orig.rev.xstim.pct.act = (db.original.total.revenue / (fid.r.total.audit - fid.r.fed.stim) * 100)
     
     
-  ) %>% 
+  ) %>%
+    
   
     
     
@@ -56,50 +66,19 @@ fa_dwork_end <- function(df){
   
   mutate(
     
-    # Local
-    
-    tab.rev.local = ifelse(FY == fiscal.year, 
-                           est.1.rev.local, 
+  
+    tab.rev.local = ifelse(FY == fiscal.year,
+                           est.1.rev.local,
                            fid.r.local),
+ 
+    tab.rev.state = ifelse(FY == fiscal.year, est.1.rev.state, fid.r.state)) %>% 
     
-    tab.rev.local.found = ifelse(FY == fiscal.year, 
-                                 est.1.rev.local.found, 
-                                 est.8.rev.local.found),
-    
-    tab.rev.local.other = ifelse(FY == fiscal.year, 
-                                 est.1.rev.local.other, 
-                                 est.8.rev.local.other),
-    
-    
-    # State
-    tab.rev.state = ifelse(FY == fiscal.year, est.1.rev.state, fid.r.state),
-    
-    
-    # regularly listed cats
-    tab.rev.state.found =        ifelse(FY == fiscal.year, est.1.rev.state.found, est.8.rev.state.found),
-    tab.rev.state.sped =         ifelse(FY == fiscal.year, est.1.rev.state.sped, est.8.rev.state.sped),
-    tab.rev.state.31a =          ifelse(FY == fiscal.year, est.1.rev.state.31a, est.8.rev.state.31a),
-    tab.rev.state.41 =           ifelse(FY == fiscal.year, est.1.rev.state.41, est.8.rev.state.41), ,
-    
-    tab.rev.state.31aa =         ifelse(FY == fiscal.year, est.1.rev.state.31aa, est.8.rev.state.31aa),
-    tab.rev.state.29 =           ifelse(FY == fiscal.year, est.1.rev.state.29, est.8.rev.state.29),
-    tab.rev.state.22l =          ifelse(FY == fiscal.year, est.1.rev.state.22l, est.8.rev.state.22l),
-    tab.rev.state.cte =          ifelse(FY == fiscal.year, est.1.rev.state.cte, est.8.rev.state.cte),
-    tab.rev.state.edcomp =       ifelse(FY == fiscal.year, est.1.rev.state.edcomp, est.8.rev.state.edcomp),
-    
-    tab.rev.state.mpsers.uaal =  ifelse(FY == fiscal.year, est.1.rev.state.mpsers.uaal, est.8.rev.state.mpsers.uaal),
-    tab.rev.state.mpsers.netother = ifelse(FY == fiscal.year, est.1.rev.state.mpsers.netother, est.8.rev.state.mpsers.netother),
-    tab.rev.state.mspers.other =  ifelse(FY == fiscal.year, est.1.rev.state.mpsers.other, est.8.rev.state.mpsers.other),
-
-    
-    # Changed in FY 2024
-    
-    # tab.rev.state.35j =          ifelse(FY == fiscal.year, est.1.rev.state.35j,est.8.rev.state.35j),
-    # tab.rev.state.27l =          ifelse(FY == fiscal.year, est.1.rev.state.27l, est.8.rev.state.27l),
-    # tab.rev.state.meals =        ifelse(FY == fiscal.year, est.1.rev.state.meals, est.8.rev.state.meals),
-
+    # this takes everything in the the suffix variable and creates a tab.rev. variable 
+    reduce(.x = rev_est_variable_suffixes, .f = ~ create_tabrev_var_from_est(.x, .y), .init = .) %>% 
+  
     
     # state other 
+    mutate(
     est.rev.state.listed.regularly = 
       tab.rev.state.found + 
       tab.rev.state.sped + 
@@ -114,7 +93,7 @@ fa_dwork_end <- function(df){
       tab.rev.state.edcomp +
       tab.rev.state.mpsers.uaal + 
       tab.rev.state.mpsers.netother + 
-      tab.rev.state.mspers.other, 
+      tab.rev.state.mpsers.other, 
     
     est.rev.state.listed = est.rev.state.listed.regularly + est.rev.state.listed.this.year, 
     
