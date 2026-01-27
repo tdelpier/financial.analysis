@@ -47,8 +47,6 @@ FA_Data_ISD %>%
   filter(fund == {{ fund }}) %>% 
   select(FY, rev, transfer.in, exp, transfer.out, bal, bal.pct.rev, bal.pct.exp) %>% 
   flextable() %>% 
-  add_header_lines(values = {{ title }}) %>% 
-
   set_header_labels(FY = "Fiscal Year",
                     rev = "Revenue",
                     transfer.in = "Transfer In",
@@ -62,7 +60,7 @@ FA_Data_ISD %>%
   colformat_double(j = c("bal.pct.rev", 
                          "bal.pct.exp"), 
                    suffix = "%") %>% 
-  flextable_custom_theme()
+  flextable_custom_theme(title = {{ title }})
   
 }
 
@@ -189,7 +187,7 @@ element_fig_isd_fund_balance <- function(fund) {
 
 ```{r}
 element_table_isd_rev_exp_bal(fund = 11, title = "General Fund")
-element_fig_isd_rev_exp(fund = 11)
+element_fig_isd_rev_exp(fund = 11, title = )
 element_fig_isd_rev_exp_with_transfers(fund = 11)
 element_fig_isd_fund_balance(fund = 11)
 
@@ -233,13 +231,12 @@ element_fig_isd_fund_balance(fund = 26)
 Transfer_Data_ISD %>% 
   select(transfer.from.fund.name, transfer.to.fund.name, amount) %>% 
   flextable() %>% 
-  add_header_lines(values = "Transfers") %>% 
   set_header_labels(transfer.from.fund.name = "From", 
                     transfer.to.fund.name = "To",
                     amount = "Amount") %>% 
    colformat_double(j = "amount", 
                     big.mark = ",", digits = 0) %>%
-  flextable_custom_theme()
+  flextable_custom_theme(title = "Transfers")
 
 
 ```
