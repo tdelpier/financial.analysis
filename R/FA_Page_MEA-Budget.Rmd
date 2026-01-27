@@ -37,11 +37,11 @@ if(No_FID_Avalible == 0 ){
                 values_from = y) %>% 
     
     # specifying the order of rows
-    mutate(n = row_number(),
-           n = ifelse(Rev_Source == "tab.rev.total.xstim", 100, n),
-           n = ifelse(Rev_Source == "tab.rev.total.xstim.xuaal", 101, n)) %>% 
-    arrange(n) %>% 
-    select(-n) %>% 
+      # mutate(n = row_number(),
+      #        n = ifelse(Rev_Source == "tab.rev.total.xstim", 100, n),
+      #        n = ifelse(Rev_Source == "tab.rev.total.xstim.xuaal", 101, n)) %>% 
+      # arrange(n) %>% 
+      # select(-n) %>% 
 
     mutate(chg = current.year - last.year,
            pct.chg = (chg / last.year) * 100,
@@ -60,23 +60,17 @@ if(No_FID_Avalible == 0 ){
                         Rev_Source == "tab.rev.state.31a"       ~ "At-Risk",
                         Rev_Source == "tab.rev.state.41"        ~ "EL / Bilingual",
                         
-                            ### New in FY 2024
                         Rev_Source == "tab.rev.state.31aa"      ~ "Mental Health and Safety",
-                        Rev_Source == "tab.rev.state.29"        ~ "Enrollment Stabilization", 
-                        
-                          # need to update these 
-                        # Rev_Source == "tab.rev.state.27l"       ~ "Educator Compensation", 
-
-                        # Rev_Source == "tab.rev.state.meals"     ~ "School Meals",
+                        Rev_Source == "tab.rev.state.29"        ~ "Enrollment Stabilization",
                         Rev_Source == "tab.rev.state.22l"       ~ "Transportation",
-                        # Rev_Source == "tab.rev.state.35j"       ~ "Early Literacy",
-  
-                        ####
-                        
+                        Rev_Source == "tab.rev.state.cte"       ~ "CTE / Vocational Education",
+                        Rev_Source == "tab.rev.state.edcomp"    ~ "Educator Compensation",
+
                         
                         Rev_Source == "tab.rev.state.mpsers.uaal" ~ "MPSERS UAAL",
+                        Rev_Source == "tab.rev.state.mpsers.netother" ~ "MPSERS Other Net",
                         Rev_Source == "tab.rev.state.mspers.other"      ~ "MPSERS Other", 
-                        # Rev_Source == "tab.rev.state.mpsers.other" ~ "MPSERS Other",
+                        
                         Rev_Source == "tab.rev.state.other"     ~ "State Other",
                         
                         # fed 
@@ -91,8 +85,11 @@ if(No_FID_Avalible == 0 ){
                         
                         # total
                         Rev_Source == "tab.rev.total"           ~ "Total Revenue",
-                        Rev_Source == "tab.rev.total.xstim"     ~ "Total less Stimulus",
-                        Rev_Source == "tab.rev.total.xstim.xuaal" ~ "Total less Stimulus and UAAL"
+                        Rev_Source == "tab.rev.net.zero.and.stim" ~ "Net Zero and Stimulus",
+                        Rev_Source == "tab.rev.total.xstim.xnet" ~ "Total less Stimulus and Net Zero"
+                        
+                        # Rev_Source == "tab.rev.total.xstim"     ~ "Total less Stimulus",
+                        # Rev_Source == "tab.rev.total.xstim.xuaal" ~ "Total less Stimulus and UAAL"
 
 
                                   )) %>% 
@@ -139,21 +136,44 @@ if(No_FID_Avalible == 0 ){
     
     
     # indentation 
-    padding(i = ~ Rev_Source %in% c("Local Foundation Share", "Local Other",
-                                    "State Foundation Share", "Special Education",
-                                    "At-Risk", "EL / Bilingual",
-                                    "Mental Health and Safety", "Enrollment Stabilization",
-                                    "Transportation", "MPSERS UAAL", "MPSERS Other", 
+    padding(i = ~ Rev_Source %in% c("Local Foundation Share", 
+                                    "Local Other",
+                                    
+                                    "State Foundation Share", 
+                                    "Special Education",
+                                    "At-Risk", 
+                                    "EL / Bilingual",
+                                    "Mental Health and Safety", 
+                                    "Enrollment Stabilization",
+                                    "Transportation", 
+                                    "CTE / Vocational Education",
+                                    "Educator Compensation",
+                                    "MPSERS UAAL", 
+                                    "MPSERS Other Net",
+                                    "MPSERS Other", 
                                     "State Other",
-                                    "Federal Stimulus", "Federal Recurring",
-                                    "Total less Stimulus", "Total less Stimulus and UAAL"
+                                    
+                                    # "Federal Stimulus", "Federal Recurring",
+                                    # "Total less Stimulus", "Total less Stimulus and UAAL",
+                                    
+                                    "Net Zero and Stimulus",
+                                    "Total less Stimulus and Net Zero"
                                     ), padding.left = 15) %>% 
     
     
     
     # color coding totals
+    bg(i = ~ Rev_Source %in% c("Educator Compensation", 
+                               "MPSERS UAAL",
+                               "MPSERS Other Net",
+                               "Federal Stimulus",
+                               "Net Zero and Stimulus"), 
+       bg = mea_gray_light,  part = "body") %>% 
     bg(i = ~ Rev_Source == "Total Revenue", bg = mea_blue_light,  part = "body") %>% 
-    bg(i = ~ Rev_Source == "Total less Stimulus and UAAL", bg = mea_green_light,  part = "body") %>% 
+    bg(i = ~ Rev_Source %in% c(
+      # "Total less Stimulus and UAAL", 
+                               "Total less Stimulus and Net Zero"), 
+       bg = mea_green_light,  part = "body") %>% 
     flextable_custom_theme(title = "Table x. Revenue Estimate")
     
 
@@ -165,25 +185,25 @@ if(No_FID_Avalible == 0 ){
 
 ```{r}
 
-FA_Data_District %>%
-  ungroup() %>%
-  select(FY, tab.rev.total, tab.rev.fed.stim, 
-         tab.rev.state.mpsers.uaal, tab.rev.total.xstim.xuaal) %>%
-  mutate(FY = ifelse(FY == fiscal.year, paste0(FY, " est."), FY)) %>% 
-  flextable() %>% 
-  set_header_labels(FY = "Fiscal Year", 
-                    tab.rev.total = "Total Revenue", 
-                    tab.rev.total.xstim.xuaal = "Total less Stimulus and UAAL",
-                    tab.rev.fed.stim = "Federal Stimulus",
-                    tab.rev.state.mpsers.uaal = "UAAL Payment (147c)"
-                    ) %>% 
-  colformat_double(j = c("tab.rev.total", "tab.rev.total.xstim.xuaal", 
-                         "tab.rev.fed.stim", "tab.rev.state.mpsers.uaal"), 
-                    big.mark = ",", digits = 0) %>%
-  bg(j = "tab.rev.total.xstim.xuaal", bg = mea_green_light, part = "all") %>% 
-  bg(j = "tab.rev.total", bg = mea_blue_light, part = "all") %>% 
-
-  flextable_custom_theme(title = "Table x. Revenue Less Stimulus and UAAL")
+# FA_Data_District %>%
+#   ungroup() %>%
+#   select(FY, tab.rev.total, tab.rev.fed.stim, 
+#          tab.rev.state.mpsers.uaal, tab.rev.total.xstim.xuaal) %>%
+#   mutate(FY = ifelse(FY == fiscal.year, paste0(FY, " est."), FY)) %>% 
+#   flextable() %>% 
+#   set_header_labels(FY = "Fiscal Year", 
+#                     tab.rev.total = "Total Revenue", 
+#                     tab.rev.total.xstim.xuaal = "Total less Stimulus and UAAL",
+#                     tab.rev.fed.stim = "Federal Stimulus",
+#                     tab.rev.state.mpsers.uaal = "UAAL Payment (147c)"
+#                     ) %>% 
+#   colformat_double(j = c("tab.rev.total", "tab.rev.total.xstim.xuaal", 
+#                          "tab.rev.fed.stim", "tab.rev.state.mpsers.uaal"), 
+#                     big.mark = ",", digits = 0) %>%
+#   bg(j = "tab.rev.total.xstim.xuaal", bg = mea_green_light, part = "all") %>% 
+#   bg(j = "tab.rev.total", bg = mea_blue_light, part = "all") %>% 
+# 
+#   flextable_custom_theme(title = "Table x. Revenue Less Stimulus and UAAL")
 
 
 ```
@@ -192,39 +212,39 @@ Note: "Revenue Less Stimulus and UAAL" is the preferred measure to fill out MEA'
 
 ```{r}
 
-FA_Data_District %>% 
-  select(FY, tab.rev.total, tab.rev.total.xstim.xuaal) %>% 
-  pivot_longer(cols = c(tab.rev.total, tab.rev.total.xstim.xuaal)) %>% 
-  filter(!is.na(value)) %>%
-  mutate(name = case_when(name == "tab.rev.total"  ~ "Total Revenue",
-                            name == "tab.rev.total.xstim.xuaal" ~ "Revenue less Stimuls and UAAL")) %>% 
- 
-  ggplot(aes(x = FY, y = value, 
-             group = name,  color = name, linetype = name))+
-  geom_rect(xmin = fiscal.year - 1, xmax = fiscal.year, 
-            ymin = -Inf, 
-            ymax = max(FA_Data_District$tab.rev.total) * 1.025, color = NA, 
-            fill = mea_gray_light)+
-  coord_cartesian(clip = 'off')+
-  annotate("text", 
-         label = "Estimate",
-         x = fiscal.year - 0.5,
-         y = max(FA_Data_District$tab.rev.total) * 1.05,
-         alpha = .75) +
-  geom_line(size = line_size, fill = NA) +
-  expand_limits(x = fiscal.year + 0.5  )+
-  scale_x_continuous(breaks = seq(1990, 2100, by = 1) )+
-  scale_y_continuous(labels = number_format(big.mark = ",")) +
-  labs(title = "Figure x. <span style='color: #003057'> Total Revenue</span> and <span style='color: #00A651'> Revenue less Stimuls and UAAL</span>",
-       x = "Fiscal Year",
-       y = "")+
-  scale_color_manual(values = c(mea_green, mea_blue)) +
-  scale_fill_manual(values = c(mea_green, mea_blue)) +
-  scale_linetype_manual(values=c("solid", "twodash"))+
-  theme(legend.box.background = element_rect(color= mea_gray, size=1),
-        legend.title = element_blank(),
-        legend.position = "bottom",
-        plot.title = element_markdown(),
-        legend.box = )
+# FA_Data_District %>% 
+#   select(FY, tab.rev.total, tab.rev.total.xstim.xuaal) %>% 
+#   pivot_longer(cols = c(tab.rev.total, tab.rev.total.xstim.xuaal)) %>% 
+#   filter(!is.na(value)) %>%
+#   mutate(name = case_when(name == "tab.rev.total"  ~ "Total Revenue",
+#                             name == "tab.rev.total.xstim.xuaal" ~ "Revenue less Stimuls and UAAL")) %>% 
+#  
+#   ggplot(aes(x = FY, y = value, 
+#              group = name,  color = name, linetype = name))+
+#   geom_rect(xmin = fiscal.year - 1, xmax = fiscal.year, 
+#             ymin = -Inf, 
+#             ymax = max(FA_Data_District$tab.rev.total) * 1.025, color = NA, 
+#             fill = mea_gray_light)+
+#   coord_cartesian(clip = 'off')+
+#   annotate("text", 
+#          label = "Estimate",
+#          x = fiscal.year - 0.5,
+#          y = max(FA_Data_District$tab.rev.total) * 1.05,
+#          alpha = .75) +
+#   geom_line(size = line_size, fill = NA) +
+#   expand_limits(x = fiscal.year + 0.5  )+
+#   scale_x_continuous(breaks = seq(1990, 2100, by = 1) )+
+#   scale_y_continuous(labels = number_format(big.mark = ",")) +
+#   labs(title = "Figure x. <span style='color: #003057'> Total Revenue</span> and <span style='color: #00A651'> Revenue less Stimuls and UAAL</span>",
+#        x = "Fiscal Year",
+#        y = "")+
+#   scale_color_manual(values = c(mea_green, mea_blue)) +
+#   scale_fill_manual(values = c(mea_green, mea_blue)) +
+#   scale_linetype_manual(values=c("solid", "twodash"))+
+#   theme(legend.box.background = element_rect(color= mea_gray, size=1),
+#         legend.title = element_blank(),
+#         legend.position = "bottom",
+#         plot.title = element_markdown(),
+#         legend.box = )
 
 ```

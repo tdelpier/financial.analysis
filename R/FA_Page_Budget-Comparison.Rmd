@@ -170,7 +170,7 @@ prior.years.to.show <- 9
 FA_Data_District %>%
   ungroup() %>% 
   filter(FY != fiscal.year) %>% 
-  select(FY, db.orig.surplus.deficit, fid.surplus.deficit, db.orig.surplus.error) %>%
+  select(FY, db.orig.surplus.deficit, fid.surplus.deficit, db.orig.surplus.error) %>% 
   flextable() %>%
   set_header_labels(FY = "Fiscal Year",
                     fid.surplus.deficit = "Actual",

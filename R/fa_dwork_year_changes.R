@@ -16,7 +16,40 @@ fa_dwork_year_changes <- function(df){
     
     
     ## add things to est.1.rev.state.manual
+#### 2026 ###########################################################################################################################
+  
+  mutate(
+
+    # cats not included in jan 2026 SASR but in old budgets
+    est.1.rev.state.manual.104h = ifelse(FY == 2026, lag(cy.a.8.096), 0),
+    est.1.rev.state.manual.35m = ifelse(FY == 2026, lag(cy.a.8.865) * 0.8, 0),
     
+    # cats new to FY 2026 budget but not in SASR
+
+
+    # chaning incorrectly calculated cats in Jan SASR
+
+    
+    # MPSERS Other
+    est.1.rev.state.mpsers.other = 
+      ifelse(FY == 2026, 
+             ((lag(cy.a.8.079) * 0.92) + #147a(2)
+                (lag(cy.a.8.082) * 1.13) + #147e
+                cy.a.1.572 + #147a(1)
+                cy.a.1.588 + #147a(3)
+                cy.adj.1.079 + #147a(2) additional $50 million allocation adjustment for FY25
+                cy.a.1.587), 
+             est.1.rev.state.mpsers.other), 
+
+    # total manaual adjustments
+    est.1.rev.state.manual = est.1.rev.state.manual.104h + est.1.rev.state.manual.35m + est.1.rev.state.mpsers.other
+
+  ) %>%
+  
+  
+  
+  
+  
 #### 2025 ###########################################################################################################################
   
     mutate(
@@ -46,7 +79,14 @@ fa_dwork_year_changes <- function(df){
         # Should be cut of aprox 54% w/ no enrollment change  
       
   
-      est.1.rev.state.mpsers.other = lag(cy.a.8.079) + lag(cy.a.8.082) + cy.a.1.572 + cy.a.1.598 + cy.a.1.588 + cy.a.1.587,
+      est.1.rev.state.mpsers.other = ifelse(FY == 2025, 
+                                            lag(cy.a.8.079) + 
+                                              lag(cy.a.8.082) + 
+                                              cy.a.1.572 + 
+                                              cy.a.1.598 + 
+                                              cy.a.1.588 + 
+                                              cy.a.1.587,
+                                            est.1.rev.state.mpsers.other),
         # used a lag of august 147a(2) and 147e because there were no significant change to appropriation 
         # jan 2025 SASR only includes less 40% of the total appropriation 
       
