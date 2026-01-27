@@ -21,8 +21,10 @@ fa_helper_render_district_fa <- function(df, dcode, type = "paged",
                         page.cac = FALSE,
                         page.gfb = TRUE,
                         page.transfers = TRUE,
-                        page_transfers_alt,
+                        page.transfers.alt,
                         page.millages = TRUE,
+                        page.stutransfers = TRUE,
+                        page.econdisad = TRUE, 
                         page.methods = TRUE,
                         page.stim = FALSE
                         ){
@@ -76,6 +78,8 @@ fa_helper_render_district_fa <- function(df, dcode, type = "paged",
                     page_transfers = do_transfers_page,
                     page_transfers_alt = do_transfers_alt_page,
                     page_millages =  {{ page.millages }},
+                    page_stu_transfers = {{ page.stutransfers }},
+                    page_econ_disad = {{ page.econdisad }}, 
                     page_methods =   {{ page.methods }}),
       
       

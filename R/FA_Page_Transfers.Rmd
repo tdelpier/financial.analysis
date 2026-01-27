@@ -29,30 +29,14 @@ transfer_back_calc <-
          transfer.back.possible = accumulate2(.x = transfered.from.gf[-1],
                           .y = fb.total[-1],
                           .f = ~ min(.x + ..2, ..3),
-                          .init = transfered.from.gf[1])
+                          .init = transfered.from.gf[1]),
+         transfer.back.possible = ifelse(transfer.back.possible < 0 , 0, transfer.back.possible)
 
   ) %>% 
   filter(max(transfer.cumulative) > 0)
 
 
 ```
-
-```{r}
-
-var_to_words <- function(var) {
-  
-  FA_Data_District %>% 
-    filter(FY == max(FY) - 1) %>% 
-    select({{ var }}) %>% 
-    unique() %>% 
-    pull()
-  
-}
-
-```
-
-
-
 
 
 
@@ -115,7 +99,7 @@ dist_gf_rev <-
 
 # add percent of GF revenue from that year. 
 district_fb_transfer_data %>% 
-  filter(
+  filter(fund != 11,
     # fund %in% funds_to_include,
          transfered.from.gf != 0,
          FY >= fiscal.year - 11) %>% 

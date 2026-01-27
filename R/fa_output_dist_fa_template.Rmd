@@ -5,22 +5,24 @@ notes: footnotes
 # author: "Tanner Delpier, MEA Labor Economist, PhD"
 # date: "`r format(Sys.Date(), '%B %d, %Y')`"
 params:
-  district:         1010
-  page_details:     TRUE
-  page_revest:      TRUE
-  page_budcomp:     TRUE
-  page_stim:        TRUE
-  page_sam:         TRUE
-  page_found:       TRUE
-  page_revexp:      TRUE
-  page_surplus:     TRUE
-  page_cac:         TRUE
-  page_gfb:         TRUE
-  page_statecat:    TRUE
-  page_millages:    TRUE
-  page_transfers:   TRUE
-  page_transfers_alt:    FALSE
-  page_methods:     TRUE
+  district:             1010
+  page_details:         TRUE
+  page_revest:          TRUE
+  page_budcomp:         TRUE
+  page_stim:            TRUE
+  page_sam:             TRUE
+  page_found:           TRUE
+  page_revexp:          TRUE
+  page_surplus:         TRUE
+  page_cac:             TRUE
+  page_gfb:             TRUE
+  page_statecat:        TRUE
+  page_millages:        TRUE
+  page_stu_transfers:   TRUE 
+  page_econ_disad:      TRUE
+  page_transfers:       TRUE
+  page_transfers_alt:   FALSE
+  page_methods:         TRUE
 ---
 
 
@@ -102,6 +104,15 @@ sass::sass(sass::sass_file(TannersTools::tt_dir_projects("financial.analysis", "
 
 ```{r, child = if(params$page_millages == TRUE){"C:/Users/Tdelpier/vault/projects/financial.analysis/R/FA_Page_Millages.Rmd"}}
 ```
+
+
+```{r, child = if(params$page_stu_transfers == TRUE){"C:/Users/Tdelpier/vault/projects/financial.analysis/R/FA_Page_Student-Transfers.Rmd"}}
+```
+
+
+```{r, child = if(params$page_econ_disad == TRUE){"C:/Users/Tdelpier/vault/projects/financial.analysis/R/FA_Page_Econ-Disad.Rmd"}}
+```
+
 
 
 ```{r, child = if(params$page_cac == TRUE){"C:/Users/Tdelpier/vault/projects/financial.analysis/R/FA_Page_CAC.Rmd"}}
