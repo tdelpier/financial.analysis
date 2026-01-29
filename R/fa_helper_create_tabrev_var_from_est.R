@@ -24,4 +24,4 @@ create_tabrev_var_from_est <- function(df, var) {
 
 
 
-  
+ 
