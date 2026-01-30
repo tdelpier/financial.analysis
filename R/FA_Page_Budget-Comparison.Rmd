@@ -10,7 +10,7 @@ Table xx and figure x are intended to help asses the accuracy of the **current M
 
 
 
-```{r}
+```{r, eval = FALSE}
 
 
 
@@ -57,7 +57,7 @@ FA_Data_District %>%
 
 ```
 
-```{r, fig.height = 3.5}
+```{r, fig.height = 3.5, eval = FALSE}
 
 district_budget_data <- 
   FA_Data_District %>% 
@@ -228,10 +228,10 @@ FA_Data_District %>%
   scale_x_continuous(breaks = seq(1990, 2100, by = 1) )+
   scale_y_continuous(labels = number_format(big.mark = ",")) +
   labs(title = "Figure x. Surplus/Deficit",
-       subtitle = "<span style='color: #C2002F '> Original Budget</span> vs. <span style='color: #003057'>Actual</span>",
+       subtitle = "<span style='color: #C2002F '> Original Budget</span> vs. <span style='color: #000000'>Actual</span>",
        x = "Fiscal Year",
        y = "") +
-  scale_color_manual(name = "", values = c("Original Budget" = mea_red, "Actual" = mea_blue))+
+  scale_color_manual(name = "", values = c("Original Budget" = mea_red, "Actual" = "black"))+
   scale_shape_manual(name = "", values = c("Original Budget" = "circle", "Actual" = "square")) +
   theme(
     plot.subtitle = element_markdown(),
@@ -255,45 +255,149 @@ Tables xx and xx compare General Fund revenue and expenditure expected in the di
 ```{r}
 FA_Data_District %>% 
   filter(FY > (fiscal.year - prior.years.to.show),
-         !is.na(est.1.rev.total.pct.act)) %>% 
-  select(FY, db.original.total.revenue, db.final.total.revenue, 
-         fid.r.total.audit, db.orig.rev.error, db.final.rev.error) %>% 
+         FY < fiscal.year
+         ) %>% 
+  select(FY, fid.r.total.audit ,
+         db.original.total.revenue, db.orig.rev.error, db.orig.rev.pct.act,
+         db.final.total.revenue, db.final.rev.error, db.final.rev.pct.act) %>% 
   flextable() %>%
+  add_header_row(values = c("", "Original Budget", "Final Budget"),
+                 colwidths = c(2,3,3)) %>% 
   set_header_labels(
                   FY = "Fiscal Year",
                   fid.r.total.audit = "Actual",
-                  db.original.total.revenue = "Original Budget",
-                  db.final.total.revenue = "Final Budget",
-                  db.orig.rev.error = "Original Budget Error (Budget - Actual)",
-                  db.final.rev.error = "Final Budget Error (Budget - Actual)") %>% 
+                  
+                  db.original.total.revenue = "Amount",
+                  db.orig.rev.error = "Budget Error",
+                  db.orig.rev.pct.act = "% of Actual ", 
+                  
+                  db.final.total.revenue = "Amount",
+                  db.final.rev.error = "Budget Error",
+                  db.final.rev.pct.act = "% of Actual") %>% 
   colformat_double(big.mark = ",", digits = 0) %>%
   colformat_num(j = "FY", big.mark = "") %>% 
+  colformat_double(j = c("db.orig.rev.pct.act", "db.final.rev.pct.act"), suffix = "%") %>% 
+  bg(j = c("db.original.total.revenue", "db.orig.rev.error", "db.orig.rev.pct.act"), bg = mea_red_light, part = "all") %>%
+  bg(j = c("db.final.total.revenue", "db.final.rev.error", "db.final.rev.pct.act"), bg = mea_blue_light, part = "all") %>%
+  bg(j = "fid.r.total.audit", bg = mea_gray_light, part = "all") %>%
   flextable_custom_theme(title = "Table x. Budgeted General Fund Revenue")
 
 ```
 
-\newline 
+
 
 ```{r}
 
+FA_Data_District %>% 
+  select(FY, db.orig.rev.pct.act, db.final.rev.pct.act) %>%
+  pivot_longer(cols = c(db.orig.rev.pct.act, db.final.rev.pct.act)) %>%
+  mutate(name = case_when(name == "db.orig.rev.pct.act"  ~ "Original",
+                            name == "db.final.rev.pct.act" ~ "Final")) %>%
+  ggplot(aes(x = FY, y = value, color = name, linetype = name)) +
+  geom_line(size = line_size) +
+  geom_hline(yintercept = 100) +
+  scale_x_continuous(breaks = seq(1990, 2100, by = 1) )+
+  scale_y_continuous(labels = number_format(suffix = "%")) +
+  labs(title = "Figure x. Original and Final Budgeted Revenue % of Actual",
+       x = "Fiscal Year",
+       y = "") +
+  scale_color_manual(values = c(mea_blue, mea_red))+
+  scale_linetype_manual(values=c(1, 2))+
+  theme(legend.position = "bottom",
+        legend.title = element_blank(),
+        legend.box.background = element_rect(color= mea_gray, size=1))
 
+
+```
+
+
+
+
+
+
+
+\newline 
+
+```{r}
 FA_Data_District %>% 
   filter(FY > (fiscal.year - prior.years.to.show),
-         !is.na(est.1.rev.total.pct.act)) %>% 
-  select(FY, db.original.total.expenditure, db.final.total.expenditure, 
-         fid.e.total.xtrans, db.orig.exp.error, db.final.exp.error) %>% 
-  flextable() %>% 
+         FY < fiscal.year
+         ) %>% 
+  select(FY, fid.r.total.audit ,
+         db.original.total.expenditure, db.orig.exp.error, db.orig.exp.pct.act,
+         db.final.total.expenditure, db.final.exp.error, db.final.exp.pct.act) %>% 
+  flextable() %>%
+  add_header_row(values = c("", "Original Budget", "Final Budget"),
+                 colwidths = c(2,3,3)) %>% 
   set_header_labels(
                   FY = "Fiscal Year",
-                  fid.e.total.xtrans = "Actual",
-                  db.original.total.expenditure = "Original Budget",
-                  db.final.total.expenditure = "Final Budget",
-                  db.orig.exp.error = "Original Budget Error (Budget - Actual)",
-                  db.final.exp.error = "Final Budget Error (Budget - Actual)") %>% 
+                  fid.r.total.audit = "Actual",
+                  
+                  db.original.total.expenditure = "Amount",
+                  db.orig.exp.error = "Budget Error",
+                  db.orig.exp.pct.act = "% of Actual ", 
+                  
+                  db.final.total.expenditure = "Amount",
+                  db.final.exp.error = "Budget Error",
+                  db.final.exp.pct.act = "% of Actual") %>% 
   colformat_double(big.mark = ",", digits = 0) %>%
   colformat_num(j = "FY", big.mark = "") %>% 
+  colformat_double(j = c("db.orig.exp.pct.act", "db.final.exp.pct.act"), suffix = "%") %>% 
+
+  bg(j = c("db.original.total.expenditure", "db.orig.exp.error", "db.orig.exp.pct.act"), bg = mea_red_light, part = "all") %>%
+  bg(j = c("db.final.total.expenditure", "db.final.exp.error", "db.final.exp.pct.act"), bg = mea_blue_light, part = "all") %>%
+  bg(j = "fid.r.total.audit", bg = mea_gray_light, part = "all") %>%
   flextable_custom_theme(title = "Table x. Budgeted General Fund Expenditure")
+```
+
+
+
+```{r}
+
+## old budget table 
+# FA_Data_District %>% 
+#   filter(FY > (fiscal.year - prior.years.to.show),
+#          FY < fiscal.year) %>% 
+#   select(FY, db.original.total.expenditure, db.final.total.expenditure, 
+#          fid.e.total.xtrans, db.orig.exp.error, db.final.exp.error) %>% 
+#   flextable() %>% 
+#   set_header_labels(
+#                   FY = "Fiscal Year",
+#                   fid.e.total.xtrans = "Actual",
+#                   db.original.total.expenditure = "Original Budget",
+#                   db.final.total.expenditure = "Final Budget",
+#                   db.orig.exp.error = "Original Budget Error (Budget - Actual)",
+#                   db.final.exp.error = "Final Budget Error (Budget - Actual)") %>% 
+#   colformat_double(big.mark = ",", digits = 0) %>%
+#   colformat_num(j = "FY", big.mark = "") %>% 
+#   flextable_custom_theme(title = "Table x. Budgeted General Fund Expenditure")
 
 
 
 ```
+
+
+```{r}
+
+FA_Data_District %>% 
+  select(FY, db.orig.exp.pct.act, db.final.exp.pct.act) %>%
+  pivot_longer(cols = c(db.orig.exp.pct.act, db.final.exp.pct.act)) %>%
+  mutate(name = case_when(name == "db.orig.exp.pct.act"  ~ "Original",
+                            name == "db.final.exp.pct.act" ~ "Final")) %>%
+  ggplot(aes(x = FY, y = value, color = name, linetype = name)) +
+  geom_line(size = line_size) +
+  geom_hline(yintercept = 100) +
+  scale_x_continuous(breaks = seq(1990, 2100, by = 1) )+
+  scale_y_continuous(labels = number_format(suffix = "%")) +
+  labs(title = "Figure x. Original and Final Budgeted Expenditure % of Actual",
+       x = "Fiscal Year",
+       y = "") +
+  scale_color_manual(values = c(mea_blue, mea_red))+
+  scale_linetype_manual(values=c(1, 2))+
+  theme(legend.position = "bottom",
+        legend.title = element_blank(),
+        legend.box.background = element_rect(color= mea_gray, size=1))
+
+```
+
+
