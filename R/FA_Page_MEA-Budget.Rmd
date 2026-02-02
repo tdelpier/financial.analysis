@@ -13,7 +13,7 @@ No_FID_Avalible <-
   FA_Data_District %>% 
   filter(FY == fiscal.year - 1) %>% 
   select(fid.r.total) %>% 
-  mutate(no.fid.avalible = ifelse(is.na(fid.r.total), 1, 0)) %>% 
+  mutate(no.fid.avalible = ifelse(is.na(fid.r.total) | fid.r.total == 0 , 1, 0)) %>% 
   pull()
 
 
@@ -241,7 +241,7 @@ FA_Data_District %>%
   expand_limits(x = fiscal.year + 0.5  )+
   scale_x_continuous(breaks = seq(1990, 2100, by = 1) )+
   scale_y_continuous(labels = number_format(big.mark = ",")) +
-  labs(title = "Figure 1. <span style='color: #003057'> Total Revenue</span> and <span style='color: #00A651'> Revenue less Stimuls and UAAL</span>",
+  labs(title = "Figure 1. <span style='color: #003057'> Total Revenue</span> and <span style='color: #00A651'> Total less Stimulus and Net Zero</span>",
        x = "Fiscal Year",
        y = "")+
   scale_color_manual(values = c(mea_green, mea_blue)) +

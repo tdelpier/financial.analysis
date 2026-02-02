@@ -87,6 +87,7 @@ fa_dwork_clean <- function(df) {
            # + fid.e.fed.stim.crf1 + fid.e.fed.stim.crf2
            # I took this out because some districts got extra money through the counties I couldn't track. In any case it's all spent
            ,
+           
 
            fid.e.fed.stim.sum.esser1 = sum(fid.e.fed.stim.esser1, na.rm = TRUE),
            fid.e.fed.stim.sum.esser2= sum(fid.e.fed.stim.esser2, na.rm = TRUE),
@@ -114,7 +115,12 @@ fa_dwork_clean <- function(df) {
 
     # Budget
 
-    mutate(db.orig.rev.error = db.original.total.revenue - fid.r.total.audit,
+    mutate(db.original.total.revenue = ifelse(db.original.total.revenue == 0, NA, db.original.total.revenue),
+           db.final.total.revenue  = ifelse(db.final.total.revenue == 0, NA, db.final.total.revenue),
+           db.original.total.expenditure = ifelse(db.original.total.expenditure == 0, NA, db.original.total.expenditure),
+           db.final.total.expenditure = ifelse(db.final.total.expenditure == 0, NA, db.final.total.expenditure),
+           
+           db.orig.rev.error = db.original.total.revenue - fid.r.total.audit,
            db.final.rev.error = db.final.total.revenue - fid.r.total.audit,
            db.orig.rev.pct.act = (db.original.total.revenue / fid.r.total.audit) * 100,
            db.final.rev.pct.act = (db.final.total.revenue / fid.r.total.audit) * 100,

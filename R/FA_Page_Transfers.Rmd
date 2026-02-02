@@ -154,11 +154,7 @@ That equates to
 revenue and `r (var_to_words(fid.b.fb.11.pct.exp) / 100) %>% percent()`
 of total expenditure. In the last 10 years,
 `r total_transfered_out_in_10_years %>% currency(digits = 0)` was
-transferred out of the General Fund. 
-As reported in their `r var_to_words(FY)` state financial data,
-`r var_to_words(district.label)` maintained
-`r non_restricted_balance %>% currency(digits = 0)` of
-non-restricted resources (i.e., committed, assigned, or unassigned) outside of the General Fund. Up to `r total_amount_to_transfer_back %>% currency(digits = 0)` dollars may be eligible to be transferred back to the General Fund. If these resources were transferred back to the General Fund, it would total
+transferred out of the General Fund. Up to `r total_amount_to_transfer_back %>% currency(digits = 0)` dollars may be eligible to be transferred back to the General Fund. If these resources were transferred back to the General Fund, it would total
 `r new_gf_bal %>% currency(digits = 0)`--which would equate to
 `r new_gf_bal_pct_rev %>% percent()` of revenue and
 `r new_gf_bal_pct_exp %>% percent()` of expenditure respectively. 
@@ -200,7 +196,8 @@ transfer_back_calc %>%
                    digits = 0) %>% 
   colformat_num(j = "FY",
                 big.mark = "") %>% 
-  flextable_custom_theme(title = "Table 13. Transfers Back to General Fund Calculation")
+  flextable_custom_theme(title = "Table 13. Transfers Back to General Fund Calculation", 1, 0) 
+
   
 
 

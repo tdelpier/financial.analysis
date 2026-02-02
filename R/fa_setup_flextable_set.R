@@ -23,9 +23,10 @@ fa_setup_flextable_set <- function() {
 #'
 #'
 #' @export
-flextable_custom_theme <- function(flex_table, title){
+flextable_custom_theme <- function(flex_table, title, line_spacing = 0, padding = 0){
   
-  {{ flex_table }} %>% 
+  flextable_common_settings <- 
+    {{ flex_table }} %>% 
     flextable::font(fontname = "Helvetica", part = "all") %>% 
     
     set_caption(caption = as_paragraph(as_chunk({{ title }}, propos = fp_text_default(font.family = "Helvetica"))) ,
@@ -36,11 +37,32 @@ flextable_custom_theme <- function(flex_table, title){
     fontsize(size = 10, part = "all") %>% 
     
     align(align = "center", part = "header") %>% 
-    bold(bold = TRUE, part = "header") %>% 
-    # hline_top(border = fp_border_default(width = 0), part = "header") %>% 
-    line_spacing(space = .5, part = "body") %>% 
-    autofit()  %>% 
-    htmltools_value(ft.shadow = FALSE)
+    bold(bold = TRUE, part = "header") 
+  
+  
+  if({line_spacing} == 0 & {padding} == 0){
+    
+    output_flextable <- 
+      flextable_common_settings %>% 
+      line_spacing(space = .5, part = "body") %>%
+      autofit()  %>%
+      htmltools_value(ft.shadow = FALSE)
+    
+      
+    
+  } else{
+    
+    output_flextable <- 
+      flextable_common_settings %>% 
+      autofit()  %>%
+      line_spacing(space = { line_spacing }, part = "body") %>%
+      padding(padding.top = { padding }, padding.bottom = { padding }, part = "body") %>%
+      htmltools_value(ft.shadow = FALSE)
+    
+    
+  }
+  
+ return(output_flextable)
   
 } 
 

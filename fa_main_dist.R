@@ -29,7 +29,7 @@ dist_geo <- fa_import_geo() %>% rename(geometry = geom)
 # Choosing District 
  tt_dnum_from_dname("kent")
  tt_dnum_from_dname("benzie")
- tt_dnum_from_dname("wayne")
+ tt_dnum_from_dname("cadil")
  
  
 dnum_x <- tt_dnum_random(1)
@@ -50,6 +50,10 @@ dnum_x <- 2070 # munising
 dnum_x <- 25010 # flint
 dnum_x <- 50070 # Clintondale
 dnum_x <- 82160 # wayne westland
+dnum_x <- 83010 # Cadillac
+dnum_x <- 11010 # Benton Harbor
+dnum_x <- 27010 # bessemer missing data
+
 
 FA_Data_District <-
   FA_Data %>%

@@ -58,9 +58,11 @@ fa_dwork_est <- function(df){
     mutate(manual = 
              lag(cy.a.8.096) +  # 104h
              (lag(cy.a.8.865) * 0.8) + #35m
-             lag(cy.a.8.260),  #99h
+             lag(cy.a.8.260) + #99h
+             lag(cy.a.8.053) # 21h,  
            
            rev.state.safsr.fid.error = (fid.r.state - onetime.safsr) - (cy.a.8.000 - non.gf.safsr.rev), 
+           rev.state.safsr.fid.error = ifelse(rev.state.safsr.fid.error < 0 & !dnum %in% c(82170, 82390), 0, rev.state.safsr.fid.error), #Wyandotte and Northville splits their revenue in a very strange way. This makes it close to accurate
            listed.counted.rev.state = rowSums(across(any_of(starts_with("tab.rev.state."))), na.rm = TRUE),
            tab.rev.state.other = ifelse(FY != fiscal.year,  fid.r.state - listed.counted.rev.state, NA),
            tab.rev.state.other = ifelse(FY == fiscal.year, 
@@ -78,6 +80,10 @@ fa_dwork_est <- function(df){
                                    ((stim.alloc.total - fid.e.fed.stim.sum.total)),
                                    0),
       est.1.rev.fed.stim = ifelse(est.1.rev.fed.stim < 0, 0, est.1.rev.fed.stim),
+      fid.r.fed.stim = ifelse(FY == 2024 & dnum == 11010,
+                              fid.r.fed.stim + 11654288, fid.r.fed.stim), # Benton Harbor did not identify a lot of federal stimulus revenue
+      
+      
       est.1.rev.fed = est.1.rev.fed.other + est.1.rev.fed.stim, 
       
       est.1.rev.fed.error = est.1.rev.fed - fid.r.fed,

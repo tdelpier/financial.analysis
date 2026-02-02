@@ -110,7 +110,7 @@ FA_Data_District %>%
                    digits = 0) %>% 
   colformat_num(j = "Fiscal Year",
                 big.mark = "") %>% 
-  flextable_custom_theme(title = "Table 9. Other Fund Balancesv by Fiscal Year")
+  flextable_custom_theme(title = "Table 9. Other Fund Balances by Fiscal Year")
 
 
 
