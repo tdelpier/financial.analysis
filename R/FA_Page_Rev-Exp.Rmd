@@ -30,7 +30,7 @@ FA_Data_District %>%
   bg(j = "fid.r.total.audit", bg = mea_green_light, part = "all") %>%
   bg(j = "fid.e.total.xtrans", bg = mea_red_light, part = "all") %>% 
 
-   flextable_custom_theme(title = "Table x. General Fund Revenue and Expenditure")
+   flextable_custom_theme(title = "Table 6. Actual General Fund Revenue and Expenditure")
 
 
 
@@ -49,33 +49,15 @@ FA_Data_District %>%
 
   
     mutate(name = case_when(name == "fid.r.total.audit"  ~ "Revenue",
-                            name == "fid.e.total.xtrans" ~ "Expenditure")) %>% 
-  # mutate(label = case_when(FY == max(FY) & name == "fid.r.total.audit"  ~ "Revenue      ",
-  #                          FY == max(FY) & name == "fid.e.total.xtrans" ~ "Expenditure")) %>% 
-  
+                            name == "fid.e.total.xtrans" ~ "Expenditure")) %>%
   
   ggplot(aes(x = FY, y = value, 
              group = name,  color = name, linetype = name))+
   geom_line(size = line_size) +
   expand_limits(x = fiscal.year + 0.5  )+
-  
-  
-  # geom_label_repel(aes(label = label, fill = name),
-  #                  color = "white",
-  #                 nudge_x = .5,
-  #                 na.rm = TRUE)+
-  
-    # geom_text_repel(aes(label = label, color = name),
-    #                # color = "white",
-    #                  min.segment.length = 0.2,
-    #                box.padding = 1,
-    #                # force = .5,
-    #               # nudge_x = .5,
-    #               na.rm = TRUE)+
-  
   scale_x_continuous(breaks = seq(1990, 2100, by = 1) )+
   scale_y_continuous(labels = number_format(big.mark = ",")) +
-  labs(title = "Figure x. <span style='color: #00A651'> Revenue</span> and <span style='color: #C2002F'>Expenditure</span>",
+  labs(title = "Figure 5. <span style='color: #00A651'> Revenue</span> and <span style='color: #C2002F'>Expenditure</span>",
        x = "Fiscal Year",
        y = "")+
   scale_color_manual(values = c(mea_red, mea_green)) +

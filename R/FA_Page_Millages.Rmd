@@ -35,8 +35,10 @@ FA_Data_District %>%
   set_header_labels(name = "Millage Type",
                     value = "Millage Rate",
                     tv = "Taxable Value (TV)",
-                    est.rev = "Estimated Revenue") %>% 
-  flextable_custom_theme(title = "Table x. Estimated Millage Revenue")
+                    est.rev = "Estimated Revenue") %>%
+  colformat_double(j = "value", digits = 4) %>%
+
+  flextable_custom_theme(title = "Table 14. Estimated Millage Revenue")
 
 
 

@@ -88,7 +88,7 @@ new_gf_bal_pct_exp <- new_gf_bal / var_to_words(fid.e.total.xtrans)
 
 ```
 
-Dollars transferred out of the General Fund are not recorded in the General Fund balance. While many interfund transfers are routine and benign, large transfers out of the General Fund can make the district appear artificially worse off financially. Table xx lists each transfer out of the General Fund. Note, some transfers, including those to the food service fund, cannot be transferred back to the General Fund.  
+Dollars transferred out of the General Fund are not recorded in the General Fund balance. While many interfund transfers are routine and benign, large transfers out of the General Fund can make the district appear artificially worse off financially. Table 11 lists each transfer out of the General Fund. Note, some transfers, including those to the food service fund, cannot be transferred back to the General Fund.  
 
 
 ```{r}
@@ -119,7 +119,7 @@ district_fb_transfer_data %>%
   colformat_num(j = "FY", big.mark = "") %>%
   colformat_double(j = "pct.of.gf.rev", suffix = "%", digits = 2) %>% 
   colformat_double(j = c("transfered.from.gf"), big.mark = ",", digits = 0) %>%
-  flextable_custom_theme(title = "Table x. Transfers Out of the General Fund")
+  flextable_custom_theme(title = "Table 11. Transfers Out of the General Fund")
 
 
 ```
@@ -177,12 +177,12 @@ transfer_back_calc %>%
                     transfer.back.possible = "GF transfer back calculation") %>% 
   colformat_double(j = c("transfer.back.possible"), big.mark = ",", digits = 0) %>% 
   bold(i = ~fund.name.trans.to == "Total") %>% 
-  flextable_custom_theme(title =  paste0("Table x. Estimated Amount to Transfer Back to General Fund, FY ", 
+  flextable_custom_theme(title =  paste0("Table 12. Estimated Amount to Transfer Back to General Fund, FY ", 
                                     fiscal.year-1))
 
 ```
 
-The following table shows the iterative calculation by fund used to estimate the total assets eligible to be transfered back to the General Fund. The calculation assumes that resources transferred out of the General Fund can be transferred back unless the receiving fund balance falls below the cumulative transfer in. 
+Table 13 shows the iterative calculation, by fund, used to estimate the total assets eligible to be transferred back to the General Fund. The calculation assumes that resources transferred out of the General Fund can be transferred back unless the receiving fund balance falls below the cumulative transfer in. 
 
 ```{r}
 
@@ -200,7 +200,7 @@ transfer_back_calc %>%
                    digits = 0) %>% 
   colformat_num(j = "FY",
                 big.mark = "") %>% 
-  flextable_custom_theme(title = "Table x. Transfers Back to General Fund Calculation")
+  flextable_custom_theme(title = "Table 13. Transfers Back to General Fund Calculation")
   
 
 

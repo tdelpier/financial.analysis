@@ -38,7 +38,7 @@ dnum_x <- 15010 # beaver island
 # dnum_x <- 82055 # Grosse Pointe 
 # dnum_x <- 43040 # baldwin
 dnum_x <- 52170 # Marquette
-# dnum_x <-  33020 # Lansing
+dnum_x <-  33020 # Lansing
 dnum_x <- 76210 #sandusky
 dnum_x <- 82090 # Lincoln Park
 dnum_x <- 82340 # huron problem
@@ -51,31 +51,29 @@ dnum_x <- 25010 # flint
 dnum_x <- 50070 # Clintondale
 dnum_x <- 82160 # wayne westland
 
-FA_Data_District <-  
+FA_Data_District <-
   FA_Data %>%
   filter(dnum == dnum_x ,
          FY >= (fiscal.year - 10)) %>%
-  arrange(FY) %>% 
+  arrange(FY) %>%
   ungroup()
 
 
-
-
-FA_Data_District %>% 
+FA_Data %>% 
   fa_helper_render_district_fa(dnum_x,
-                               type = "web", # "web", "paged", or "slides"
-                               page.details = FALSE,
+                               type = "paged", # "web", "paged", or "slides"
+                               page.details = TRUE,
                                page.revest = TRUE, 
                                page.budcomp = TRUE,
-                               page.sam = FALSE,
-                               page.found = FALSE,
-                               page.revexp = FALSE,
-                               page.gfb = FALSE,
-                               page.transfers = FALSE,
-                               page.millages = FALSE,
-                               page.stutransfers = FALSE,
-                               page.econdisad = FALSE,
-                               page.methods = FALSE,
+                               page.sam = TRUE,
+                               page.found = TRUE,
+                               page.revexp = TRUE,
+                               page.gfb = TRUE,
+                               page.transfers = TRUE,
+                               page.millages = TRUE,
+                               page.stutransfers = TRUE,
+                               page.econdisad = TRUE,
+                               page.methods = TRUE,
                                
                                # not using
                                page.stim = FALSE,
@@ -85,13 +83,9 @@ FA_Data_District %>%
                                )
 
 
+rm(FA_Data_District, districts, dnum_x, counter, total)
 
-fa_output_district_fa(dnum_x)
-
-
-# There's a better way to do this
-  # want to pull all the dcodes and make sure the data is correct before running
-dnum_x <- 
+districts <- 
   district_id %>% 
   mutate(dnum = as.numeric(dcode)) %>% 
   tt_dnum_isd(dnum) %>% 
@@ -99,4 +93,24 @@ dnum_x <-
   filter(flag.charter == 0,
          flag.isd == 0) %>% 
   select(dnum) %>% pull()
+
+
+# districts <- tt_dnum_random(10)
+
+counter <-  0
+total <- length(districts)
+
+for (dnum_x in districts) {
+  
+  counter <- counter + 1
+  message(paste0("Processing ", counter, " of ", total, " (District: ", dnum_x, ")"))
+  
+  fa_output_district_fa(dnum_x)
+  
+}
+
+
+# There's a better way to do this
+  # want to pull all the dcodes and make sure the data is correct before running
+
 

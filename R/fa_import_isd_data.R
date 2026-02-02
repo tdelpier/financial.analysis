@@ -37,6 +37,10 @@ fa_import_isd_data <- function() {
     tt_dnum_isd(dnum) %>% 
     filter(flag.isd == 1)
   
+  isd_taxes <- 
+    isd_cydata %>% 
+    mutate(fund = 11) %>%  # taxable value isn't in a fund, but I don't want to duplicate
+    select(FY, dnum, fund, milloper, enhancemnt, millopdebt, millspeced, millvoced, sev)
   
   isd_dnums_dnames <- 
     isd_cydata %>% 
@@ -91,6 +95,7 @@ fa_import_isd_data <- function() {
     rev %>% 
     full_join(exp, join_by(FY, dnum, fund)) %>% 
     full_join(bal, join_by(FY, dnum, fund)) %>% 
+    full_join(isd_taxes, join_by(FY, dnum, fund)) %>%
     mutate(bal.pct.rev = bal / rev * 100,
            bal.pct.exp = bal/ exp * 100) %>% 
     replace(is.na(.), 0) %>% 
@@ -120,6 +125,7 @@ fa_import_isd_data <- function() {
     rename(transfer.to.fund = fund,
            transfer.to.fund.name = fund.name) %>% 
     mutate(transfer.to.fund.name = ifelse(transfer.to.fund == 8200, "Payment to other districts", transfer.to.fund.name),
+           transfer.to.fund.name = ifelse(transfer.to.fund == 8900, "Other Transactions", transfer.to.fund.name),
            transfer.to.fund.name = ifelse(transfer.to.fund == 8500, "Sub-grantee flow through", transfer.to.fund.name))
   
   

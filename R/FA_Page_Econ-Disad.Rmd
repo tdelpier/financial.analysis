@@ -12,17 +12,17 @@ FA_Data_District %>%
   select(FY, cy.d.pylunch.pct.of.pupilcnt, cy.d.pylunch, cy.d.pylunch.chg, cy.d.pylunch.pct.chg) %>% 
   flextable() %>%
   set_header_labels(FY = "Fiscal Year",
-                    cy.d.pylunch.pct.of.pupilcnt = "Pct of Total Students",
+                    cy.d.pylunch.pct.of.pupilcnt = "% of Total Students",
                     cy.d.pylunch = "Economically Disadvantaged Students",
                     cy.d.pylunch.chg = "Change",
-                    cy.d.pylunch.pct.chg = "Pct Change"
+                    cy.d.pylunch.pct.chg = "% Change"
                     ) %>%
   colformat_double(big.mark = ",", digits = 0) %>%
   colformat_num(j = "FY", big.mark = "") %>%
   colformat_double(j = c("cy.d.pylunch.pct.of.pupilcnt", "cy.d.pylunch.pct.chg"), suffix = "%") %>%
   bg(j = "cy.d.pylunch.pct.of.pupilcnt", bg = mea_gray_light, part = "all") %>%
 
-  flextable_custom_theme(title = "Table xx. Economically Disadvantaged Students")
+  flextable_custom_theme(title = "Table 19. Economically Disadvantaged Students")
 
 
 
@@ -37,7 +37,7 @@ FA_Data_District %>%
   geom_area(aes(y = cy.d.pylunch.pct.of.pupilcnt), color = mea_gray, fill = mea_gray_light, size = line_size) +
   scale_x_continuous(breaks = seq(1990, 2100, by = 1) )+
   scale_y_continuous(labels = number_format(big.mark = ",", suffix = "%"))+
-  labs(title = "Figure x. Percent of Economically Disadvantaged Students",
+  labs(title = "Figure 11. Percent of Economically Disadvantaged Students",
        x = "Fiscal Year",
        y = "") +
    theme(legend.box.background = element_rect(color= mea_gray, size=1),

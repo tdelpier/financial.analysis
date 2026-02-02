@@ -4,7 +4,7 @@ output: html_document
 
 ## Student Transfers
 
-Michigan's school choice laws permit resident students to transfer to a non-resident district or charter school. Conversely, student from outside the district can transfer into the district subject to district policies. Table xx and figure xx show the number of students FTE transferring into and out of the district over time. 
+Michigan's school choice laws permit resident students to transfer to a non-resident district or charter school. Conversely, student from outside the district can transfer into the district subject to district policies. Table 18 and figure 9 show the number of students FTE transferring into and out of the district over time. 
 
 
 ```{r}
@@ -24,7 +24,7 @@ FA_Data_District %>%
   bg(j = "nrs.stu.transfer.out", bg = mea_red_light, part = "all") %>% 
   bg(j = "nrs.stu.transfer.net", bg = mea_blue_light, part = "all") %>% 
 
-  flextable_custom_theme(title = "Table x. Student Transfers")
+  flextable_custom_theme(title = "Table 18. Student Transfers")
 
 
 ```
@@ -37,16 +37,20 @@ FA_Data_District %>%
   filter(FY != fiscal.year) %>% 
   select(FY, nrs.stu.transfer.in, nrs.stu.transfer.out, nrs.stu.transfer.net) %>% 
   pivot_longer(cols = c(nrs.stu.transfer.in, nrs.stu.transfer.out, nrs.stu.transfer.net)) %>% 
+  mutate(name = case_match(name,
+                           "nrs.stu.transfer.in" ~ "Transfer In",
+                           "nrs.stu.transfer.out" ~ "Transfer Out",
+                           "nrs.stu.transfer.net" ~ "Net Transfer")) %>% 
   ggplot(aes(x = FY, y = value, 
              group = name,  color = name, linetype = name))+
   geom_line(size = line_size) +
   geom_hline(yintercept = 0) +
   scale_x_continuous(breaks = seq(1990, 2100, by = 1) )+
   scale_y_continuous(labels = number_format(big.mark = ","))+
-  scale_color_manual(values = c(mea_green, mea_blue, mea_red)) +
-  scale_linetype_manual(values=c(6, 1, 3)) +
+  scale_color_manual(values = c(mea_blue, mea_green, mea_red)) +
+  scale_linetype_manual(values=c(1, 6, 3)) +
 
-  labs(title = "Figure x. Student Transfers",
+  labs(title = "Figure 10. Student Transfers",
        x = "Fiscal Year",
        y = "") +
    theme(legend.box.background = element_rect(color= mea_gray, size=1),

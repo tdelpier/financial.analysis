@@ -27,6 +27,8 @@ fa_dwork_est <- function(df){
     create_tabrev_var_from_icd(var_name = "tab.rev.state.sped",            c("033", "081", "036", "380", "430", "440")) %>%
     create_tabrev_var_from_icd(var_name = "tab.rev.state.31a",             c("231")) %>% 
     create_tabrev_var_from_icd(var_name = "tab.rev.state.41"  ,            c("250")) %>% 
+    mutate(tab.rev.state.41 = ifelse(FY == 2026, lag(cy.a.8.250) * 1.25, tab.rev.state.41)) %>% 
+    
     create_tabrev_var_from_icd(var_name = "tab.rev.state.31aa" ,           c("174")) %>% 
     create_tabrev_var_from_icd(var_name = "tab.rev.state.29",              c("076")) %>% 
     create_tabrev_var_from_icd(var_name = "tab.rev.state.22l"  ,           c("106")) %>% 
@@ -49,9 +51,9 @@ fa_dwork_est <- function(df){
                   .default = tab.rev.state.mpsers.other)) %>% 
     
     
-    create_tabrev_var_from_icd(var_name = "in.jan", c("037", "046", "064", "171", "175", "228", "251", "666", "848", "1023")) %>% # things to keep unchanged and aggregated
+    create_tabrev_var_from_icd(var_name = "in.jan", c("037", "046", "064", "171", "175", "666", "848", "1023")) %>% # things to keep unchanged and aggregated
     create_tabrev_var_from_icd(var_name = "onetime.safsr", c("1023") ) %>% 
-    create_tabrev_var_from_icd(var_name = "non.gf.safsr.rev" ,   c("235", "335", "354")) %>% 
+    create_tabrev_var_from_icd(var_name = "non.gf.safsr.rev" ,   c("235", "335", "354", "251", "228")) %>% 
     
     mutate(manual = 
              lag(cy.a.8.096) +  # 104h

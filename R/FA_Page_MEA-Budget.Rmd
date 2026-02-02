@@ -4,7 +4,7 @@
 
 ## Revenue Estimate
 
-The table below uses state data to display actual revenue for FY `r fiscal.year - 1` and estimated revenue for FY `r fiscal.year`. Data for the actual revenue column comes from the [Financial Information Database](https://www.mischooldata.org/financial-data-files/) (FID) as well as the the end-of-year August [State Aid Status Report](https://mdoe.state.mi.us/samspublic/Home/StatusReport) (SASR). The FY `r fiscal.year` estimate is produced by updating actual revenue from FY `r fiscal.year - 1` with January SASR data. Additional adjustments are made where payments in the January SASR do not reflect the [state's budget](https://www.legislature.mi.gov/Laws/MCLTablesAndAppropriationActs).
+Table 1 uses state data to display actual revenue for FY `r fiscal.year - 1` and estimated revenue for FY `r fiscal.year`. Data for the actual revenue column comes from the [Financial Information Database](https://www.mischooldata.org/financial-data-files/) (FID) as well as the the end-of-year August [State Aid Status Report](https://mdoe.state.mi.us/samspublic/Home/StatusReport) (SASR). The FY `r fiscal.year` estimate is produced by updating actual revenue from FY `r fiscal.year - 1` with January SASR data. Additional adjustments are made where payments in the January SASR do not reflect the [state's budget](https://www.legislature.mi.gov/Laws/MCLTablesAndAppropriationActs). Rows highlighted in gray represent one-time or zero net appropriations. 
 
 
 ```{r}
@@ -177,7 +177,7 @@ if(No_FID_Avalible == 0 ){
       # "Total less Stimulus and UAAL", 
                                "Total less Stimulus and Net Zero"), 
        bg = mea_green_light,  part = "body") %>% 
-    flextable_custom_theme(title = "Table x. Revenue Estimate")
+    flextable_custom_theme(title = "Table 1. Revenue Estimate")
     
 
 }
@@ -209,12 +209,12 @@ FA_Data_District %>%
   bg(j = "tab.rev.total.xstim.xnet", bg = mea_green_light, part = "all") %>%
   bg(j = "tab.rev.total", bg = mea_blue_light, part = "all") %>%
 
-  flextable_custom_theme(title = "Table x. Revenue Less Stimulus and UAAL")
+  flextable_custom_theme(title = "Table 2. Revenue Less Stimulus, UAAL, and Other Net")
 
 
 ```
 
-Note: "Revenue Less Stimulus and UAAL" is the preferred measure to fill out MEA's Cost Alignment Calculator (CAC). These dollars represent revenues that are not one-time federal stimulus nor 147c payments that must by law be submitted to the Office of Retirement Services (ORS).
+Note: "Total less Stimulus and Net Zero" is the preferred measure to fill out MEA's Cost Alignment Calculator (CAC). These dollars represent revenues that are not one-time federal stimulus nor net zero payments (i.e., those appropriations that come with a corresponding cost increase). Specifically, the green column excludes federal stimulus as well as sections 27l(2), 27l(4), 147a(4), 147c(1), 147c(2), and 147g. These stimulus and zero net revenues are highlighted in gray in tables 1 and 2. 
 
 ```{r}
 
@@ -241,7 +241,7 @@ FA_Data_District %>%
   expand_limits(x = fiscal.year + 0.5  )+
   scale_x_continuous(breaks = seq(1990, 2100, by = 1) )+
   scale_y_continuous(labels = number_format(big.mark = ",")) +
-  labs(title = "Figure x. <span style='color: #003057'> Total Revenue</span> and <span style='color: #00A651'> Revenue less Stimuls and UAAL</span>",
+  labs(title = "Figure 1. <span style='color: #003057'> Total Revenue</span> and <span style='color: #00A651'> Revenue less Stimuls and UAAL</span>",
        x = "Fiscal Year",
        y = "")+
   scale_color_manual(values = c(mea_green, mea_blue)) +

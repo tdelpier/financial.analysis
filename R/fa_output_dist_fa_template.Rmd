@@ -65,46 +65,32 @@ sass::sass(sass::sass_file(TannersTools::tt_dir_projects("financial.analysis", "
 
 ```
 
-
 ```{r, child = if(params$page_revest == TRUE){"C:/Users/Tdelpier/vault/projects/financial.analysis/R/FA_Page_MEA-Budget.Rmd"}}
 ```
-
 
 ```{r, child = if(params$page_budcomp == TRUE){"C:/Users/Tdelpier/vault/projects/financial.analysis/R/FA_Page_Budget-Comparison.Rmd"}}
 ```
 
-
-```{r, child = if(params$page_sam == TRUE){"C:/Users/Tdelpier/vault/projects/financial.analysis/R/FA_Page_StateAidMembership.Rmd"}}
-```
-
-
-```{r, child = if(params$page_found == TRUE){"C:/Users/Tdelpier/vault/projects/financial.analysis/R/FA_Page_Foundation.Rmd"}}
-```
-
-
 ```{r, child = if(params$page_revexp == TRUE){"C:/Users/Tdelpier/vault/projects/financial.analysis/R/FA_Page_Rev-Exp.Rmd"}}
 ```
-
-
-```{r, child = if(params$page_surplus == TRUE){"C:/Users/Tdelpier/vault/projects/financial.analysis/R/FA_Page_Surplus-Deficit.Rmd"}}
-```
-
 
 ```{r, child = if(params$page_gfb == TRUE){"C:/Users/Tdelpier/vault/projects/financial.analysis/R/FA_Page_Fund-Balance.Rmd"}}
 ```
 
-
 ```{r,  child = if(params$page_transfers == TRUE){"C:/Users/Tdelpier/vault/projects/financial.analysis/R/FA_Page_Transfers.Rmd" }}
 ```
-
 
 ```{r,  child = if(params$page_transfers_alt == TRUE){"C:/Users/Tdelpier/vault/projects/financial.analysis/R/FA_Page_Transfers-Alt.Rmd"}}
 ```
 
-
 ```{r, child = if(params$page_millages == TRUE){"C:/Users/Tdelpier/vault/projects/financial.analysis/R/FA_Page_Millages.Rmd"}}
 ```
 
+```{r, child = if(params$page_found == TRUE){"C:/Users/Tdelpier/vault/projects/financial.analysis/R/FA_Page_Foundation.Rmd"}}
+```
+
+```{r, child = if(params$page_sam == TRUE){"C:/Users/Tdelpier/vault/projects/financial.analysis/R/FA_Page_StateAidMembership.Rmd"}}
+```
 
 ```{r, child = if(params$page_stu_transfers == TRUE){"C:/Users/Tdelpier/vault/projects/financial.analysis/R/FA_Page_Student-Transfers.Rmd"}}
 ```
@@ -114,6 +100,14 @@ sass::sass(sass::sass_file(TannersTools::tt_dir_projects("financial.analysis", "
 ```
 
 
+```{r, child = if(params$page_methods == TRUE){"C:/Users/Tdelpier/vault/projects/financial.analysis/R/FA_Page_Data-and-Methods.Rmd"}}
+```
+
+
+
+
+
+
 
 ```{r, child = if(params$page_cac == TRUE){"C:/Users/Tdelpier/vault/projects/financial.analysis/R/FA_Page_CAC.Rmd"}}
 ```
@@ -121,9 +115,8 @@ sass::sass(sass::sass_file(TannersTools::tt_dir_projects("financial.analysis", "
 ```{r, child = if(params$page_stim == TRUE){"C:/Users/Tdelpier/vault/projects/financial.analysis/R/FA_Page_Fed-Stim.Rmd"}}
 ```
 
-```{r, child = if(params$page_methods == TRUE){"C:/Users/Tdelpier/vault/projects/financial.analysis/R/FA_Page_Data-and-Methods.Rmd"}}
+```{r, child = if(params$page_surplus == TRUE){"C:/Users/Tdelpier/vault/projects/financial.analysis/R/FA_Page_Surplus-Deficit.Rmd"}}
 ```
-
 
 
 

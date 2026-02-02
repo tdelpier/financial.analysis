@@ -29,7 +29,7 @@ FA_Data_District %>%
                          "fid.b.fb.11.pct.exp"), 
                    suffix = "%") %>% 
   bg(j = "fid.b.fb.11.pct.exp", bg = mea_gray_light , part = "all") %>% 
-  flextable_custom_theme(title = "Table x. General Fund Balance")
+  flextable_custom_theme(title = "Table 7. General Fund Balance")
  
 
 ```
@@ -49,7 +49,7 @@ FA_Data_District %>%
   scale_y_continuous(labels = percent_format(), 
                      # limits = c(0, max_fb)
                      )+
-  labs(title = "Figure xx. General Fund Balance % Expenditure",
+  labs(title = "Figure 6. General Fund Balance % Expenditure",
        x = "Fiscal Year",
        y = "") 
 
@@ -59,7 +59,7 @@ FA_Data_District %>%
 
 ### Fund Balance Class
 
-Fund balances can be broken down into five classes based on the type and source of restriction. From most to least limited, those classes are nonspendable, restricted, committed, assigned, and unassigned. Nonspendable assets are those not available for spending such as pre-paid expenditures. Restricted amounts are legally limited by an external body such as the state or federal governments. Restricted resources include state categorical funding, federal grants, as well as sinking funds and bonded capital debt. Committed assets are those constrained by the school district itself using the highest level of decision making authority (a school board resolution). Assigned assets are those intended to be used for a specific purpose and is typically determined by the district's finance committee or an official authorized by the school board. Unassigned assets are all remaining resources after nonspendable, restricted, committed, and assigned.
+Fund balances can be broken down into five classes based on the type and source of restriction. From most to least limited, those classes are nonspendable, restricted, committed, assigned, and unassigned. **Nonspendable** assets are those not available for spending such as pre-paid expenditures. **Restricted** amounts are legally limited by an external body such as the state or federal governments. Restricted resources include state categorical funding, federal grants, as well as sinking funds and bonded capital debt. **Committed** assets are those constrained by the school district itself using the highest level of decision making authority (a school board resolution). **Assigned** assets are those intended to be used for a specific purpose and is typically determined by the district's finance committee or an official authorized by the school board. **Unassigned** assets are all remaining resources after nonspendable, restricted, committed, and assigned.
 
 Committed and assigned assets can be un-committed or un-assigned in the same manner they were originally initiated. While nonspendable and restricted fund balance classes are unalterable by the school district, committed and assigned can be reclassified as unassigned.
 
@@ -83,7 +83,7 @@ FA_Data_District %>%
                    digits = 0) %>% 
     colformat_num(j = "FY",
                 big.mark = "") %>%
-  flextable_custom_theme(title = "Table x. General Fund Balance by Balance Class")
+  flextable_custom_theme(title = "Table 8. General Fund Balance by Balance Class")
 
 ```
 
@@ -110,7 +110,7 @@ FA_Data_District %>%
                    digits = 0) %>% 
   colformat_num(j = "Fiscal Year",
                 big.mark = "") %>% 
-  flextable_custom_theme(title = "Table x. Other Fund Balancesv by Fiscal Year")
+  flextable_custom_theme(title = "Table 9. Other Fund Balancesv by Fiscal Year")
 
 
 
@@ -158,7 +158,7 @@ FA_Data_District %>%
   set_header_labels(fund.name = "Fund Name") %>% 
   colformat_double(big.mark = ",",
                    digits = 0) %>% 
-  flextable_custom_theme(title = paste0("Table x. Other Fund Balances by Balance Class, FY ", 
+  flextable_custom_theme(title = paste0("Table 10. Other Fund Balances by Balance Class, FY ", 
                                    fiscal.year-1))
 
 
@@ -166,7 +166,7 @@ FA_Data_District %>%
 
 Notes:
 
--   non-General funds names may not match the audit. While district's have flexibility in fund naming internally, fund names are standardized for state reporting.
+-   Non-General funds names may not match the audit. While district's have flexibility in fund naming internally, fund names are standardized for state reporting.
 -   Districts with multiple funds of the same kind are combined in this report. For more detail, refer to the audit.
 -   School district classification of non-General fund balances may be inaccurate. Occasionally, school districts will classify revenue from a bonded capital project or other restricted revenue source as assigned or committed.
 

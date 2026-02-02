@@ -1,12 +1,11 @@
 ```{r}
 
-prior.years.to.show <- 10
+prior.years.to.show <- 12
 
 ```
 
 ## Budget Comparison
 
-Table xx and figure x are intended to help asses the accuracy of the **current MEA revenue estimate** compared to the district's original budget. Consequently, table xx and figure xx do not show the MEA revenue estimated in that year. Rather, they apply the current mechanical model used to estimate current revenue to historical data. Note, **baseline revenue** assumes no change in revenue from the previous fiscal year. 
 
 
 
@@ -152,16 +151,8 @@ legend = "")+
 
 ```
 
-\newpage
+Table 3 and figure 2 compares the surplus or deficit expected by the district in their original and final budgets  to the actual surplus or deficit. A **surplus** occurs when revenue is greater than expenditure within a fiscal year. A **deficit** occurs when revenue is less than expenditure within a fiscal year. 
 
-### Surplus/Deficit
-
-Table xx and figure xx compares the surplus or deficit expected by the district in their original budget  to the actual surplus or deficit. A **surplus** occurs when revenue is greater than expenditure within a fiscal year. A **deficit** occurs when revenue is less than expenditure within a fiscal year. 
-
-
-```{r}
-prior.years.to.show <- 9
-```
 
 
 ```{r}
@@ -170,36 +161,41 @@ prior.years.to.show <- 9
 FA_Data_District %>%
   ungroup() %>% 
   filter(FY != fiscal.year) %>% 
-  select(FY, db.orig.surplus.deficit, fid.surplus.deficit, db.orig.surplus.error) %>% 
+  # mutate(db.orig.surplus.deficit.pct.error = (db.orig.surplus.error / fid.surplus.deficit) * 100,
+  #        db.final.surplus.deficit.pct.error = (db.final.surplus.error / fid.surplus.deficit)* 100) %>% 
+  select(FY, fid.surplus.deficit, 
+         db.orig.surplus.deficit,  db.orig.surplus.error,
+         db.final.surplus.deficit, db.final.surplus.error) %>% 
   flextable() %>%
+    add_header_row(values = c("", "Original Budget", "Final Budget"),
+                 colwidths = c(2,2,2)) %>% 
   set_header_labels(FY = "Fiscal Year",
                     fid.surplus.deficit = "Actual",
-                    db.orig.surplus.deficit = "Original Budget",
-                    db.orig.surplus.error = "Original Budget Error (Budget - Actual)") %>%
+                    db.orig.surplus.deficit = "Amount",
+                    db.orig.surplus.error = "Budget Error",
+                    # db.orig.surplus.deficit.pct.error = "% Error",
+                    
+                    db.final.surplus.deficit = "Amount",
+                    db.final.surplus.error = "Budget Error"
+                    # db.final.surplus.deficit.pct.error = "% Error"
+                    ) %>%
   colformat_num(j = "FY",
                 big.mark = "") %>%
   colformat_double(j = c("fid.surplus.deficit",
-                         "db.orig.surplus.deficit"),
+                         "db.orig.surplus.deficit",
+                         "db.orig.surplus.error", 
+                         "db.final.surplus.deficit",
+                         "db.final.surplus.error"),
                    big.mark = ",",
                    digits = 0) %>%
-  
-  # Option #1. this code does a light shade for the two columns.
-  bg(j = "fid.surplus.deficit", bg = mea_blue_light, part = "all") %>%
-  bg(j = "db.orig.surplus.deficit", bg = mea_red_light, part = "all") %>% 
-  
-  
-  # option #2. dark shade on the header. Decided to keep it the same
-      # bg(j = "fid.surplus.deficit", bg = mea_blue, part = "header") %>%
-      # color(j = "fid.surplus.deficit",
-      #       color = "white", part = "header") %>%
-      # 
-      # bg(j = "db.orig.surplus.deficit", bg = mea_red, part = "header") %>%
-      # color(j = "db.orig.surplus.deficit",
-      #       color = "white", part = "header") %>%
-
-  flextable_custom_theme(title = "Table x. Surplus/Deficit, Original Budget and Actual")
-
-
+  # colformat_double(j = c("db.orig.surplus.deficit.pct.error", 
+  #                        "db.final.surplus.deficit.pct.error"), suffix = "%") %>% 
+  bg(j = "fid.surplus.deficit", bg = mea_gray_light, part = "all") %>%
+  bg(j = c("db.orig.surplus.deficit", 
+           "db.orig.surplus.error"), bg = mea_red_light, part = "all") %>% 
+    bg(j = c("db.final.surplus.deficit", 
+             "db.final.surplus.error"), bg = mea_blue_light, part = "all") %>% 
+  flextable_custom_theme(title = "Table 3. Surplus/Deficit, Original Budget and Actual")
 
 
 ```
@@ -224,15 +220,19 @@ FA_Data_District %>%
                  shape = "Original Budget"),
            # color = mea_red, 
            size = 3, alpha = 1) +
-  
+    geom_point(aes(y = db.final.surplus.deficit, 
+                 color = "Final Budget",
+                 shape = "Final Budget"),
+           # color = mea_red, 
+           size = 3, alpha = 1) +
   scale_x_continuous(breaks = seq(1990, 2100, by = 1) )+
   scale_y_continuous(labels = number_format(big.mark = ",")) +
-  labs(title = "Figure x. Surplus/Deficit",
-       subtitle = "<span style='color: #C2002F '> Original Budget</span> vs. <span style='color: #000000'>Actual</span>",
+  labs(title = "Figure 2. Surplus/Deficit",
+       # subtitle = "<span style='color: #C2002F '> Original Budget</span> vs. <span style='color: #3F3F3F'>Actual</span>",
        x = "Fiscal Year",
        y = "") +
-  scale_color_manual(name = "", values = c("Original Budget" = mea_red, "Actual" = "black"))+
-  scale_shape_manual(name = "", values = c("Original Budget" = "circle", "Actual" = "square")) +
+  scale_color_manual(name = "", values = c("Original Budget" = mea_red, "Actual" = mea_gray, "Final Budget" = mea_blue))+
+  scale_shape_manual(name = "", values = c("Original Budget" = "circle", "Actual" = "square", "Final Budget" = "diamond")) +
   theme(
     plot.subtitle = element_markdown(),
     legend.box.background = element_rect(color= mea_gray, size=1),
@@ -243,14 +243,9 @@ FA_Data_District %>%
 ```
 
 
+### Budgeted Revenue
 
-
-\newpage
-
-
-### Revenue and Expenditure
-
-Tables xx and xx compare General Fund revenue and expenditure expected in the district's original and final budgets to the actual revenue earned and expenditure spent in that fiscal year. 
+Table 4 and figure 3 compare General Fund revenue expected in the district's original and final budgets to the actual revenue earned in that fiscal year. 
 
 ```{r}
 FA_Data_District %>% 
@@ -280,7 +275,7 @@ FA_Data_District %>%
   bg(j = c("db.original.total.revenue", "db.orig.rev.error", "db.orig.rev.pct.act"), bg = mea_red_light, part = "all") %>%
   bg(j = c("db.final.total.revenue", "db.final.rev.error", "db.final.rev.pct.act"), bg = mea_blue_light, part = "all") %>%
   bg(j = "fid.r.total.audit", bg = mea_gray_light, part = "all") %>%
-  flextable_custom_theme(title = "Table x. Budgeted General Fund Revenue")
+  flextable_custom_theme(title = "Table 4. Budgeted General Fund Revenue")
 
 ```
 
@@ -298,7 +293,7 @@ FA_Data_District %>%
   geom_hline(yintercept = 100) +
   scale_x_continuous(breaks = seq(1990, 2100, by = 1) )+
   scale_y_continuous(labels = number_format(suffix = "%")) +
-  labs(title = "Figure x. Original and Final Budgeted Revenue % of Actual",
+  labs(title = "Figure 3. Original and Final Budgeted Revenue % of Actual",
        x = "Fiscal Year",
        y = "") +
   scale_color_manual(values = c(mea_blue, mea_red))+
@@ -314,9 +309,10 @@ FA_Data_District %>%
 
 
 
+### Budgeted Expenditure 
 
+Table 5 and figure 4 compare General Fund expenditure expected in the district's original and final budgets to the actual expenditure spent in that fiscal year. 
 
-\newline 
 
 ```{r}
 FA_Data_District %>% 
@@ -347,32 +343,7 @@ FA_Data_District %>%
   bg(j = c("db.original.total.expenditure", "db.orig.exp.error", "db.orig.exp.pct.act"), bg = mea_red_light, part = "all") %>%
   bg(j = c("db.final.total.expenditure", "db.final.exp.error", "db.final.exp.pct.act"), bg = mea_blue_light, part = "all") %>%
   bg(j = "fid.r.total.audit", bg = mea_gray_light, part = "all") %>%
-  flextable_custom_theme(title = "Table x. Budgeted General Fund Expenditure")
-```
-
-
-
-```{r}
-
-## old budget table 
-# FA_Data_District %>% 
-#   filter(FY > (fiscal.year - prior.years.to.show),
-#          FY < fiscal.year) %>% 
-#   select(FY, db.original.total.expenditure, db.final.total.expenditure, 
-#          fid.e.total.xtrans, db.orig.exp.error, db.final.exp.error) %>% 
-#   flextable() %>% 
-#   set_header_labels(
-#                   FY = "Fiscal Year",
-#                   fid.e.total.xtrans = "Actual",
-#                   db.original.total.expenditure = "Original Budget",
-#                   db.final.total.expenditure = "Final Budget",
-#                   db.orig.exp.error = "Original Budget Error (Budget - Actual)",
-#                   db.final.exp.error = "Final Budget Error (Budget - Actual)") %>% 
-#   colformat_double(big.mark = ",", digits = 0) %>%
-#   colformat_num(j = "FY", big.mark = "") %>% 
-#   flextable_custom_theme(title = "Table x. Budgeted General Fund Expenditure")
-
-
+  flextable_custom_theme(title = "Table 5. Budgeted General Fund Expenditure")
 
 ```
 
@@ -389,7 +360,7 @@ FA_Data_District %>%
   geom_hline(yintercept = 100) +
   scale_x_continuous(breaks = seq(1990, 2100, by = 1) )+
   scale_y_continuous(labels = number_format(suffix = "%")) +
-  labs(title = "Figure x. Original and Final Budgeted Expenditure % of Actual",
+  labs(title = "Figure 4. Original and Final Budgeted Expenditure % of Actual",
        x = "Fiscal Year",
        y = "") +
   scale_color_manual(values = c(mea_blue, mea_red))+

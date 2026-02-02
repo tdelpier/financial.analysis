@@ -30,14 +30,12 @@ fa_helper_render_district_fa <- function(df, dcode, type = "paged",
                         ){
     
   
-  
-  
   quietly(tt_dir_projects())
     
     
     format <- {{ type }}
     
-    FA_Data_District <-  
+    FA_Data_District <<-  
       df %>%
       filter(dnum == {{ dcode }},
              FY >= (fiscal.year - 10)) %>%

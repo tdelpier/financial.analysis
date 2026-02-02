@@ -8,6 +8,6 @@ editor_options:
 
 ## Transfers
 
-Dollars transferred out of the General Fund are not recorded in the General Fund balance. While many interfund transfers are routine and benign, large transfers out of the General Fund can make the district appear artificially worse off financially. T
+Dollars transferred out of the General Fund are not recorded in the General Fund balance. While many interfund transfers are routine and benign, large transfers out of the General Fund can make the district appear artificially worse off financially. 
 
 Based on state financial reporting, `r var_to_words(district.label)` did not make any major transfers out of the General Fund within the last 10 years. 
