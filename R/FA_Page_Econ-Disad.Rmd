@@ -4,7 +4,7 @@ output: html_document
 
 ## Economically Disadvantaged Students
 
-Funding for ["at-risk"](https://www.michigan.gov/mde/services/school-performance-supports/educational-supports/programs/section-31a-at-risk) pupils under [sec. 31a](https://www.legislature.mi.gov/Laws/MCL?objectName=MCL-388-1631A&highlight=31a&QueryID=185997513) of the School Aid act has increased substantially since FY 2023. This funding is allocated based on the number and proportion of "economically disadvantaged" students in the district thereby improving the equitable distribution of resources. The number and proportion of economically disadvantaged students are reported in table 19 and figure 11.
+Funding for ["at-risk"](https://www.michigan.gov/mde/services/school-performance-supports/educational-supports/programs/section-31a-at-risk) pupils under [sec. 31a](https://www.legislature.mi.gov/Laws/MCL?objectName=MCL-388-1631A&highlight=31a&QueryID=185997513) of the School Aid act has increased substantially since FY 2023. This funding is allocated based on the number and proportion of "economically disadvantaged" students in the district thereby improving the equitable distribution of resources. 
 
 ```{r}
      

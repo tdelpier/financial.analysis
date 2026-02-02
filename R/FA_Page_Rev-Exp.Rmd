@@ -45,17 +45,12 @@ FA_Data_District %>%
   select(FY, fid.r.total.audit, fid.e.total.xtrans) %>% 
   pivot_longer(cols = c(fid.r.total.audit, fid.e.total.xtrans)) %>% 
   filter(!is.na(value)) %>%
-  filter(FY != fiscal.year) %>% 
-
-  
-    mutate(name = case_when(name == "fid.r.total.audit"  ~ "Revenue",
+  mutate(name = case_when(name == "fid.r.total.audit"  ~ "Revenue",
                             name == "fid.e.total.xtrans" ~ "Expenditure")) %>%
-  
   ggplot(aes(x = FY, y = value, 
              group = name,  color = name, linetype = name))+
   geom_line(size = line_size) +
-  expand_limits(x = fiscal.year + 0.5  )+
-  scale_x_continuous(breaks = seq(1990, 2100, by = 1) )+
+  scale_x_continuous(breaks = seq(1990, fiscal.year - 1, by = 1) )+
   scale_y_continuous(labels = number_format(big.mark = ",")) +
   labs(title = "Figure 5. <span style='color: #00A651'> Revenue</span> and <span style='color: #C2002F'>Expenditure</span>",
        x = "Fiscal Year",

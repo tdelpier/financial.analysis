@@ -29,7 +29,7 @@ dist_geo <- fa_import_geo() %>% rename(geometry = geom)
 # Choosing District 
  tt_dnum_from_dname("kent")
  tt_dnum_from_dname("benzie")
- tt_dnum_from_dname("cadil")
+ tt_dnum_from_dname("baldw")
  
  
 dnum_x <- tt_dnum_random(1)
@@ -46,14 +46,14 @@ dnum_x <- 39065 # gull lake
 dnum_x <- 41050 # Caledonia        
 dnum_x <- 50210 # Utica
 dnum_x <- 70020 # holand
-dnum_x <- 2070 # munising
+dnum_x <- 2070  # munising
 dnum_x <- 25010 # flint
 dnum_x <- 50070 # Clintondale
 dnum_x <- 82160 # wayne westland
 dnum_x <- 83010 # Cadillac
 dnum_x <- 11010 # Benton Harbor
 dnum_x <- 27010 # bessemer missing data
-
+dnum_x <- 43040 # Baldwin weird grant
 
 FA_Data_District <-
   FA_Data %>%
@@ -96,7 +96,8 @@ districts <-
   tt_dnum_psa(dnum) %>% 
   filter(flag.charter == 0,
          flag.isd == 0) %>% 
-  select(dnum) %>% pull()
+  select(dnum) %>% 
+  pull() 
 
 
 # districts <- tt_dnum_random(10)

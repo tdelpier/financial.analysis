@@ -69,7 +69,8 @@ fa_dwork_clean <- function(df) {
     arrange(FY) %>%
     mutate(fid.r.total.audit.chg = fid.r.total.audit - lag(fid.r.total.audit),
            fid.r.total.audit.pct.chg = (fid.r.total.audit.chg / lag(fid.r.total.audit)) * 100,
-
+           
+           fid.e.total.xtrans = ifelse(fid.e.total.xtrans == 0, NA, fid.e.total.xtrans),
            fid.e.total.xtrans.chg = fid.e.total.xtrans - lag(fid.e.total.xtrans),
            fid.e.total.xtrans.pct.chg = (fid.e.total.xtrans.chg / lag(fid.e.total.xtrans)) * 100,
 

@@ -13,7 +13,7 @@ No_FID_Avalible <-
   FA_Data_District %>% 
   filter(FY == fiscal.year - 1) %>% 
   select(fid.r.total) %>% 
-  mutate(no.fid.avalible = ifelse(is.na(fid.r.total) | fid.r.total == 0 , 1, 0)) %>% 
+  mutate(no.fid.avalible = ifelse(is.na(fid.r.total) | fid.r.total == 0 , 1, 0)) %>%
   pull()
 
 
@@ -188,8 +188,10 @@ if(No_FID_Avalible == 0 ){
 
 ```{r}
 
+
 FA_Data_District %>%
   ungroup() %>%
+  filter(if(No_FID_Avalible == 1){FY <= fiscal.year - 2}else{FY>=2000}) %>%
   mutate(other.net = tab.rev.state.mpsers.netother + tab.rev.state.edcomp) %>% 
   select(FY, tab.rev.total, tab.rev.fed.stim,
          tab.rev.state.mpsers.uaal, other.net, tab.rev.total.xstim.xnet) %>%
@@ -222,6 +224,7 @@ FA_Data_District %>%
   select(FY, tab.rev.total, tab.rev.total.xstim.xnet) %>%
   pivot_longer(cols = c(tab.rev.total, tab.rev.total.xstim.xnet)) %>%
   filter(!is.na(value)) %>%
+  filter(if(No_FID_Avalible == 1){FY <= fiscal.year - 2}else{FY>=2000}) %>%
   mutate(name = case_when(name == "tab.rev.total"  ~ "Total Revenue",
                             name == "tab.rev.total.xstim.xnet" ~ "Revenue less Stimuls and Net")) %>%
 

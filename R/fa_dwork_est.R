@@ -59,7 +59,7 @@ fa_dwork_est <- function(df){
              lag(cy.a.8.096) +  # 104h
              (lag(cy.a.8.865) * 0.8) + #35m
              lag(cy.a.8.260) + #99h
-             lag(cy.a.8.053) # 21h,  
+             lag(cy.a.8.053), # 21h,  
            
            rev.state.safsr.fid.error = (fid.r.state - onetime.safsr) - (cy.a.8.000 - non.gf.safsr.rev), 
            rev.state.safsr.fid.error = ifelse(rev.state.safsr.fid.error < 0 & !dnum %in% c(82170, 82390), 0, rev.state.safsr.fid.error), #Wyandotte and Northville splits their revenue in a very strange way. This makes it close to accurate
