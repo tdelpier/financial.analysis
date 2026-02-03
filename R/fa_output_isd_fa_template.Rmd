@@ -43,24 +43,32 @@ sass::sass(sass::sass_file(TannersTools::tt_dir_projects("financial.analysis", "
 
 element_table_isd_rev_exp_bal <- function(fund, title) {
   
-FA_Data_ISD %>% 
+  data <- 
+    FA_Data_ISD %>% 
   filter(fund == {{ fund }}) %>% 
-  select(FY, rev, transfer.in, exp, transfer.out, bal, bal.pct.rev, bal.pct.exp) %>% 
-  flextable() %>% 
-  set_header_labels(FY = "Fiscal Year",
-                    rev = "Revenue",
-                    transfer.in = "Transfer In",
-                    exp = "Expenditure",
-                    transfer.out = "Transfer Out",
-                    bal = "Fund Balance Amount",
-                    bal.pct.rev = "Fund Balance % of Revenue",
-                    bal.pct.exp = "Fund Balance % of Expenditure") %>% 
-  colformat_num(j = "FY",
-                big.mark = "") %>%
-  colformat_double(j = c("bal.pct.rev", 
-                         "bal.pct.exp"), 
-                   suffix = "%") %>% 
-  flextable_custom_theme(title = {{ title }})
+  select(FY, rev, transfer.in, exp, transfer.out, bal, bal.pct.rev, bal.pct.exp)
+  
+  if(nrow(data) != 0){
+    
+     data %>% 
+      flextable() %>% 
+      set_header_labels(FY = "Fiscal Year",
+                        rev = "Revenue",
+                        transfer.in = "Transfer In",
+                        exp = "Expenditure",
+                        transfer.out = "Transfer Out",
+                        bal = "Fund Balance Amount",
+                        bal.pct.rev = "Fund Balance % of Revenue",
+                        bal.pct.exp = "Fund Balance % of Expenditure") %>% 
+      colformat_num(j = "FY",
+                    big.mark = "") %>%
+      colformat_double(j = c("bal.pct.rev", 
+                             "bal.pct.exp"), 
+                       suffix = "%") %>% 
+      flextable_custom_theme(title = {{ title }})
+    
+  }
+ 
   
 }
 
@@ -74,32 +82,38 @@ FA_Data_ISD %>%
 
 element_fig_isd_rev_exp <- function(fund, transfers) {
   
-  FA_Data_ISD %>% 
-  filter(fund == {{ fund }}) %>% 
-  select(FY, rev, exp) %>% 
-  pivot_longer(cols = c(rev, exp)) %>% 
-  filter(!is.na(value)) %>%
-  filter(FY != fiscal.year) %>% 
-    mutate(name = case_when(name == "rev"  ~ "Revenue",
-                            name == "exp" ~ "Expenditure")) %>% 
-  ggplot(aes(x = FY, y = value, 
-             group = name,  color = name, linetype = name))+
-  geom_line(size = line_size) +
-  expand_limits(x = fiscal.year + 0.5  ) +
+  data <- 
+    FA_Data_ISD %>% 
+    filter(fund == {{ fund }}) %>% 
+    select(FY, rev, exp) %>% 
+    pivot_longer(cols = c(rev, exp)) %>% 
+    filter(!is.na(value)) %>%
+    filter(FY != fiscal.year) %>% 
+      mutate(name = case_when(name == "rev"  ~ "Revenue",
+                              name == "exp" ~ "Expenditure"))
   
-  scale_x_continuous(breaks = seq(1990, 2100, by = 1) )+
-  scale_y_continuous(labels = number_format(big.mark = ",")) +
-  labs(title = "<span style='color: #00A651'> Revenue</span> and <span style='color: #C2002F'>Expenditure</span>",
-       subtitle = "Excluding Transfers",
-       x = "Fiscal Year",
-       y = "")+
-  scale_color_manual(values = c(mea_red, mea_green)) +
-  scale_fill_manual(values = c(mea_red, mea_green)) +
-  scale_linetype_manual(values=c("twodash", "solid"))+
-  theme(legend.box.background = element_rect(color= mea_gray, size=1),
-        legend.title = element_blank(),
-        legend.position = "bottom",
-        plot.title = element_markdown())
+  if(nrow(data) != 0){
+    
+  data %>% 
+    ggplot(aes(x = FY, y = value, 
+             group = name,  color = name, linetype = name))+
+    geom_line(size = line_size) +
+  scale_x_continuous(breaks = seq(1990, fiscal.year-1, by = 1) )+
+    scale_y_continuous(labels = number_format(big.mark = ",")) +
+    labs(title = "<span style='color: #00A651'> Revenue</span> and <span style='color: #C2002F'>Expenditure</span>",
+         subtitle = "Excluding Transfers",
+         x = "Fiscal Year",
+         y = "")+
+    scale_color_manual(values = c(mea_red, mea_green)) +
+    scale_fill_manual(values = c(mea_red, mea_green)) +
+    scale_linetype_manual(values=c("twodash", "solid"))+
+    theme(legend.box.background = element_rect(color= mea_gray, size=1),
+          legend.title = element_blank(),
+          legend.position = "bottom",
+          plot.title = element_markdown())
+
+    
+  }
   
 }
 
@@ -111,34 +125,39 @@ element_fig_isd_rev_exp <- function(fund, transfers) {
 
 element_fig_isd_rev_exp_with_transfers <- function(fund, transfers) {
   
-  FA_Data_ISD %>% 
-  filter(fund == {{ fund }}) %>% 
-  mutate(rev = rev + transfer.in,
-         exp = exp + transfer.out) %>% 
-  select(FY, rev, exp) %>% 
-  pivot_longer(cols = c(rev, exp)) %>% 
-  filter(!is.na(value)) %>%
-  filter(FY != fiscal.year) %>% 
+  data <- 
+    FA_Data_ISD %>% 
+    filter(fund == {{ fund }}) %>% 
+    mutate(rev = rev + transfer.in,
+           exp = exp + transfer.out) %>% 
+    select(FY, rev, exp) %>% 
+    pivot_longer(cols = c(rev, exp)) %>% 
+    filter(!is.na(value)) %>%
+    filter(FY != fiscal.year) %>% 
     mutate(name = case_when(name == "rev"  ~ "Revenue",
-                            name == "exp" ~ "Expenditure")) %>% 
-  ggplot(aes(x = FY, y = value, 
-             group = name,  color = name, linetype = name))+
-  geom_line(size = line_size) +
-  expand_limits(x = fiscal.year + 0.5  ) +
+                              name == "exp" ~ "Expenditure"))
   
-  scale_x_continuous(breaks = seq(1990, 2100, by = 1) )+
-  scale_y_continuous(labels = number_format(big.mark = ",")) +
-  labs(title = "<span style='color: #00A651'> Revenue</span> and <span style='color: #C2002F'>Expenditure</span>",
-       subtitle = "Including Transfers",
-       x = "Fiscal Year",
-       y = "")+
-  scale_color_manual(values = c(mea_red, mea_green)) +
-  scale_fill_manual(values = c(mea_red, mea_green)) +
-  scale_linetype_manual(values=c("twodash", "solid"))+
-  theme(legend.box.background = element_rect(color= mea_gray, size=1),
-        legend.title = element_blank(),
-        legend.position = "bottom",
-        plot.title = element_markdown())
+  
+  if(nrow(data) != 0){
+    data %>% 
+    ggplot(aes(x = FY, y = value, 
+             group = name,  color = name, linetype = name))+
+    geom_line(size = line_size) +
+      scale_x_continuous(breaks = seq(1990, fiscal.year-1, by = 1) )+
+    scale_y_continuous(labels = number_format(big.mark = ",")) +
+    labs(title = "<span style='color: #00A651'> Revenue</span> and <span style='color: #C2002F'>Expenditure</span>",
+         subtitle = "Including Transfers",
+         x = "Fiscal Year",
+         y = "")+
+    scale_color_manual(values = c(mea_red, mea_green)) +
+    scale_fill_manual(values = c(mea_red, mea_green)) +
+    scale_linetype_manual(values=c("twodash", "solid"))+
+    theme(legend.box.background = element_rect(color= mea_gray, size=1),
+          legend.title = element_blank(),
+          legend.position = "bottom",
+          plot.title = element_markdown())
+  
+  }
   
 }
 
@@ -152,25 +171,34 @@ element_fig_isd_rev_exp_with_transfers <- function(fund, transfers) {
 
 element_fig_isd_fund_balance <- function(fund) {
   
-  FA_Data_ISD %>% 
+  data <- 
+    FA_Data_ISD %>% 
   filter(fund == {{ fund }}) %>% 
-  select(FY, bal.pct.exp) %>% 
+  select(FY, bal.pct.rev) %>% 
   filter(FY != fiscal.year) %>% 
-  mutate(bal.pct.exp = bal.pct.exp / 100) %>% 
-  ggplot(aes(x = FY, y = bal.pct.exp)) +
+  mutate(bal.pct.exp = bal.pct.rev / 100)
+  
+    
+  if(nrow(data) != 0){
+    
+    data %>% 
+    ggplot(aes(x = FY, y = bal.pct.exp)) +
   geom_line(size = line_size)+
-  
-  expand_limits(x = fiscal.year + 0.5  ) +
-  
-  scale_x_continuous(breaks = seq(1990, 2100, by = 1) )+
+  scale_x_continuous(breaks = seq(1990, fiscal.year-1, by = 1) )+
   scale_y_continuous(labels = percent_format()) +
-  labs(title = "Fund Balance as % of Expenditure",
+  labs(title = "Fund Balance as % of Revenue",
        x = "Fiscal Year",
        y = "")+
   theme(legend.box.background = element_rect(color= mea_gray, size=1),
         legend.title = element_blank(),
         legend.position = "bottom",
         plot.title = element_markdown())
+    
+    
+  }  
+  
+  
+  
   
 }
   
@@ -206,12 +234,26 @@ element_fig_isd_fund_balance(fund = 22)
 
 ```
 
+```{r}
+
+ 
+
+
+show_voced_header <- 
+  FA_Data_ISD %>% 
+  filter(fund == 26) %>%
+  nrow() > 0
+  
+
+```
 
 
 
+```{asis, echo = show_voced_header}
 
 ## Vocational Education Fund
 
+```
 
 ```{r}
 
@@ -263,7 +305,7 @@ FA_Data_ISD %>%
                     sev.pct.chg = "% Change"
                     ) %>% 
   colformat_num(j = "FY", big.mark = "") %>%
-  colformat_double(j = c("sev", "sev.chg"), big.mark = ",", )%>%
+  colformat_double(j = c("sev", "sev.chg"), big.mark = ",", digits = 0)%>%
   colformat_double(j = "sev.pct.chg", suffix = "%") %>% 
 
   flextable_custom_theme(title = "Taxable Value")
@@ -289,10 +331,10 @@ FA_Data_ISD %>%
 
 ```
 
+\newpage
 
 
-
-```{r, eval=FALSE}
+```{r}
 
 
 FA_Data_ISD %>% 
@@ -302,23 +344,37 @@ FA_Data_ISD %>%
          millage.rev.se = sev  * millspeced,
          millage.rev.voc = sev * millvoced,
          millage.rev.rem = sev * enhancemnt) %>% 
-  select(FY, sev, milloper, millage.rev.oper,  millspeced, millage.rev.se, millvoced, millage.rev.voc, enhancemnt, millage.rev.rem) %>% 
+  select(FY, sev, millage.rev.oper, millage.rev.se, millage.rev.voc, millage.rev.rem) %>% 
+  flextable() %>% 
+  set_header_labels(FY = "Fiscal Year",
+                    sev = "Taxable Value (Thousands)",
+                    millage.rev.oper = "Operational Millage Revenue",
+                    millage.rev.se = "Special Education Millage Revenue",
+                    millage.rev.voc = "Vocational Education Millage Revenue",
+                    millage.rev.rem = "Regional Enhancement Millage Revenue"
+                    ) %>% 
+  colformat_num(digits = 0) %>%
+  colformat_num(j = "FY", digits = 0, big.mark = "") %>%
+
+  flextable_custom_theme(title = "Millage Revenue")
+
+  
+
+FA_Data_ISD %>% 
+  filter(fund == 11) %>% 
+  select(FY, sev, milloper,  millspeced, millvoced, enhancemnt) %>% 
   flextable() %>% 
   set_header_labels(FY = "Fiscal Year",
                     sev = "Taxable Value (Thousands)",
                     milloper = "Operational Millage Rate",
-                    millage.rev.oper = "Operational Millage Revenue",
                     millspeced = "Special Education Millage Rate",
-                    millage.rev.se = "Special Education Millage Revenue",
                     millvoced = "Vocational Education Millage Rate",
-                    millage.rev.voc = "Vocational Education Millage Revenue",
-                    enhancemnt = "Regional Enhancement Millage Rate",
-                    millage.rev.rem = "Regional Enhancement Millage Revenue"
+                    enhancemnt = "Regional Enhancement Millage Rate"
                     ) %>% 
-  flextable_custom_theme(title = "Millage Rates and Revenue")
-
-  
-
+  colformat_double( digits = 4) %>%
+  colformat_num(j = "sev", digits = 0) %>%
+  colformat_num(j = "FY", digits = 0, big.mark = "") %>%
+  flextable_custom_theme(title = "Millage Rates")
 
   
 ```
